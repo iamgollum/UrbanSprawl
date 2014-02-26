@@ -1,10 +1,15 @@
 $(document).ready(function () {
 
+
+/*
+NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP / HISTOGRAM
+*/
 	var map;
 	var themap;
 	var markers = [];
 	var bounds = null;
 	var selecting = false;
+	var infoBox = $("#info");
 
 	var redIcon = {
 		path: google.maps.SymbolPath.CIRCLE,
@@ -35,6 +40,8 @@ $(document).ready(function () {
 	  mapTypeControl: false,
 	  zoomControl:false
 	});
+
+	infoBox.html(map.getCenter().lat() + ", " + map.getCenter().lat());
 
 	 // NY sample Lat / Lng
 	var southWest = new google.maps.LatLng(42.102961, -79.164429);
@@ -75,6 +82,14 @@ $(document).ready(function () {
 	var markerCluster = new MarkerClusterer(map, markers);
 
 
+
+    /* Update Lat and Long */
+    google.maps.event.addListener(map,'center_changed', function(e) {
+    	setTimeout(function() {
+      		infoBox.html(map.getCenter().lat() + ", " + map.getCenter().lat());
+    	}, 600);
+
+      });
 
 
 	// Start drag rectangle to select markers !!!!!!!!!!!!!!!!
