@@ -20,6 +20,8 @@ body {
 	margin-bottom: -40px;
 }
 
+
+
 #sidebar{
 	background-color: #3C3C41;
 	position: absolute;
@@ -43,12 +45,11 @@ body {
 	color: #67676C;
 }
 
-#sidebar li:hover a, #sidebar li:hover i{
+#sidebar li:hover a{
 	color: white;
 }
 
 #sidebar li i{
-	color: #67676C;
 	font-size: 40px;
 	padding: 0px;
 	margin: 0px;
@@ -61,6 +62,7 @@ body {
 	width: inherit;
 	left: 0px;
 }
+
 
 
 
@@ -116,4 +118,18 @@ margin-bottom: 0.625rem;
 margin-right: 5px;
 color: #008cba;
 font-weight: bold;
+}
+
+
+
+
+#info{
+	position: absolute;
+	bottom: 1rem;
+	right: 6.25rem;
+	z-index: 1;
+	background: white;
+	width: 20rem;
+	height: 2rem;
+	overflow: auto;
 }
