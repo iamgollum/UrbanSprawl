@@ -25,20 +25,131 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 		strokeColor: "blue"
 	}
 
-	$("#box-select").click(function(){
-	    selecting = true;
-	    $(this).css("color","white");
-	});
 
+	var urbanTheme = [
+		{
+			"stylers": [
+				{
+					"saturation": -100
+				}
+			]
+		},
+		{
+			"featureType": "water",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"lightness": -30
+				}
+			]
+		},
+		{
+			"featureType": "water",
+			"elementType": "labels",
+			"stylers": [
+				{
+					"invert_lightness": true
+				},
+				{
+					"lightness": 30
+				}
+			]
+		},
+		{
+			"featureType": "road",
+			"stylers": [
+				{
+					"lightness": 15
+				}
+			]
+		},
+		{
+			"featureType": "poi.park",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"lightness": 25
+				}
+			]
+		},
+		{
+			"featureType": "landscape.natural.terrain",
+			"stylers": [
+				{
+					"visibility": "off"
+				}
+			]
+		}
+	]
+
+	var transitTheme = [
+		{
+			"stylers": [
+				{
+					"visibility": "simplified"
+					/* Remove strokes around map */
+				}
+			]
+		},
+		{
+			"elementType": "labels",
+			"stylers": [
+				{
+					"visibility": "off"
+					/*remove text and other text shit on map*/
+				}
+			]
+		},
+		{
+			"featureType": "landscape",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"lightness": 20
+				}
+			]
+		},
+		{
+			"featureType": "landscape.natural.terrain",
+			"stylers": [
+				{
+					"visibility": "off"
+				}
+			]
+		},
+		{
+			"featureType": "road",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"lightness": -10 /* make them lighter*/
+				},
+				{
+					"visibility": "on" /*not in simplified mode*/
+				}
+			]
+		},
+		{
+			"featureType": "poi.park",
+			"elementType": "geometry",
+			"stylers": [
+				{
+					"lightness": 25
+				}
+			]
+		}
+	]
 
 	var center = new google.maps.LatLng(42.792025, -75.435944);
 
 	map = new google.maps.Map(document.getElementById('map-canvas'), {
 	  zoom: 6,
 	  center: center,
-	  mapTypeId: google.maps.MapTypeId.SATELLITE,
+	  mapTypeId: google.maps.MapTypeId.ROADMAP,
 	  mapTypeControl: false,
-	  zoomControl:false
+	  zoomControl:false,
+	  disableDefaultUI: true,
+	  styles: urbanTheme
 	});
 
 	infoBox.html(map.getCenter().lat() + ", " + map.getCenter().lat());
@@ -200,5 +311,12 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 	    //stopDraw(e);
 	});
 
+
+
+	/* Box Selection Toolbar */
+	$("#box-select").click(function(){
+	    selecting = true;
+	    $(this).css("color","white");
+	});
 
 });
