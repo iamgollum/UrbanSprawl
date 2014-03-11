@@ -19,25 +19,78 @@ body {
    -o-transition: width 0.3s; /* Opera */
 }
 
-
-#map-canvas { 
-	height: 100%;
-	position: absolute; 
-	top: 0; 
-	bottom: -200px; 
-	left: 0; 
-	right: 0; 
-	z-index: 0;
-	margin-top: 40px
-	margin-bottom: -40px;
+nav{
+	z-index: 1;
 }
+
+#sprawl-map{ 
+  height: 100%;
+  position: absolute; 
+  top: 0; 
+  bottom: -200px; 
+  left: 0; 
+  right: 0; 
+  z-index: 0;
+}
+ 
+#container {
+  z-index: 100;
+  position: relative;
+}
+
+
+#search {
+  background: #59b;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 5px rgba(88, 88, 88, 0.5);
+  -webkit-box-shadow: 2px 2px 5px rgba(88, 88, 88, 0.5);
+  margin-bottom: 10px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+}
+
+#q {
+  background: #fff;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid #eee;
+  outline-width: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 18px;
+  width: 330px;
+}
+
+#btn {
+  padding: 8px 10px;
+  border: 1px solid #eee;
+  outline-width: 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 18px;
+  background: #fff;
+  cursor: pointer;
+}
+
+#search label {
+  color: #fff;
+  padding: 8px 10px;
+  font-size: 18px;
+}
+
+
 
 
 
 #sidebar{
 	background-color: #3C3C41;
 	position: absolute;
-	top: 100px;
+	top: 15rem;
 	left: 0px;
 	z-index: 1;
 }
@@ -77,6 +130,54 @@ body {
 
 
 
+.controls {
+margin-top: 16px;
+border: 1px solid transparent;
+border-radius: 2px 0 0 2px;
+box-sizing: border-box;
+-moz-box-sizing: border-box;
+height: 32px;
+outline: none;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+background-color: #fff;
+padding: 0 11px 0 13px;
+width: 400px;
+font-family: Roboto;
+font-size: 15px;
+font-weight: 300;
+text-overflow: ellipsis;
+position: absolute;
+z-index: 2;
+top: 10rem;
+left: 10rem;
+}
+
+#pac-input:focus {
+border-color: #4d90fe;
+margin-left: -1px;
+padding-left: 14px;  /* Regular padding-left + 1. */
+width: 401px;
+}
+
+.pac-container {
+font-family: Roboto;
+}
+
+#type-selector {
+color: #fff;
+background-color: #4d90fe;
+padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+font-family: Roboto;
+font-size: 13px;
+font-weight: 300;
+}
+
 
 #map-results{
 	position: absolute;
@@ -84,10 +185,11 @@ body {
 	left: 6.25rem;
 	z-index: 1;
 	background: white;
-	width: 25rem;
+	width: 40rem;
 	height: 35rem;
 	overflow-y: scroll;
-	overflow-x: hidden;
+/* 	overflow-x: hidden; */
+	background-color:rgba(0, 0, 0, 0.5);
 }
 
 
@@ -133,6 +235,35 @@ font-weight: bold;
 }
 
 
+
+ .column {
+    width: 33%;
+    float: left;
+    padding-bottom: 100px;
+  }
+  .portlet {
+    margin: 0 1em 1em 0;
+    padding: 0.3em;
+  }
+  .portlet-header {
+    padding: 0.2em 0.3em;
+    margin-bottom: 0.5em;
+    position: relative;
+  }
+  .portlet-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -8px;
+  }
+  .portlet-content {
+    padding: 0.4em;
+  }
+  .portlet-placeholder {
+    border: 1px dotted black;
+    margin: 0 1em 1em 0;
+    height: 50px;
+  }
 
 
 #info{

@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width" />
 
     <link rel="stylesheet" href="foundations/css/normalize.css">
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 
     <link rel="stylesheet" href="foundations/css/foundation.min.css">
 
@@ -19,8 +20,7 @@
   </head>
   <body>
 
-  <div id="map-canvas"></div>
-
+  <div id="sprawl-map"></div>
 
   <div id="container">
     
@@ -31,22 +31,11 @@
 
         <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
       </ul>
-
       <section class="top-bar-section">
           <ul class="left">
             <li class="divider"></li>
             <li><a href="#">About</a></li>
             <li class="divider"></li>
-            <li class="has-form">
-              <div class="row collapse">
-                <div class="large-8 small-9 columns">
-                  <input type="text" placeholder="Find Stuff">
-                </div>
-                <div class="large-4 small-3 columns">
-                  <a href="#" class="alert button expand">Search</a>
-                </div>
-              </div>
-            </li>
             <li class="has-form">
               <a class="button">Invert</a>
             </li>
@@ -65,6 +54,17 @@
         </section>
       </nav>
 
+    <div id="search">
+      <form action="" method="" id="s">
+        <div>
+          <label>Search New York by county</label>
+          <input type="search" value="Rensselaer" id="q"/>
+          <label>within <span id="dist"></span> km
+          <span id="of"></span></label>
+          <input type="submit" value="Search!" id="btn"/>
+        </div>
+      </form>
+    </div>
       <!-- SIDEBAR OF TOOLS-->
 
       <ul id="sidebar" class="side-nav">
@@ -74,125 +74,25 @@
         <li><a href="#"><i class="fi-graph-trend"></i><span class="icon-title">Trends</span></a></li>
         <li><a href="#"><i class="fi-social-delicious"></i><span class="icon-title">Distance</span></a></li>
       </ul>
+
   
     <!-- ANALYSIS WINDOW PANE -->
-      <section id="map-results">
-        <header>
-          <span class="left"><h4 id="results-title">SELECTION <i class="fi-web"></i></h4> </span>
-          <span class="right">
-            <ul class="button-group radius">
-              <li><a href="" class="tiny button">Histogram</a></li>
-              <li><a href="" class="tiny button secondary">List</a></li>
-            </ul>
-          </span>
-
-          <div class="panel"><p>Selection or more ways to define selection</p></div>
-        </header>
-
-        <aside>
-          <h5><small>LAYER TYPE</small></h5>
-          <ul class="histogram-list no-bullet">
-            <li>
-              <span class="left histogram-list-subj">BuildingInfrastructure</span>
-              <span class="right progress small-3">
-                <span class="meter" style="width: 100%"></span>
-              </span>
-              <span class="right histogram-list-totals">14690</span>
-            </li>
-          </ul>
-
-          <hr>
-
-          <h5><small>LAYER TYPE &gt;&gt; BUILDING INFRASTRUCTURE</small></h5>
-          <ul class="histogram-list no-bullet">
-            <li>
-              <span class="histogram-list-subj">BuildingServices</span>
-              <span class="right progress small-3"><span class="meter" style="width: 90%"></span></span>
-              <span class="right histogram-list-totals">9920</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Commercial</span>
-              <span class="right progress small-3"><span class="meter" style="width: 3%"></span></span>
-              <span class="right histogram-list-totals">2600</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Residential</span>
-              <span class="right progress small-3"><span class="meter" style="width: 2%"></span></span>
-              <span class="right histogram-list-totals">1240</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Educational</span>
-              <span class="right progress small-3"><span class="meter" style="width: 1%"></span></span>
-              <span class="right histogram-list-totals">130</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Medical</span>
-              <span class="right progress small-3"><span class="meter" style="width: 0.5%"></span></span>
-              <span class="right histogram-list-totals">24</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Civic</span>
-              <span class="right progress small-3"><span class="meter" style="width: 1%"></span></span>
-              <span class="right histogram-list-totals">10</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Religious</span>
-              <span class="right progress small-3"><span class="meter" style="width: 0%"></span></span>
-              <span class="right histogram-list-totals">4</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Educational</span>
-              <span class="right progress small-3"><span class="meter" style="width: 0%"></span></span>
-              <span class="right histogram-list-totals">2</span>
-            </li>
-          </ul>
-
-          <div class="panel"><p></p></div>
-          <h5><small>ACCESS</small></h5>
-          <ul class="histogram-list no-bullet">
-            <li>
-              <span class="histogram-list-subj">Private</span>
-              <span class="right progress small-3"><span class="meter" style="width: 40%"></span></span>
-              <span class="right histogram-list-totals">920</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Public</span>
-              <span class="right progress small-3"><span class="meter" style="width: 30%"></span></span>
-              <span class="right histogram-list-totals">00</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Civic</span>
-              <span class="right progress small-3"><span class="meter" style="width: 20%"></span></span>
-              <span class="right histogram-list-totals">1240</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Government</span>
-              <span class="right progress small-3"><span class="meter" style="width: 5%"></span></span>
-              <span class="right histogram-list-totals">130</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Military</span>
-              <span class="right progress small-3"><span class="meter" style="width: 3%"></span></span>
-              <span class="right histogram-list-totals">24</span>
-            </li>
-            <li>
-              <span class="histogram-list-subj">Unknown</span>
-              <span class="right progress small-3"><span class="meter" style="width: 2%"></span></span>
-              <span class="right histogram-list-totals">10</span>
-            </li>
-          </ul>
-        </aside>
-      </section>
+      <section id="map-results" style="display: none;"> </section>
 
       <div id="info"></div>
 	</div><!--container-->
-
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-	<script type="text/javascript" src="foundations/js/foundation.min.js"></script>
-	<script>$(document).foundation();</script>
+  
+  <!-- SCRIPTS -->
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	
+  <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
+  <script>$(document).foundation();</script>
 
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"></script>
   <script type="text/javascript" src="js/vendor/markerclusterer_compiled.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/theme.js"></script>
+  <script type="text/javascript" src="js/distancewidget.js"></script>
+	<script type="text/javascript" src="js/map.js"></script>
 </body>
 </html>
