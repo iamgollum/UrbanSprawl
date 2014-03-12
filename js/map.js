@@ -1,28 +1,222 @@
-var distanceWidget;
-var map;
-var geocodeTimer;
-var profileMarkers = [];
-
-var urbanSprawlPortal = function(opt_options){
-	this.options = opt_options || {};
-	this.map =   map = new google.maps.Map(
+/**
+ * A singelton instance of the Urban Sprawl Assessment Portal.
+ * 
+ *
+ * @param {Object} opt_options Options such as map, position etc.
+ *
+ * @constructor
+ */
+ var UrbanSprawlPortal = function (opt_options){
+	var options = opt_options || {};
+	
+	this.map = new google.maps.Map(
 		document.getElementById('sprawl-map'), 
 		{
-	    center: new google.maps.LatLng(37.790234970864, -122.39031314844),
-	    zoom: 8,
-	    mapTypeId: google.maps.MapTypeId.ROADMAP
+		center: new google.maps.LatLng(42.792025, -75.435944),
+		zoom: 6,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: false,
+		zoomControl:false,
+		disableDefaultUI: true,
+		styles: urbanTheme
 	  	}
 	  );
+
+	this.infoBox = $("#info");
+	this.markers = [];
+	this.markerCluster = new MarkerClusterer(this.map);
+
+    /* Update Lat and Long */
+    themap = this.map
+    google.maps.event.addListener(themap,'center_changed', function(e) {
+    	window.setTimeout(function() {
+      		$("#info").html(themap.getCenter().lat() + ", " + themap.getCenter().lng());
+    	}, 200);
+    });
+
+	this.loadNewYorkData_();
+	this.enableBoxSelection_();
+}
+UrbanSprawlPortal.prototype = new google.maps.MVCObject();
+
+UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
+
+	var southWest = new google.maps.LatLng(42.102961, -79.164429);
+	var northEast = new google.maps.LatLng(43.125695, -73.759155);
+	var lngSpan = northEast.lng() - southWest.lng();
+	var latSpan = northEast.lat() - southWest.lat();
+
+	for (var i = 0; i < 500; i++) {
+		// init markers
+	    var marker = new google.maps.Marker({
+	        position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
+	        map: this.map,
+	        title: 'marker ' + i,
+			icon: 'img/small_red.png',
+			selected: false,
+			state: 'Online',
+			id: (i+1) 
+	    });
+
+	    // process multiple info windows
+	    (function(marker, i) {
+	        // add click event
+	        google.maps.event.addListener(marker, 'click', function() {
+	            infowindow = new google.maps.InfoWindow({
+	                content: 'Marker Content'
+	            });
+	            infowindow.open(this.map, marker);
+	        });
+	    })(marker, i);
+
+	    this.markers.push(marker);
+	}
 }
 
 
-function init() {
-  var mapDiv = document.getElementById('sprawl-map');
-  map = new google.maps.Map(mapDiv, {
-    center: new google.maps.LatLng(37.790234970864, -122.39031314844),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
+
+	var portal = this;
+	portal.mouseDownPos = null;
+	portal.gribBoundingBox = null;
+	portal.mouseIsDown = 0,
+	portal.selecting = false;
+	portal.shiftPressed = false;
+	themap = portal.map; /*need portal for closure*/
+
+
+	$(window).keydown(function (evt) {
+	    if (evt.which === 16) { // shift
+	        portal.shiftPressed = true;
+	    }
+	}).keyup(function (evt) {
+	    if (evt.which === 16) { // shift
+	        portal.shiftPressed = false;
+	    }
+	});
+
+	/* Box Selection Toolbar */
+	$("#box-select").click(function(){
+	    portal.selecting = true;
+	    $(this).css("color","white");
+	});
+
+	 google.maps.event.addListener(themap, 'mousemove', function (e) {
+	    if (portal.mouseIsDown && (portal.selecting || portal.shiftPressed || portal.gribBoundingBox != null) ) {
+	        if (portal.gribBoundingBox !== null) // box exists
+	        {         
+	            var newbounds = new google.maps.LatLngBounds(portal.mouseDownPos,null);
+	            newbounds.extend(e.latLng);    
+	            portal.gribBoundingBox.setBounds(newbounds); // If portal statement is enabled, I lose mouseUp events
+
+	        } else // create bounding box
+	        {
+	            portal.gribBoundingBox = new google.maps.Rectangle({
+	                map: themap,
+	                bounds: null,
+	                fillOpacity: 0.15,
+	                strokeWeight: 0.9,
+	                clickable: false
+	            });
+	        }
+	    }
+	});
+
+	google.maps.event.addListener(themap, 'mousedown', function (e) {
+	    if (portal.selecting || portal.shiftPressed) {
+	    	$("#box-select").css("color","white");
+	        portal.mouseIsDown = 1;
+	        portal.mouseDownPos = e.latLng;
+	        themap.setOptions({
+	            draggable: false
+	        });
+	    }
+	});
+
+	google.maps.event.addListener(themap, 'mouseup', function (e) {
+	    if (portal.mouseIsDown && (portal.selecting || portal.shiftPressed|| portal.gribBoundingBox != null)) {
+	        portal.mouseIsDown = 0;
+	        var markersNumSelected = 0;
+	        if (portal.gribBoundingBox !== null) // box exists
+	        {
+	            var boundsSelectionArea = new google.maps.LatLngBounds(portal.gribBoundingBox.getBounds().getSouthWest(), portal.gribBoundingBox.getBounds().getNorthEast());
+	            
+	            for (var key in portal.markers) { // looping through my Markers Collection 
+
+					if (portal.gribBoundingBox.getBounds().contains(portal.markers[key].getPosition())) 
+					{
+						portal.markers[key].setIcon('img/small_yellow.png');
+						markersNumSelected++;
+
+					} else {
+
+						portal.markers[key].setIcon('img/small_red.png');
+					}
+	            }
+
+	            portal.gribBoundingBox.setMap(null); // remove the rectangle
+	        }
+	        portal.gribBoundingBox = null;
+	        portal.selecting = false;
+			portal.infoBox.html("Markers selected: " + markersNumSelected + " not-selected: " + (portal.markers.length - markersNumSelected));
+	        $("#box-select").css("color","#67676C");
+	    }
+
+	    themap.setOptions({
+	        draggable: true
+	    });
+	});
+
+}
+
+UrbanSprawlPortal.prototype.cluster = function(){
+
+	this.markerCluster.addMarkers(this.markers);
+	this.markerCluster.setIgnoreHidden(true);
+}
+
+UrbanSprawlPortal.prototype.heatmap = function(){
+
+/*
+// Unset all markers
+var i = 0, l = markers.length;
+for (i; i<l; i++) {
+    markers[i].setMap(null)
+}
+markers = []; //remove from memory, reset
+
+// Clears all clusters and markers from the clusterer.
+markerClusterer.clearMarkers();
+*/
+	/*$.each(this.markers, function(k, v){
+	    v.setVisible(false);
+	});
+	this.markerCluster.repaint();*/
+
+  markerClusterer.getSize() ? markerClusterer.clearMarkers() : null;
+
+  var pointArray = new google.maps.MVCArray(this.markers);
+
+  this.heatmap = new google.maps.visualization.HeatmapLayer({
+    data: pointArray
   });
+
+  heatmap.setMap(this.map);
+}
+
+UrbanSprawlPortal.prototype.cluster = function(){
+
+	var bikeLayer = new google.maps.BicyclingLayer();
+	bikeLayer.setMap(this.map); /*setMap(null) to remove it.*/
+}
+
+
+UrbanSprawlPortal.prototype.clearOverlay = function(overlay){
+
+
+}
+
+UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
 
   distanceWidget = new DistanceWidget({
     map: map,
@@ -47,84 +241,10 @@ function init() {
   addActions();
 }
 
-function updatePosition() {
-  if (geocodeTimer) {
-    window.clearTimeout(geocodeTimer);
-  }
 
-  // Throttle the geo query so we don't hit the limit
-  geocodeTimer = window.setTimeout(function() {
-    reverseGeocodePosition();
-  }, 200);
+
+
+function main(){
+	var Portal = new UrbanSprawlPortal();
 }
-
-function reverseGeocodePosition() {
-  var pos = distanceWidget.get('position');
-  var geocoder = new google.maps.Geocoder();
-  geocoder.geocode({'latLng': pos}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[1]) {
-        $('#of').html('of ' + results[1].formatted_address);
-        return;
-      }
-    }
-
-    $('#of').html('of somewhere');
-  });
-}
-
-function updateDistance() {
-  var distance = distanceWidget.get('distance');
-  $('#dist').html(distance.toFixed(2));
-}
-
-function addActions() {
-  var s = $('#s').submit(search);
-
-/*  $('#close').click(function() {
-    $('#cols').removeClass('has-cols');
-    google.maps.event.trigger(map, 'resize');
-    map.fitBounds(distanceWidget.get('bounds'));
-    $('#results-wrapper').hide();
-
-    return false;
-  });*/
-}
-
-function search(e) {
-  e.preventDefault();
-  var q = $('#q').val();
-  if (q == '') {
-    return false;
-  }
-
-  var d = distanceWidget.get('distance');
-  var p = distanceWidget.get('position');
-
-/*  var url = 'http://search.twitter.com/search.json?callback=addResults' +
-    '&rrp=100&q=' + escape(q) + '&geocode=' + escape(p.lat() + ',' + p.lng() +
-    ',' + d + 'km');
-
-  clearMarkers();
-
-  $.getScript(url);
-
-  $('#results').html('Searching...');
-  var cols = $('#cols');
-  if (!cols.hasClass('has-cols')) {
-    $('#cols').addClass('has-cols');
-    google.maps.event.trigger(map, 'resize');
-    map.fitBounds(distanceWidget.get('bounds'));
-  }*/
-}
-
-function clearMarkers() {
-  for (var i = 0, marker; marker = profileMarkers[i]; i++) {
-    marker.setMap(null);
-  }
-
-
-
-}
-
-google.maps.event.addDomListener(window, 'load', init);
+google.maps.event.addDomListener(window, 'load', main);

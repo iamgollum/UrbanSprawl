@@ -17,6 +17,8 @@ $(function() {
 	  icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
 	  icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
 	});
+
+
 });
 
 /*

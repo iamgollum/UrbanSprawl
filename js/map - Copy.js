@@ -55,7 +55,7 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 	        position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
 	        map: map,
 	        title: 'marker ' + i,
-			icon: redIcon,
+			icon: 'small_red',
 			selected: false,
 			state: 'Online',
 			id: (i+1) 
@@ -78,13 +78,6 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 	var markerCluster = new MarkerClusterer(map, markers);
 
 
-    /* Update Lat and Long */
-    google.maps.event.addListener(map,'center_changed', function(e) {
-    	setTimeout(function() {
-      		infoBox.html(map.getCenter().lat() + ", " + map.getCenter().lat());
-    	}, 600);
-
-      });
 
 
 	// Start drag rectangle to select markers !!!!!!!!!!!!!!!!
@@ -149,15 +142,9 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 	            
 	            for (var key in markers) { // looping through my Markers Collection 
 
-					//if (boundsSelectionArea.contains(markers[key].marker.getPosition())) 
 					if (gribBoundingBox.getBounds().contains(markers[key].getPosition())) 
 					{
-					//if(flashMovie !== null && flashMovie !== undefined) {
-						
-						//$('#info').HTML( "key:"+key+" posn: "+markers[key].marker.getPosition()+" in bnds: "+gribBoundingBox.getBounds());
-						// console.log("User selected:" + key + ", id:" + markers[key].id);
-						
-						markers[key].setIcon(redIcon)
+						markers[key].setIcon('small_red')
 
 						if (markers[key].getAnimation() != null) {
 						markers[key].setAnimation(null);
@@ -167,17 +154,9 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 
 						markersNumSelected++;
 
-					//}   
 					} else {
-					//if(flashMovie !== null && flashMovie !== undefined) {
-						if (markers[key].getAnimation() != null) {
-						markers[key].setAnimation(null);
-						}
 
-						markers[key].setIcon(blueIcon);
-						//$('#info').HTML( "key:"+key+" posn: "+markers[key].marker.getPosition()+" out of bnds: "+gribBoundingBox.getBounds());
-						// console.log("User NOT selected:" + key + ", id:" + markers[key].id);
-					//} 
+						markers[key].setIcon('small_blue');
 					}
 	            }
 
@@ -192,7 +171,6 @@ NEED TO CREATE EVENTS ON DATA WINDOW ... ON HOVER ... HIGHLIGHT POINTS IN GROUP 
 	    themap.setOptions({
 	        draggable: true
 	    });
-	    //stopDraw(e);
 	});
 
 
