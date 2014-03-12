@@ -6,22 +6,11 @@
  *
  * @constructor
  */
- var UrbanSprawlPortal = function (opt_options){
-	var options = opt_options || {};
-	
-	this.map = new google.maps.Map(
-		document.getElementById('sprawl-map'), 
-		{
-		center: new google.maps.LatLng(42.792025, -75.435944),
-		zoom: 6,
-		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		mapTypeControl: false,
-		zoomControl:false,
-		disableDefaultUI: true,
-		styles: urbanTheme
-	  	}
-	  );
-
+ var UrbanSprawlPortal = function (map_options, map_styles){
+	var options = map_options || {};
+	this.map = new google.maps.Map(document.getElementById('sprawl-map'), options);
+	this.styles = map_styles;
+	this.themeStrategy = map_styles['urban'];
 	this.infoBox = $("#info");
 	this.markers = [];
 	this.markerCluster = new MarkerClusterer(this.map);
@@ -34,11 +23,16 @@
     	}, 200);
     });
 
+	this.themeStrategy.execute(this.map);
 	this.loadNewYorkData_();
 	this.enableBoxSelection_();
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
+UrbanSprawlPortal.prototype.changeMapStyle = function(style_index){
+	console.log(this.styles[style_index]);
+	this.styles[style_index].execute(this.map);
+}
 UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 
 	var southWest = new google.maps.LatLng(42.102961, -79.164429);
@@ -211,7 +205,7 @@ UrbanSprawlPortal.prototype.cluster = function(){
 }
 
 
-UrbanSprawlPortal.prototype.clearOverlay = function(overlay){
+UrbanSprawlPortal.prototype.changeOverlay = function(overlay){
 
 
 }
@@ -245,6 +239,27 @@ UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
 
 
 function main(){
-	var Portal = new UrbanSprawlPortal();
+
+	var mapOptions = {
+		center: new google.maps.LatLng(42.792025, -75.435944),
+		zoom: 6,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: false,
+		zoomControl:false,
+		disableDefaultUI: true
+	}
+	var mapStyles = {
+		'urban': new UrbanTheme(),
+		'transit': new TransitTheme(),
+		'water': new WaterTheme(),
+		'inverseWater': new InverseWaterTheme()
+	}
+
+	var Portal = new UrbanSprawlPortal(mapOptions, mapStyles);
+
+	/* Box Selection Toolbar */
+	$("#mapthemes > li > a").click(function(){
+	    Portal.changeMapStyle($(this).attr('id'));
+	});
 }
 google.maps.event.addDomListener(window, 'load', main);
