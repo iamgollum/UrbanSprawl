@@ -8,12 +8,36 @@
  */
  var UrbanSprawlPortal = function (map_options, map_styles){
 	var options = map_options || {};
-	this.map = new google.maps.Map(document.getElementById('sprawl-map'), options);
+	this.set('map', new google.maps.Map(document.getElementById('sprawl-map'), options) );
 	this.styles = map_styles;
 	this.themeStrategy = map_styles['urban'];
 	this.infoBox = $("#info");
-	this.markers = [];
-	this.markerCluster = new MarkerClusterer(this.map);
+	this.set('markers', []);
+	this.weightedLocations = [];
+	this.dataviews= {
+		'points' : new PointData(),
+		'cluster' : new ClusterData()
+	};
+
+	for (key in this.styles){
+		this.styles[key].bindTo('map', this);
+	}
+
+	for (key in this.dataviews){
+		this.dataviews[key].bindTo('data', this, 'markers');
+		this.dataviews[key].bindTo('map', this);
+	}
+
+	this.overlays = {
+		'bikeroute' : new google.maps.BicyclingLayer(),
+		'heatmap' : new google.maps.visualization.HeatmapLayer(),
+	}
+
+
+
+	this.dataStrategy = this.dataviews['cluster'];
+	this.overlayStrategy = this.overlays['heatmap'];
+
 
     /* Update Lat and Long */
     themap = this.map
@@ -29,10 +53,24 @@
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
-UrbanSprawlPortal.prototype.changeMapStyle = function(style_index){
-	console.log(this.styles[style_index]);
-	this.styles[style_index].execute(this.map);
+UrbanSprawlPortal.prototype.changeMapStyle = function(index){
+	this.styles[index].execute(this.map);
+	this.themeStrategy = this.styles[index];
 }
+
+UrbanSprawlPortal.prototype.changeDataView = function(index){
+	this.dataStrategy.removeOverlay();
+	this.dataviews[index].execute(this.map, this.markers);
+	this.dataStrategy = this.dataviews[index];
+}
+
+UrbanSprawlPortal.prototype.toggleOverlay = function(index){
+	this.overlays[index].setMap(this.overlays[index].getMap() ? null : this.map);
+	if (index == "heatmap"){
+		this.overlays[index].setData(this.weightedLocations);
+	}
+}
+
 UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 
 	var southWest = new google.maps.LatLng(42.102961, -79.164429);
@@ -49,7 +87,8 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 			icon: 'img/small_red.png',
 			selected: false,
 			state: 'Online',
-			id: (i+1) 
+			id: (i+1),
+			visible: false
 	    });
 
 	    // process multiple info windows
@@ -62,8 +101,12 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	            infowindow.open(this.map, marker);
 	        });
 	    })(marker, i);
-
+	    var wloc = {
+	    	location: marker.getPosition(), 
+	    	weight: ((Math.random() + 1) * 100)
+	    };
 	    this.markers.push(marker);
+	    this.weightedLocations.push(wloc);
 	}
 }
 
@@ -163,53 +206,6 @@ UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 
 }
 
-UrbanSprawlPortal.prototype.cluster = function(){
-
-	this.markerCluster.addMarkers(this.markers);
-	this.markerCluster.setIgnoreHidden(true);
-}
-
-UrbanSprawlPortal.prototype.heatmap = function(){
-
-/*
-// Unset all markers
-var i = 0, l = markers.length;
-for (i; i<l; i++) {
-    markers[i].setMap(null)
-}
-markers = []; //remove from memory, reset
-
-// Clears all clusters and markers from the clusterer.
-markerClusterer.clearMarkers();
-*/
-	/*$.each(this.markers, function(k, v){
-	    v.setVisible(false);
-	});
-	this.markerCluster.repaint();*/
-
-  markerClusterer.getSize() ? markerClusterer.clearMarkers() : null;
-
-  var pointArray = new google.maps.MVCArray(this.markers);
-
-  this.heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
-  });
-
-  heatmap.setMap(this.map);
-}
-
-UrbanSprawlPortal.prototype.cluster = function(){
-
-	var bikeLayer = new google.maps.BicyclingLayer();
-	bikeLayer.setMap(this.map); /*setMap(null) to remove it.*/
-}
-
-
-UrbanSprawlPortal.prototype.changeOverlay = function(overlay){
-
-
-}
-
 UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
 
   distanceWidget = new DistanceWidget({
@@ -257,9 +253,19 @@ function main(){
 
 	var Portal = new UrbanSprawlPortal(mapOptions, mapStyles);
 
-	/* Box Selection Toolbar */
+	/* Theme Selection */
 	$("#mapthemes > li > a").click(function(){
 	    Portal.changeMapStyle($(this).attr('id'));
 	});
+	/* Data View Selection */
+	$("#dataview > li > a").click(function(){
+	    Portal.changeDataView($(this).attr('id'));
+	});
+	$('#overlays input[type=checkbox]').change(function() {
+		console.log("triggered");
+  		Portal.toggleOverlay($(this).attr('id'));
+	});
+
 }
+
 google.maps.event.addDomListener(window, 'load', main);

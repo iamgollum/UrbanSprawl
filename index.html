@@ -45,6 +45,20 @@
                 <li><a id="inverseWater" href="#">InvWater</a></li>
               </ul>
             </li>
+            <li class="has-dropdown">
+              <a href="#">Data View</a>
+              <ul id="dataview" class="dropdown">
+                <li><a id="points" href="#">Points</a></li>
+                <li><a id="cluster" href="#">Cluster</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown has-form">
+              <a href="#">Overlays</a>
+              <ul id="overlays" class="dropdown">
+                <li><input id="heatmap" type="checkbox"><label for="heatmap">Heatmap</label></li>
+                <li><input id="bikeroute" type="checkbox"><label for="heatmap">Bike Routes</label></li>
+              </ul>
+            </li>
             <li class="divider"></li>
             <li class="has-form">
               <a class="button">Invert</a>
@@ -102,6 +116,7 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=visualization"></script>
   <script type="text/javascript" src="js/vendor/markerclusterer_packed.js"></script>
   <script type="text/javascript" src="js/theme.js"></script>
+  <script type="text/javascript" src="js/dataoverlays.js"></script>
   <script type="text/javascript" src="js/distancewidget.js"></script>
 	<script type="text/javascript" src="js/map.js"></script>
 </body>
