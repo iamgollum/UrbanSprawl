@@ -8,68 +8,48 @@
  */
  var UrbanSprawlPortal = function (map_options, map_styles){
 	var options = map_options || {};
-	this.set('map', new google.maps.Map(document.getElementById('sprawl-map'), options) );
-	this.styles = map_styles;
-	this.themeStrategy = map_styles['urban'];
-	this.infoBox = $("#info");
-	this.set('markers', []);
-	this.weightedLocations = [];
-	this.dataviews= {
-		'points' : new PointData(),
-		'cluster' : new ClusterData()
-	};
 
+	this.set('map', new google.maps.Map(document.getElementById('sprawl-map'), options) );
+	
+	this.styles = map_styles;
 	for (key in this.styles){
 		this.styles[key].bindTo('map', this);
 	}
+	this.themeStrategy = map_styles['transit'];
 
-	for (key in this.dataviews){
-		this.dataviews[key].bindTo('data', this, 'markers');
-		this.dataviews[key].bindTo('map', this);
-	}
+	this.infoBox = $("#info");
+
+	this.markers = [];
+	this.weightedLocations = [];
+
+    this.MarkerCluster = null;
+    this.cluster_on = false;    
+    this.markers_on = true;
 
 	this.overlays = {
 		'bikeroute' : new google.maps.BicyclingLayer(),
+		'transit' : new google.maps.TransitLayer(),
+		'counties' : new google.maps.KmlLayer({url: 'https://dl.dropboxusercontent.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml?dl=1&token_hash=AAF6sV2X7iOiMai5Z17hwY2gaCiCUCMCtK6u3-XbjMT14Q'}),
 		'heatmap' : new google.maps.visualization.HeatmapLayer(),
 	}
-
-
-
-	this.dataStrategy = this.dataviews['cluster'];
+	console.log(this.overlays['counties']);
+//http://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml   https://www.dropbox.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml
 	this.overlayStrategy = this.overlays['heatmap'];
 
-
     /* Update Lat and Long */
-    themap = this.map
+    themap = this.get('map');
     google.maps.event.addListener(themap,'center_changed', function(e) {
     	window.setTimeout(function() {
       		$("#info").html(themap.getCenter().lat() + ", " + themap.getCenter().lng());
     	}, 200);
     });
 
-	this.themeStrategy.execute(this.map);
+	this.themeStrategy.execute(themap);
 	this.loadNewYorkData_();
 	this.enableBoxSelection_();
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
-UrbanSprawlPortal.prototype.changeMapStyle = function(index){
-	this.styles[index].execute(this.map);
-	this.themeStrategy = this.styles[index];
-}
-
-UrbanSprawlPortal.prototype.changeDataView = function(index){
-	this.dataStrategy.removeOverlay();
-	this.dataviews[index].execute(this.map, this.markers);
-	this.dataStrategy = this.dataviews[index];
-}
-
-UrbanSprawlPortal.prototype.toggleOverlay = function(index){
-	this.overlays[index].setMap(this.overlays[index].getMap() ? null : this.map);
-	if (index == "heatmap"){
-		this.overlays[index].setData(this.weightedLocations);
-	}
-}
 
 UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 
@@ -82,13 +62,13 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 		// init markers
 	    var marker = new google.maps.Marker({
 	        position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
-	        map: this.map,
+	        map: this.get('map'),
 	        title: 'marker ' + i,
 			icon: 'img/small_red.png',
 			selected: false,
 			state: 'Online',
 			id: (i+1),
-			visible: false
+			visible: true
 	    });
 
 	    // process multiple info windows
@@ -98,7 +78,7 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	            infowindow = new google.maps.InfoWindow({
 	                content: 'Marker Content'
 	            });
-	            infowindow.open(this.map, marker);
+	            infowindow.open(this.get('map'), marker);
 	        });
 	    })(marker, i);
 	    var wloc = {
@@ -110,6 +90,38 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	}
 }
 
+UrbanSprawlPortal.prototype.changeMapStyle = function(index){
+	this.styles[index].execute(this.get('map'));
+	this.themeStrategy = this.styles[index];
+}
+
+UrbanSprawlPortal.prototype.toggleCluster = function(){
+  if (!this.cluster_on) {
+    this.markerCluster = new MarkerClusterer(this.get('map'), this.markers);
+    this.cluster_on = true;
+  } else {
+  	this.markerCluster.clearMarkers();
+  	this.markerCluster = null;
+    for (var i = 0, marker; marker = this.markers[i]; i++) {
+      marker.setMap(this.get('map'));
+    }
+    this.cluster_on = false;
+  }
+}
+
+UrbanSprawlPortal.prototype.toggleOverlay = function(index){
+	this.overlays[index].setMap(this.overlays[index].getMap() ? null : this.get('map'));
+	if (index == "heatmap"){
+		this.overlays[index].setData(this.weightedLocations);
+	}
+}
+
+UrbanSprawlPortal.prototype.toggleMarkers = function(){
+    for (var i = 0, marker; marker = this.markers[i]; i++) {
+      marker.setMap((this.markers_on) ? null : this.get('map'));
+    }
+    this.markers_on = (this.markers_on) ? false : true;
+}
 
 UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 
@@ -208,6 +220,9 @@ UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 
 UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
 
+
+/* NEED TO COMPLETE THIS AND HOOK IT IN */
+
   distanceWidget = new DistanceWidget({
     map: map,
     distance: 50, // Starting distance in km.
@@ -257,13 +272,14 @@ function main(){
 	$("#mapthemes > li > a").click(function(){
 	    Portal.changeMapStyle($(this).attr('id'));
 	});
-	/* Data View Selection */
-	$("#dataview > li > a").click(function(){
-	    Portal.changeDataView($(this).attr('id'));
-	});
 	$('#overlays input[type=checkbox]').change(function() {
-		console.log("triggered");
   		Portal.toggleOverlay($(this).attr('id'));
+	});
+	$("#cluster").click(function(){
+	    Portal.toggleCluster();
+	});
+	$("#show_markers").click(function(){
+	    Portal.toggleMarkers();
 	});
 
 }
