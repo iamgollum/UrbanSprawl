@@ -10,8 +10,8 @@ body {
 
 .text-glow:hover, .text-glow:focus, .text-glow:active {
    -webkit-stroke-width: 5.3px;
-   -webkit-stroke-color: #FFFFFF;
-   -webkit-fill-color: #FFFFFF;
+   -webkit-stroke-color: #ffffffFFF;
+   -webkit-fill-color: #ffffffFFF;
    text-shadow: 1px 0px 20px yellow;
    -webkit-transition: width 0.3s; /*Safari & Chrome*/
    transition: width 0.3s;
@@ -53,7 +53,7 @@ nav{
 }
 
 #q {
-  background: #fff;
+  background: #ffffff;
   margin: 0;
   padding: 8px 10px;
   border: 1px solid #eee;
@@ -73,12 +73,12 @@ nav{
   -moz-border-radius: 5px;
   border-radius: 5px;
   font-size: 18px;
-  background: #fff;
+  background: #ffffff;
   cursor: pointer;
 }
 
 #search label {
-  color: #fff;
+  color: #ffffff;
   padding: 8px 10px;
   font-size: 18px;
 }
@@ -114,10 +114,11 @@ nav{
 	color: white !important;
 }
 
-#sidebar li i{
-	font-size: 40px;
+i{
+	font-size: inherit;
 	padding: 0px;
 	margin: 0px;
+	margin-right: 1em;
 }
 
 .icon-title{
@@ -142,7 +143,7 @@ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 #pac-input {
-background-color: #fff;
+background-color: #ffffff;
 padding: 0 11px 0 13px;
 width: 400px;
 font-family: Roboto;
@@ -167,7 +168,7 @@ font-family: Roboto;
 }
 
 #type-selector {
-color: #fff;
+color: #ffffff;
 background-color: #4d90fe;
 padding: 5px 11px 0px 11px;
 }
@@ -267,10 +268,9 @@ font-weight: bold;
 
 
 #info{
-	position: absolute;
-	bottom: 1rem;
+	/*bottom: 1rem;
 	right: 6.25rem;
-	z-index: 1;
+	z-index: 1;*/
 	background-color: #3C3C41;
 	color: #999;
 	width: 24rem;
