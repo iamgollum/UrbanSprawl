@@ -29,7 +29,9 @@
 	this.overlays = {
 		'bikeroute' : new google.maps.BicyclingLayer(),
 		'transit' : new google.maps.TransitLayer(),
-		'counties' : new google.maps.KmlLayer({url: 'https://dl.dropboxusercontent.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml?dl=1&token_hash=AAF6sV2X7iOiMai5Z17hwY2gaCiCUCMCtK6u3-XbjMT14Q'}),
+		'counties' : new google.maps.KmlLayer({
+			url: 'https://dl.dropboxusercontent.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml?dl=1&token_hash=AAF6sV2X7iOiMai5Z17hwY2gaCiCUCMCtK6u3-XbjMT14Q',
+		    suppressInfoWindows: true}),
 		'heatmap' : new google.maps.visualization.HeatmapLayer(),
 	}
 	console.log(this.overlays['counties']);
@@ -47,6 +49,7 @@
 	this.themeStrategy.execute(themap);
 	this.loadNewYorkData_();
 	this.enableBoxSelection_();
+	this.enableCountyEvents_();
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
@@ -71,7 +74,7 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 			visible: true
 	    });
 
-	    // process multiple info windows
+	    /* process multiple info windows
 	    (function(marker, i) {
 	        // add click event
 	        google.maps.event.addListener(marker, 'click', function() {
@@ -80,7 +83,7 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	            });
 	            infowindow.open(this.get('map'), marker);
 	        });
-	    })(marker, i);
+	    })(marker, i);*/
 	    var wloc = {
 	    	location: marker.getPosition(), 
 	    	weight: ((Math.random() + 1) * 100)
@@ -88,6 +91,13 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	    this.markers.push(marker);
 	    this.weightedLocations.push(wloc);
 	}
+}
+
+UrbanSprawlPortal.prototype.enableCountyEvents_ = function(index){
+    google.maps.event.addListener(this.overlays['counties'], 'click', function (kmlEvent) {
+        alert(kmlEvent.featureData.name);
+        console.log(kmlEvent);
+    });
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
