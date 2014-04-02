@@ -79,8 +79,9 @@ nav{
 	width: 16rem;
 	height: 2.8125rem;
 	overflow: auto;
-	line-height: 1.8rem;
+	line-height: 3rem;
 	text-align: center;
+	font-weight: bold;
 }
 
 

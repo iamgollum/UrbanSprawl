@@ -15,7 +15,7 @@
 	for (key in this.styles){
 		this.styles[key].bindTo('map', this);
 	}
-	this.themeStrategy = map_styles['transit'];
+	this.themeStrategy = map_styles['water'];
 
 	this.infoBox = $("#info");
 
@@ -34,7 +34,7 @@
 		    suppressInfoWindows: true}),
 		'heatmap' : new google.maps.visualization.HeatmapLayer(),
 	}
-	console.log(this.overlays['counties']);
+
 //http://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml   https://www.dropbox.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml
 	this.overlayStrategy = this.overlays['heatmap'];
 
@@ -42,14 +42,17 @@
     themap = this.get('map');
     google.maps.event.addListener(themap,'center_changed', function(e) {
     	window.setTimeout(function() {
-      		$("#info").html(themap.getCenter().lat() + ", " + themap.getCenter().lng());
+      		$("#info").html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6));
     	}, 200);
     });
 
+    this.infoBox.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6))
 	this.themeStrategy.execute(themap);
 	this.loadNewYorkData_();
 	this.enableBoxSelection_();
 	this.enableCountyEvents_();
+	this.enablePlacesSearch_();
+	this.changeMapStyle("water");
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
@@ -99,6 +102,61 @@ UrbanSprawlPortal.prototype.enableCountyEvents_ = function(index){
         console.log(kmlEvent);
     });
 }
+
+UrbanSprawlPortal.prototype.enablePlacesSearch_ = function(){
+themap = this.get('map');
+var searchBox = new google.maps.places.SearchBox(
+	                (document.getElementById('search-input')));
+
+  place_markers = [];
+  // [START region_getplaces]
+  // Listen for the event fired when the user selects an item from the
+  // pick list. Retrieve the matching places for that item.
+  google.maps.event.addListener(searchBox, 'places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    for (var i = 0, marker; marker = place_markers[i]; i++) {
+      marker.setMap(null);
+    }
+
+    // For each place, get the icon, place name, and location.
+    place_markers = [];
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0, place; place = places[i]; i++) {
+      var image = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      var marker = new google.maps.Marker({
+        map: themap,
+        icon: image,
+        title: place.name,
+        position: place.geometry.location
+      });
+
+      place_markers.push(marker);
+
+      bounds.extend(place.geometry.location);
+    }
+
+    themap.fitBounds(bounds);
+  });
+  // [END region_getplaces]
+
+  // Bias the SearchBox results towards places that are within the bounds of the
+  // current map's viewport.
+
+  google.maps.event.addListener(themap, 'bounds_changed', function() {
+    var bounds = themap.getBounds();
+    searchBox.setBounds(bounds);
+  });
+}
+
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
 	this.styles[index].execute(this.get('map'));
@@ -217,7 +275,7 @@ UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 	        }
 	        portal.gribBoundingBox = null;
 	        portal.selecting = false;
-			portal.infoBox.html("Markers selected: " + markersNumSelected + " not-selected: " + (portal.markers.length - markersNumSelected));
+			portal.infoBox.html("Selected: " + markersNumSelected + " Rem: " + (portal.markers.length - markersNumSelected));
 	        $("#box-select").css("color","#67676C");
 	    }
 
@@ -243,11 +301,9 @@ UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
     activeSizerIcon: 'img/resize.png'
   });
 
-  google.maps.event.addListener(distanceWidget, 'distance_changed',
-      updateDistance);
+  google.maps.event.addListener(distanceWidget, 'distance_changed', updateDistance);
 
-  google.maps.event.addListener(distanceWidget, 'position_changed',
-      updatePosition);
+  google.maps.event.addListener(distanceWidget, 'position_changed', updatePosition);
 
   map.fitBounds(distanceWidget.get('bounds'));
 
@@ -257,41 +313,90 @@ UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
 }
 
 
-
-
 function main(){
 
 	var mapOptions = {
 		center: new google.maps.LatLng(42.792025, -75.435944),
-		zoom: 6,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		mapTypeControl: false,
-		zoomControl:false,
-		disableDefaultUI: true
+		disableDefaultUI: true,
+	    mapTypeControl: true,
+	    mapTypeControlOptions: {
+	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+	    },
+	    panControl: false,
+	    zoom: 6,
+	    zoomControl: true,
+	    zoomControlOptions: {
+	      style: google.maps.ZoomControlStyle.SMALL,
+	      position: google.maps.ControlPosition.TOP_RIGHT
+	  }
 	}
+
 	var mapStyles = {
 		'urban': new UrbanTheme(),
 		'transit': new TransitTheme(),
-		'water': new WaterTheme(),
-		'inverseWater': new InverseWaterTheme()
+		'water': new InverseWaterTheme()
 	}
 
 	var Portal = new UrbanSprawlPortal(mapOptions, mapStyles);
 
 	/* Theme Selection */
-	$("#mapthemes > li > a").click(function(){
+	$('input[type=radio][name=theme]').change(function() {
 	    Portal.changeMapStyle($(this).attr('id'));
 	});
-	$('#overlays input[type=checkbox]').change(function() {
+	$('input[type=checkbox][name=overlay]').click(function() {
   		Portal.toggleOverlay($(this).attr('id'));
 	});
-	$("#cluster").click(function(){
+	$("input[type=checkbox][name=cluster]").click(function(){
 	    Portal.toggleCluster();
 	});
-	$("#show_markers").click(function(){
+	$('input[type=checkbox][name=marker]').click(function(){
 	    Portal.toggleMarkers();
 	});
 
+  /* Map Toggle View */
+  $("#map-toggle").click(function(){
+    $("#graph-overlay").slideToggle("slow");
+  });
+
+  /* Data-viz slider */
+  $( "#slider" ).slider({
+    range: true,
+      values: [2002, 2010],
+      min: 2000,
+      max: 2014,
+      step: 2
+  })
+  .each(function() {
+
+    // Get the options for this slider
+    var opt = $(this).slider("option");
+
+    // Get the number of possible values
+    var vals = (opt.max - opt.min)/opt.step;
+    console.log(vals);
+    // Space out values
+    for (var i = 0; i <= vals; i++) {
+      var el = $('<label>'+( (i*opt.step)+opt.min)+'</label>').css('left',(i/vals*100)+'%');
+      $( "#slider" ).append(el);
+    }
+  });
+
+    var data = google.visualization.arrayToDataTable([
+      ['Year', 'Sales', 'Expenses'],
+      ['2004',  1000,      400],
+      ['2005',  1170,      460],
+      ['2006',  660,       1120],
+      ['2007',  1030,      540]
+    ]);
+
+    var options = {
+      title: 'Company Performance',
+      hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
 }
 
 google.maps.event.addDomListener(window, 'load', main);
