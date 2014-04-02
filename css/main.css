@@ -36,7 +36,28 @@ nav{
   z-index: 0;
 }
 
- #sprawl-map img{max-width: none;}
+/* Fix img stretch for fluid container */
+#sprawl-map img{
+	max-width: none;
+}
+
+#map-toggle{
+	bottom: 0.50rem;
+	right: .50rem;
+	z-index: 3;
+	position: absolute;
+	font-size: 36px;
+	height: 2.8125rem;
+	line-height: 2.8125rem;
+	display: block;
+	background-color: orange;
+	border: 1px solid #333;
+	padding: .25rem;
+}
+
+#map-toggle a{
+	color: black;
+}
 
 #graph-overlay{
 	background: white;
@@ -49,12 +70,12 @@ nav{
 }
 
 #info{
-	bottom: 1rem;
-	right: 2.5rem;
+	bottom: 0.50rem;
+	right: 2rem;
 	z-index: 1;
 	position: absolute;
-	background-color: #3C3C41;
-	color: #999;
+	background-color: #999;
+	color: #333;
 	width: 16rem;
 	height: 2.8125rem;
 	overflow: auto;
@@ -62,12 +83,6 @@ nav{
 	text-align: center;
 }
 
-#map-toggle{
-	bottom: 1rem;
-	right: 0rem;
-	z-index: 1;
-	position: absolute;
-}
 
 /*** 
 Top Bar
