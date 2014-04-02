@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8" />
+
+	<title>Expanse Portal</title>
+	<meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="foundations/css/normalize.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+
+   <link rel="stylesheet" href="foundations/css/foundation.min.css">
+
+   <link rel="stylesheet" type="text/css" href="css/main.css">
+
+   <link rel="stylesheet" type="text/css" href="css/toggle-switch.css">
+    
+    <link rel="stylesheet" href="foundations/foundation-icons/foundation-icons.css">
+
+
+    <script type="text/javascript" src="foundations/js/vendor/modernizr.js"></script>
+  </head>
+
+<body>
+<div class="off-canvas-wrap">
+  <div class="inner-wrap">
+    <nav class="tab-bar">
+      <section class="left-small">
+        <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+      </section>
+
+      <section class="middle tab-bar-section">
+		<nav class="top-bar" data-topbar>
+		  <ul class="title-area">
+		    <li class="name">
+		      <h1><a href="#">Urban Sprawl Portal</a></h1>
+		    </li>
+		    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+		  </ul>
+
+		  <section class="top-bar-section">
+		    <!-- Right Nav Section -->
+		    <ul class="right">
+		      <li class="active"><a href="#">Right Button Active</a></li>
+		      <li class="has-dropdown">
+		        <a href="#">Right Button Dropdown</a>
+		        <ul class="dropdown">
+		          <li><a href="#">First link in dropdown</a></li>
+		        </ul>
+		      </li>
+		    </ul>
+
+		    <!-- Left Nav Section -->
+		    <ul class="left">
+		      <li><a href="#">Left Nav Button</a></li>
+		    </ul>
+		  </section>
+		</nav>
+      </section>
+
+      <section class="right-small">
+        <a class="right-off-canvas-toggle menu-icon" ><span></span></a>
+      </section>
+    </nav>
+
+    <aside id="histogram" class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><h2>States</h2></li>
+        <li>
+	      <span class="h-subject left">New York</span>
+	      <span class="right h-amount">
+	      	<span class="h-totals">3</span>
+	      	<span class="h-progress">
+	      		<span class="meter"></span>
+	      	</span>
+	      </span>
+	    </li>
+		<li><h2>New York &gt;&gt; Counties</h2></li>
+        <li>
+            <div class="checkbox">
+       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
+	    		<label for="albany">
+			      <span class="h-subject left">Albany</span>
+			      <span class="right h-amount">
+			      	<span class="h-totals">6</span>
+			      	<span class="h-progress">
+			      		<span class="meter"></span>
+			      	</span>
+			      </span>
+		    	</label>     	
+            </div>
+        </li>
+        <li>
+            <div class="checkbox">
+       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
+	    		<label for="bronx">
+			      <span class="h-subject left">Bronx</span>
+			      <span class="right h-amount">
+			      	<span class="h-totals">6</span>
+			      	<span class="h-progress">
+			      		<span class="meter"></span>
+			      	</span>
+			      </span>
+		    	</label>     	
+            </div>
+        </li>
+        <li>
+            <div class="checkbox">
+       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
+	    		<label for="allegany">
+			      <span class="h-subject left">Allegany</span>
+			      <span class="right h-amount">
+			      	<span class="h-totals">6</span>
+			      	<span class="h-progress">
+			      		<span class="meter"></span>
+			      	</span>
+			      </span>
+		    	</label>     	
+            </div>
+        </li>
+        <li><h2>Counties &gt;&gt; Characteristics</h2></li>
+        <li>
+	      <span class="h-subject left">Population</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+        <li>
+	      <span class="h-subject left">Housing</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+        <li>
+	      <span class="h-subject left">Information Tech</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+        <li>
+	      <span class="h-subject left">Health</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+        <li>
+	      <span class="h-subject left">Educational Serv</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+        <li>
+	      <span class="h-subject left">Retail Trade</span>
+	      <button class="right tiny btn-visualize">Visualize</a>
+        </li>
+
+    </aside>
+
+
+    <aside class="right-off-canvas-menu">
+
+      <ul class="off-canvas-list">
+		<li><h2>Themes</h2></li>
+        <li>
+			<div class="radio">  
+			    <input id="urban" type="radio" name="theme" value="urban">  
+			    <label for="urban">Urban</label>  
+			</div>  
+        </li>
+        <li>
+			<div class="radio">  
+			    <input id="transit" type="radio" name="theme" value="transit">  
+			    <label for="transit">Transit</label>  
+			</div>  
+        </li>
+        <li>
+			<div class="radio">  
+			    <input id="water" type="radio" name="theme" value="water">  
+			    <label for="water">Water</label>  
+			</div>  
+        </li>
+        <li><h2>Overlays</h2></li>
+        <li>
+	    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+				<input type="checkbox">
+				<span>
+					Bike Path
+					<span>Off</span>
+					<span>On</span>
+				</span>
+				<a></a>
+			</label>
+        </li>
+        <li>
+	    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+				<input type="checkbox">
+				<span>
+					Transit
+					<span>Off</span>
+					<span>On</span>
+				</span>
+				<a></a>
+			</label>
+        </li>
+        <li>
+	    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+				<input type="checkbox">
+				<span>
+					Counties
+					<span>Off</span>
+					<span>On</span>
+				</span>
+				<a></a>
+			</label>
+        </li>
+        <li><h2>Data Points</h2></li>
+      </ul>
+    </aside>
+
+    <section class="main-section">
+      <!-- content goes here -->
+      <section id="container">
+
+      <aside id="graph-overlay">
+      	<!-- https://developers.google.com/chart/interactive/docs/gallery/columnchart -->
+      	<div id="slider"></div>
+		<div id="chart_div" style="width: 900px; height: 500px; margin: 0px auto;"></div>
+      </aside>
+
+      </section>
+
+    </section>
+
+  <a class="exit-off-canvas"></a>
+
+  </div>
+</div>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  <script type="text/javascript" src="foundations\js\vendor\jquery.js"></script>
+	  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
+  <script>$(document).foundation(); </script>
+  <script>
+$(document).ready(function(){
+  $(".btn-visualize").click(function(){
+    $("#graph-overlay").slideToggle("slow");
+  });
+
+	$( "#slider" ).slider({
+		range: true,
+	    values: [2002, 2010],
+	    min: 2000,
+	    max: 2014,
+	    step: 2
+	})
+	.each(function() {
+
+	  //
+	  // Add labels to slider whose values 
+	  // are specified by min, max and whose
+	  // step is set to 1
+	  //
+
+	  // Get the options for this slider
+	  var opt = $(this).slider("option");
+	  
+	  // Get the number of possible values
+	  var vals = (opt.max - opt.min)/opt.step;
+	  console.log(vals);
+	  // Space out values
+	  for (var i = 0; i <= vals; i++) {
+	    
+	    var el = $('<label>'+( (i*opt.step)+opt.min)+'</label>').css('left',(i/vals*100)+'%');
+	  
+	    $( "#slider" ).append(el);
+	    
+	  }
+	  
+	});
+});
+</script>
+</body>
+</html>

@@ -1,8 +1,7 @@
-html { 
+html, body { 
 	height: 100% 
 }
 body { 
-	height: 100%; 
 	margin: 0; 
 	padding: 0;
 	position: relative;
@@ -20,7 +19,7 @@ body {
 }
 
 nav{
-	z-index: 1;
+	z-index: !important;
 }
 
 #sprawl-map{ 
@@ -35,7 +34,232 @@ nav{
 #container {
   z-index: 100;
   position: relative;
+  min-height: 800px;
+  background-color: black;
 }
+
+#graph-overlay{
+	background: white;
+	height: 800px;
+}
+
+
+ul.off-canvas-list li{
+font-weight: bold;
+font-size: .8rem;
+color: #fff;
+}
+
+ul.off-canvas-list li h2{
+padding: 0.3rem 0.9375rem; 
+color: #fff;
+text-transform:  capitalize;
+font-size: 1.2rem;
+background: #444;
+border-top: 1px solid #5e5e5e;
+border-bottom: none;
+margin: 0; 
+text-align: center;
+font-weight: bold;
+}
+
+ul.off-canvas-list li label {
+padding: 0;
+color: none;
+text-transform: none;
+font-weight: none;
+background: none;
+border-top: none;
+border-bottom: none;
+margin: 0;
+font-size: inherit;
+vertical-align: middle;
+font-weight: inherit;
+}
+/*** 
+HISTOGRAM VIEW 
+
+**/
+.move-right>.inner-wrap {
+-webkit-transform: translate3d(350px, 0, 0);
+-moz-transform: translate3d(350px, 0, 0);
+-ms-transform: translate3d(350px, 0, 0);
+-o-transform: translate3d(350px, 0, 0);
+transform: translate3d(350px, 0, 0);
+}
+
+ul.off-canvas-list li{
+	clear: both;
+	color: rgba(255,255,255,0.7);
+	padding: 1rem;
+}
+
+/*.move-left>.inner-wrap {
+-webkit-transform: translate3d(-150px, 0, 0);
+-moz-transform: translate3d(-150px, 0, 0);
+-ms-transform: translate3d(-150px, 0, 0);
+-o-transform: translate3d(-150px, 0, 0);
+transform: translate3d(-150px, 0, 0);
+}*/
+
+.left-off-canvas-menu{
+	width: 350px;
+}
+
+/*.right-off-canvas-menu{
+	width: 150px;
+}*/
+
+.right-off-canvas-menu .switch-light > span {
+padding-right: 0px;
+}
+.right-off-canvas-menu .switch-light{
+margin-left: 100px;
+width: 100px;
+}
+
+
+.right-off-canvas-menu label:not([class^="switch-light"]):before ,
+.left-off-canvas-menu label:not([class^="switch-light"]):before {
+content: "";
+display: inline-block;
+width: 1rem;
+height: 1rem;
+margin-right: 0;
+position: absolute;
+left: 0;
+top: .125rem;
+background-color: #aaa;
+box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+
+.checkbox label, .radio label {  
+    display: inline-block;  
+    cursor: pointer;  
+    position: relative;  
+    padding-left: 25px;  
+    margin-right: 15px;   
+    width: 100%;
+}  
+
+.radio label { 
+	padding-left: 2rem !important;
+}
+
+input[type=radio] {  
+    display: none;  
+} 
+
+input[type=radio]:checked + label:before {  
+    content: "\2022";  
+    color: black;  
+    font-size: 30px;  
+    text-align: center;  
+    line-height: 18px;  
+} 
+
+input[type=checkbox] {  
+    display: none;  
+} 
+
+.checkbox label:before {  
+    border-radius: 3px;  
+} 
+
+input[type=checkbox]:checked + label:before {  
+    content: "\2713";  
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);  
+    font-size: 15px;  
+    color: #000;  
+    text-align: center;  
+    line-height: 15px;  
+}
+
+
+.radio label:before {  
+    border-radius: 8px;  
+}  
+
+.h-subject{
+	margin-left: 1.6rem;
+}
+.h-amount{
+display: block;
+height: .9rem;
+}
+
+.h-amount span{
+	display: inline-block;
+}
+
+.h-progress{
+height:100%;
+width: 4rem;
+padding: 0rem;
+background: #fff;
+}
+
+.h-progress .meter{
+background: #008cba;
+display: block;
+width: 50%;
+height: inherit;
+}
+.h-progress, .h-progress .meter{
+	border-radius: 15px;
+}
+
+.h-totals{
+margin-right: 5px;
+color: #008cba;
+}
+
+.btn-visualize{
+	padding: 0;
+	margin: 0;
+}
+
+
+
+
+#slider label {
+    position: absolute;
+    width: 20px;
+    margin-left: -10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* below is not necessary, just for style */
+#slider {
+    width: 50%;
+    margin: 2em auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #search {
@@ -86,47 +310,15 @@ nav{
 
 
 
-#sidebar{
-	background-color: #3C3C41;
-	position: absolute;
-	top: 15rem;
-	left: 0px;
-	z-index: 1;
-}
 
-#sidebar li{
-	padding: 0px;
-	padding-left: 10px;
-	padding-right: 10px;
-	width: 100%;
-}
 
-#sidebar li a{
-	padding: 0px;
-	text-align: center;
-	position: relative;
-	min-width: 60px;
-	color: #67676C;
-}
 
-#sidebar li:hover a{
-	color: white !important;
-}
 
-i{
-	font-size: inherit;
-	padding: 0px;
-	margin: 0px;
-	margin-right: 1em;
-}
 
-.icon-title{
-	display: block;
-	padding: 0px;
-	margin-top: -15px;
-	width: inherit;
-	left: 0px;
-}
+
+
+
+
 
 
 
@@ -179,6 +371,34 @@ font-weight: 300;
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#info{
+	/*bottom: 1rem;
+	right: 6.25rem;
+	z-index: 1;*/
+	background-color: #3C3C41;
+	color: #999;
+	width: 24rem;
+	height: 2rem;
+	overflow: auto;
+	line-height: 1.8rem;
+	text-align: center;
+}
+
+
 #map-results{
 	position: absolute;
 	top: 6.25rem;
@@ -216,65 +436,3 @@ padding-left: 1.15rem;
 font-size: 0.5875rem;
 }
 
-.histogram-list{
-text-align: top;
-}
-.histogram-list li{
-	font-size: .75rem;
-	clear: both;
-}
-.histogram-list li .progress{
-height: .9rem;
-padding: 0rem;
-margin-bottom: 0.625rem;
-}
-.histogram-list-totals{
-margin-right: 5px;
-color: #008cba;
-font-weight: bold;
-}
-
-
-
- .column {
-    width: 33%;
-    float: left;
-    padding-bottom: 100px;
-  }
-  .portlet {
-    margin: 0 1em 1em 0;
-    padding: 0.3em;
-  }
-  .portlet-header {
-    padding: 0.2em 0.3em;
-    margin-bottom: 0.5em;
-    position: relative;
-  }
-  .portlet-toggle {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    margin-top: -8px;
-  }
-  .portlet-content {
-    padding: 0.4em;
-  }
-  .portlet-placeholder {
-    border: 1px dotted black;
-    margin: 0 1em 1em 0;
-    height: 50px;
-  }
-
-
-#info{
-	/*bottom: 1rem;
-	right: 6.25rem;
-	z-index: 1;*/
-	background-color: #3C3C41;
-	color: #999;
-	width: 24rem;
-	height: 2rem;
-	overflow: auto;
-	line-height: 1.8rem;
-	text-align: center;
-}
