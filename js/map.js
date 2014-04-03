@@ -16,6 +16,7 @@
 		this.styles[key].bindTo('map', this);
 	}
 	this.themeStrategy = map_styles['water'];
+	this.changeMapStyle("water");
 
 	this.infoBox = $("#info");
 
@@ -52,7 +53,7 @@
 	this.enableBoxSelection_();
 	this.enableCountyEvents_();
 	this.enablePlacesSearch_();
-	this.changeMapStyle("water");
+	this.loadDashboard();
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
@@ -312,6 +313,53 @@ UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
   addActions();
 }
 
+UrbanSprawlPortal.prototype.loadDashboard = function(){
+
+	var data = google.visualization.arrayToDataTable([
+      ['Year', 'Albany', 'Bronx', 'Allegany'],
+      [new Date(2004, 6, 13),  1000,      400,    780],
+      [new Date(2005, 6, 13),  1170,      460,    510],
+      [new Date(2006, 6, 13),  660,       1120,   350],
+      [new Date(2007, 6, 13),  1030,      540,    230]
+    ]);
+
+	  // Define a slider control for the 'Donuts eaten' column
+	  var slider = new google.visualization.ControlWrapper({
+	    'controlType': 'DateRangeFilter',
+	    'containerId': 'slider',
+	    'options': {
+	      'filterColumnLabel': 'Year',
+	      'ui': {'labelStacking': 'vertical', 'format': { 'pattern': 'yyyy' }},
+	    }
+	  });
+
+  // Define a pie chart
+  var columnchart = new google.visualization.ChartWrapper({
+    'chartType': 'ColumnChart',
+    'containerId': 'chart',
+    'options': {
+      'title': 'Population Trends',
+      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
+      'width': 800,
+      'height': 500
+    }
+	});
+/*    var options = {
+      title: 'Population Trends',
+      hAxis: {title: 'Year', titleTextStyle: {color: 'red'}},
+      width: 800,
+      height: 500
+    };*/
+
+/*    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(data, options);*/
+      // Create the dashboard.
+  var dashboard = new google.visualization.Dashboard(document.getElementById('graph-overlay')).
+    // Configure the slider to affect the piechart
+    bind(slider, columnchart).
+    // Draw the dashboard
+    draw(data);
+}
 
 function main(){
 
@@ -359,44 +407,6 @@ function main(){
     $("#graph-overlay").slideToggle("slow");
   });
 
-  /* Data-viz slider */
-  $( "#slider" ).slider({
-    range: true,
-      values: [2002, 2010],
-      min: 2000,
-      max: 2014,
-      step: 2
-  })
-  .each(function() {
-
-    // Get the options for this slider
-    var opt = $(this).slider("option");
-
-    // Get the number of possible values
-    var vals = (opt.max - opt.min)/opt.step;
-    console.log(vals);
-    // Space out values
-    for (var i = 0; i <= vals; i++) {
-      var el = $('<label>'+( (i*opt.step)+opt.min)+'</label>').css('left',(i/vals*100)+'%');
-      $( "#slider" ).append(el);
-    }
-  });
-
-    var data = google.visualization.arrayToDataTable([
-      ['Year', 'Sales', 'Expenses'],
-      ['2004',  1000,      400],
-      ['2005',  1170,      460],
-      ['2006',  660,       1120],
-      ['2007',  1030,      540]
-    ]);
-
-    var options = {
-      title: 'Company Performance',
-      hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
-    };
-
-    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
 }
 
 google.maps.event.addDomListener(window, 'load', main);

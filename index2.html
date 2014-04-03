@@ -13,6 +13,7 @@
    <link rel="stylesheet" type="text/css" href="css/main.css">
 
    <link rel="stylesheet" type="text/css" href="css/toggle-switch.css">
+   <link rel="stylesheet" type="text/css" href="css/dashboard.css">
     
     <link rel="stylesheet" href="foundations/foundation-icons/foundation-icons.css">
 
@@ -252,9 +253,9 @@
 		      <aside id="info"></aside>
 		      <aside id="map-toggle"><a class="#"><i class="fi-map"></i></a></aside>
 
-		      <aside id="graph-overlay" style="display: none;">
-		      	<div id="slider"></div>
-				<div id="chart_div" style="width: 900px; height: 500px; margin: 0px auto;"></div>
+		      <aside id="graph-overlay" style="display: none;" class="google-visualization-controls-theme-plus">
+				<div id="slider"></div>
+				<div id="chart"></div>
 		      </aside>
 	      </div>
 	    </section>
@@ -270,7 +271,7 @@
   <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
   <script>
   	$(document).foundation(); 
-  	google.load("visualization", "1", {packages:["corechart"]});
+  	google.load("visualization", "1", {packages:["corechart", "controls"]});
 	google.load("maps", "3", {other_params: 'sensor=false&libraries=places,visualization'});	
 /*	$('.switch-light').click(function() {
 	    var input = $(this).children("input");

@@ -1,0 +1,92 @@
+<!-- http://jsfiddle.net/asgallant/WaUu2/-->
+<div id="colFilter_div"></div>
+<div id="chart_div"></div>
+<div id="creativeCommons" style="text-align: center; width: 400px;">
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Code to use a CategoryFilter as a column selector</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Andrew Gallant</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+</div>
+
+<script>google.load('visualization', '1', {packages: ['controls']});
+google.setOnLoadCallback(drawChart);
+
+function drawChart () {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Year');
+    data.addColumn('number', 'Foo');
+    data.addColumn('number', 'Bar');
+    data.addColumn('number', 'Baz');
+    data.addColumn('number', 'Cad');
+    data.addRows([
+        ['2005',  45, 60, 89, 100],
+        ['2006',  155, 50, 79, 24],
+        ['2007',  35, 31, 140, 53],
+        ['2008',  105, 23, 43, 82],
+        ['2009',  120, 56, 21, 67],
+        ['2010',  65, 19, 34, 134],
+        ['2011',  80, 23, 130, 40],
+        ['2012',  70, 140, 83, 90]
+    ]);
+
+    var columnsTable = new google.visualization.DataTable();
+    columnsTable.addColumn('number', 'colIndex');
+    columnsTable.addColumn('string', 'colLabel');
+    var initState= {selectedValues: []};
+    // put the columns into this data table (skip column 0)
+    for (var i = 1; i < data.getNumberOfColumns(); i++) {
+        columnsTable.addRow([i, data.getColumnLabel(i)]);
+        // you can comment out this next line if you want to have a default selection other than the whole list
+        initState.selectedValues.push(data.getColumnLabel(i));
+    }
+    // you can set individual columns to be the default columns (instead of populating via the loop above) like this:
+    // initState.selectedValues.push(data.getColumnLabel(4));
+    
+    var chart = new google.visualization.ChartWrapper({
+        chartType: 'BarChart',
+        containerId: 'chart_div',
+        dataTable: data,
+        options: {
+            title: 'Foobar',
+            width: 600,
+            height: 400
+        }
+    });
+    
+    var columnFilter = new google.visualization.ControlWrapper({
+        controlType: 'CategoryFilter',
+        containerId: 'colFilter_div',
+        dataTable: columnsTable,
+        options: {
+            filterColumnLabel: 'colLabel',
+            ui: {
+                label: 'Columns',
+                allowTyping: false,
+                allowMultiple: true,
+                allowNone: false,
+                selectedValuesLayout: 'belowStacked'
+            }
+        },
+        state: initState
+    });
+    
+    function setChartView () {
+        var state = columnFilter.getState();
+        var row;
+        var view = {
+            columns: [0]
+        };
+        for (var i = 0; i < state.selectedValues.length; i++) {
+            row = columnsTable.getFilteredRows([{column: 1, value: state.selectedValues[i]}])[0];
+            view.columns.push(columnsTable.getValue(row, 0));
+        }
+        // sort the indices into their original order
+        view.columns.sort(function (a, b) {
+            return (a - b);
+        });
+        chart.setView(view);
+        chart.draw();
+    }
+    google.visualization.events.addListener(columnFilter, 'statechange', setChartView);
+    
+    setChartView();
+    columnFilter.draw();
+}
+</script>
