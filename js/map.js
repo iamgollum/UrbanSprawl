@@ -32,10 +32,11 @@
 		'transit' : new google.maps.TransitLayer(),
 		'counties' : new google.maps.KmlLayer({
 			url: 'https://dl.dropboxusercontent.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml?dl=1&token_hash=AAF6sV2X7iOiMai5Z17hwY2gaCiCUCMCtK6u3-XbjMT14Q',
-		    suppressInfoWindows: true}),
+		    suppressInfoWindows: true})
+		    	,
 		'heatmap' : new google.maps.visualization.HeatmapLayer(),
 	}
-
+	this.overlays['counties'].setOptions({"fillOpacity": 0, "stokeColor": "red"});
 //http://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml   https://www.dropbox.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml
 	this.overlayStrategy = this.overlays['heatmap'];
 

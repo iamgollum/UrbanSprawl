@@ -1,0 +1,250 @@
+[
+  {
+    "Subject":"Albany County, New York",
+    "Occupied":"120,512"
+  },
+  {
+    "Subject":"Allegany County, New York",
+    "Occupied":"18,009"
+  },
+  {
+    "Subject":"Bronx County, New York",
+    "Occupied":"463,212"
+  },
+  {
+    "Subject":"Broome County, New York",
+    "Occupied":"80,749"
+  },
+  {
+    "Subject":"Cattaraugus County, New York",
+    "Occupied":"32,023"
+  },
+  {
+    "Subject":"Cayuga County, New York",
+    "Occupied":"30,558"
+  },
+  {
+    "Subject":"Chautauqua County, New York",
+    "Occupied":"54,515"
+  },
+  {
+    "Subject":"Chemung County, New York",
+    "Occupied":"35,049"
+  },
+  {
+    "Subject":"Chenango County, New York",
+    "Occupied":"19,926"
+  },
+  {
+    "Subject":"Clinton County, New York",
+    "Occupied":"29,423"
+  },
+  {
+    "Subject":"Columbia County, New York",
+    "Occupied":"24,796"
+  },
+  {
+    "Subject":"Cortland County, New York",
+    "Occupied":"18,210"
+  },
+  {
+    "Subject":"Delaware County, New York",
+    "Occupied":"19,270"
+  },
+  {
+    "Subject":"Dutchess County, New York",
+    "Occupied":"99,536"
+  },
+  {
+    "Subject":"Erie County, New York",
+    "Occupied":"380,873"
+  },
+  {
+    "Subject":"Essex County, New York",
+    "Occupied":"15,028"
+  },
+  {
+    "Subject":"Franklin County, New York",
+    "Occupied":"17,931"
+  },
+  {
+    "Subject":"Fulton County, New York",
+    "Occupied":"21,884"
+  },
+  {
+    "Subject":"Genesee County, New York",
+    "Occupied":"22,770"
+  },
+  {
+    "Subject":"Greene County, New York",
+    "Occupied":"18,256"
+  },
+  {
+    "Subject":"Hamilton County, New York",
+    "Occupied":"2,362"
+  },
+  {
+    "Subject":"Herkimer County, New York",
+    "Occupied":"25,734"
+  },
+  {
+    "Subject":"Jefferson County, New York",
+    "Occupied":"40,068"
+  },
+  {
+    "Subject":"Kings County, New York",
+    "Occupied":"880,727"
+  },
+  {
+    "Subject":"Lewis County, New York",
+    "Occupied":"10,040"
+  },
+  {
+    "Subject":"Livingston County, New York",
+    "Occupied":"22,150"
+  },
+  {
+    "Subject":"Madison County, New York",
+    "Occupied":"25,368"
+  },
+  {
+    "Subject":"Monroe County, New York",
+    "Occupied":"286,512"
+  },
+  {
+    "Subject":"Montgomery County, New York",
+    "Occupied":"20,038"
+  },
+  {
+    "Subject":"Nassau County, New York",
+    "Occupied":"447,387"
+  },
+  {
+    "Subject":"New York County, New York",
+    "Occupied":"738,644"
+  },
+  {
+    "Subject":"Niagara County, New York",
+    "Occupied":"87,846"
+  },
+  {
+    "Subject":"Oneida County, New York",
+    "Occupied":"90,496"
+  },
+  {
+    "Subject":"Onondaga County, New York",
+    "Occupied":"181,153"
+  },
+  {
+    "Subject":"Ontario County, New York",
+    "Occupied":"38,370"
+  },
+  {
+    "Subject":"Orange County, New York",
+    "Occupied":"114,788"
+  },
+  {
+    "Subject":"Orleans County, New York",
+    "Occupied":"15,363"
+  },
+  {
+    "Subject":"Oswego County, New York",
+    "Occupied":"45,522"
+  },
+  {
+    "Subject":"Otsego County, New York",
+    "Occupied":"23,291"
+  },
+  {
+    "Subject":"Putnam County, New York",
+    "Occupied":"32,703"
+  },
+  {
+    "Subject":"Queens County, New York",
+    "Occupied":"782,664"
+  },
+  {
+    "Subject":"Rensselaer County, New York",
+    "Occupied":"59,894"
+  },
+  {
+    "Subject":"Richmond County, New York",
+    "Occupied":"156,341"
+  },
+  {
+    "Subject":"Rockland County, New York",
+    "Occupied":"92,675"
+  },
+  {
+    "Subject":"St. Lawrence County, New York",
+    "Occupied":"40,506"
+  },
+  {
+    "Subject":"Saratoga County, New York",
+    "Occupied":"78,165"
+  },
+  {
+    "Subject":"Schenectady County, New York",
+    "Occupied":"59,684"
+  },
+  {
+    "Subject":"Schoharie County, New York",
+    "Occupied":"11,991"
+  },
+  {
+    "Subject":"Schuyler County, New York",
+    "Occupied":"7,374"
+  },
+  {
+    "Subject":"Seneca County, New York",
+    "Occupied":"12,630"
+  },
+  {
+    "Subject":"Steuben County, New York",
+    "Occupied":"39,071"
+  },
+  {
+    "Subject":"Suffolk County, New York",
+    "Occupied":"469,299"
+  },
+  {
+    "Subject":"Sullivan County, New York",
+    "Occupied":"27,661"
+  },
+  {
+    "Subject":"Tioga County, New York",
+    "Occupied":"19,725"
+  },
+  {
+    "Subject":"Tompkins County, New York",
+    "Occupied":"36,420"
+  },
+  {
+    "Subject":"Ulster County, New York",
+    "Occupied":"67,499"
+  },
+  {
+    "Subject":"Warren County, New York",
+    "Occupied":"25,726"
+  },
+  {
+    "Subject":"Washington County, New York",
+    "Occupied":"22,458"
+  },
+  {
+    "Subject":"Wayne County, New York",
+    "Occupied":"34,908"
+  },
+  {
+    "Subject":"Westchester County, New York",
+    "Occupied":"337,142"
+  },
+  {
+    "Subject":"Wyoming County, New York",
+    "Occupied":"14,906"
+  },
+  {
+    "Subject":"Yates County, New York",
+    "Occupied":"9,029"
+  }
+]

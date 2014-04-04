@@ -90,6 +90,31 @@ width: 800px;
 	color: black;
 }
 
+.warning{
+	background-color: orange !important;
+}
+
+.warning:hover, .warning:focus {
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000', GradientType=0);
+background-image: -webkit-gradient(linear,0 0,0 100%,from(transparent),color-stop(40%,rgba(0,0,0,.05)),to(rgba(0,0,0,.1)));
+background-image: -webkit-linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));
+background-image: -moz-linear-gradient(top,rgba(0,0,0,.05) 0,rgba(0,0,0,.1));
+background-image: -o-linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));
+background-image: linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));
+}
+
+li .btn-visualize:nth-child(odd){
+	margin-right: 1rem;
+}
+
+button.tiny{
+font-size: 1.4rem;
+padding-top: .25rem;
+padding-bottom: .25rem;
+padding-left: .75rem;
+padding-right: .75rem;
+color: black !important;
+}
 
 /*** 
 Top Bar
@@ -152,13 +177,14 @@ color: #fff;
 clear: both;
 color: rgba(255,255,255,0.7);
 padding: 1rem;
+line-height: 1.8rem;
 }
 
 ul.off-canvas-list li h2{
 padding: 0.3rem 0.9375rem; 
 color: #fff;
 text-transform:  capitalize;
-font-size: 1.2rem;
+font-size: 1rem;
 background: #444;
 border-top: 1px solid #5e5e5e;
 border-bottom: none;
