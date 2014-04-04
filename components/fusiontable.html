@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Fusion Tables layers</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+var map, layer;
+
+function initialize() {
+  var chicago = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), {
+    center: chicago,
+    zoom: 8
+  });
+
+  layer = new google.maps.FusionTablesLayer({
+    query: {
+      select: '*',
+      from: '1gAQjle6dIxqgMSBXbJNMWJxMqUGIJYWvYRHKLA'
+    },
+      styles: [{
+/*      where: '*',*/
+      polygonOptions: {
+        fillColor: "#f3f3f3",
+        fillOpacity: 0.0,
+      }
+    }]
+  });
+  layer.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>

@@ -21,6 +21,7 @@
 	this.infoBox = $("#info");
 
 	this.markers = [];
+	this.selectedMarkers = [];
 	this.weightedLocations = [];
 
     this.MarkerCluster = null;
@@ -36,7 +37,6 @@
 		    	,
 		'heatmap' : new google.maps.visualization.HeatmapLayer(),
 	}
-	this.overlays['counties'].setOptions({"fillOpacity": 0, "stokeColor": "red"});
 //http://gmaps-samples.googlecode.com/svn/trunk/ggeoxml/cta.kml   https://www.dropbox.com/s/fevjaq8q977tn0l/NYCountyBoundaries.kml
 	this.overlayStrategy = this.overlays['heatmap'];
 
@@ -65,6 +65,7 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 	var northEast = new google.maps.LatLng(43.125695, -73.759155);
 	var lngSpan = northEast.lng() - southWest.lng();
 	var latSpan = northEast.lat() - southWest.lat();
+	portal = this
 
 	for (var i = 0; i < 500; i++) {
 		// init markers
@@ -79,16 +80,20 @@ UrbanSprawlPortal.prototype.loadNewYorkData_ = function(){
 			visible: true
 	    });
 
-	    /* process multiple info windows
-	    (function(marker, i) {
+		selectedMarkers = this.selectedMarkers;
+
+	     //process multiple info windows
+	    (function(marker, i, selectedMarkers) {
 	        // add click event
-	        google.maps.event.addListener(marker, 'click', function() {
-	            infowindow = new google.maps.InfoWindow({
-	                content: 'Marker Content'
-	            });
-	            infowindow.open(this.get('map'), marker);
+	        google.maps.event.addListener(marker, 'click', function(event) {
+	        	marker.setIcon('img/small_yellow.png');
+			    selectedMarkers.push(marker);
+			    portal.infoBox.html("Selected: " + portal.selectedMarkers.length);
+			    // some more code to change icon, add marker name to list, etc 
+			    //   so user knows marker has been selected
 	        });
-	    })(marker, i);*/
+	    })(marker, i, selectedMarkers);
+
 	    var wloc = {
 	    	location: marker.getPosition(), 
 	    	weight: ((Math.random() + 1) * 100)
@@ -266,10 +271,12 @@ UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 					{
 						portal.markers[key].setIcon('img/small_yellow.png');
 						markersNumSelected++;
+						portal.selectedMarkers[key] = portal.markers[key];
 
 					} else {
 
 						portal.markers[key].setIcon('img/small_red.png');
+						portal.selectedMarkers.splice(key, 1);
 					}
 	            }
 
@@ -277,7 +284,7 @@ UrbanSprawlPortal.prototype.enableBoxSelection_ = function(){
 	        }
 	        portal.gribBoundingBox = null;
 	        portal.selecting = false;
-			portal.infoBox.html("Selected: " + markersNumSelected + " Rem: " + (portal.markers.length - markersNumSelected));
+			portal.infoBox.html("Selected: " + portal.selectedMarkers.length + " Rem: " + (portal.markers.length - portal.selectedMarkers.length));
 	        $("#box-select").css("color","#67676C");
 	    }
 
@@ -361,53 +368,3 @@ UrbanSprawlPortal.prototype.loadDashboard = function(){
     // Draw the dashboard
     draw(data);
 }
-
-function main(){
-
-	var mapOptions = {
-		center: new google.maps.LatLng(42.792025, -75.435944),
-		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		disableDefaultUI: true,
-	    mapTypeControl: true,
-	    mapTypeControlOptions: {
-	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-	    },
-	    panControl: false,
-	    zoom: 6,
-	    zoomControl: true,
-	    zoomControlOptions: {
-	      style: google.maps.ZoomControlStyle.SMALL,
-	      position: google.maps.ControlPosition.TOP_RIGHT
-	  }
-	}
-
-	var mapStyles = {
-		'urban': new UrbanTheme(),
-		'transit': new TransitTheme(),
-		'water': new InverseWaterTheme()
-	}
-
-	var Portal = new UrbanSprawlPortal(mapOptions, mapStyles);
-
-	/* Theme Selection */
-	$('input[type=radio][name=theme]').change(function() {
-	    Portal.changeMapStyle($(this).attr('id'));
-	});
-	$('input[type=checkbox][name=overlay]').click(function() {
-  		Portal.toggleOverlay($(this).attr('id'));
-	});
-	$("input[type=checkbox][name=cluster]").click(function(){
-	    Portal.toggleCluster();
-	});
-	$('input[type=checkbox][name=marker]').click(function(){
-	    Portal.toggleMarkers();
-	});
-
-  /* Map Toggle View */
-  $("#map-toggle").click(function(){
-    $("#graph-overlay").slideToggle("slow");
-  });
-
-}
-
-google.maps.event.addDomListener(window, 'load', main);

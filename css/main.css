@@ -108,9 +108,9 @@ li .btn-visualize:nth-child(odd){
 }
 
 button.tiny{
-font-size: 1.4rem;
-padding-top: .25rem;
-padding-bottom: .25rem;
+font-size: 1rem;
+padding-top: .15rem;
+padding-bottom: .15rem;
 padding-left: .75rem;
 padding-right: .75rem;
 color: black !important;
@@ -170,6 +170,12 @@ top: 7px;
 Off Canvas 
 **/
 
+ul.off-canvas-list ul{
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
 ul.off-canvas-list li{
 font-weight: bold;
 font-size: .8rem;
@@ -178,6 +184,11 @@ clear: both;
 color: rgba(255,255,255,0.7);
 padding: 1rem;
 line-height: 1.8rem;
+}
+
+ul.off-canvas-list ul li{
+	padding: 0;
+	padding-top: 1rem;
 }
 
 ul.off-canvas-list li h2{

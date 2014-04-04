@@ -3,120 +3,309 @@
   <head>
   <meta charset="utf-8" />
 
-	<title>Expanse Portal</title>
+	<title>Urban Sprawl Portal</title>
 	<meta name="viewport" content="width=device-width" />
 
     <link rel="stylesheet" href="foundations/css/normalize.css">
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+   <link rel="stylesheet" href="foundations/css/foundation.min.css">
 
-    <link rel="stylesheet" href="foundations/css/foundation.min.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+   <link rel="stylesheet" type="text/css" href="css/main.css">
+
+   <link rel="stylesheet" type="text/css" href="css/toggle-switch.css">
+   <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+    
     <link rel="stylesheet" href="foundations/foundation-icons/foundation-icons.css">
 
 
     <script type="text/javascript" src="foundations/js/vendor/modernizr.js"></script>
   </head>
-  <body>
 
-  <div id="sprawl-map"></div>
+<body>
+	<div class="off-canvas-wrap">
+	  <div class="inner-wrap">
 
-  <div id="container">
-    
-    <!-- Main Navigation -->
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <li class="name"><h1><a href="#" class="text-glow">Urban Sprawl Portal</a></h1></li>
+	    <nav class="tab-bar">
+	      <section class="left-small">
+	        <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+	      </section>
+		
+		  <!-- TOP NAV BAR -->
+	      <section class="middle tab-bar-section">
 
-        <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
-      </ul>
-      <section class="top-bar-section">
-          <ul class="left">
-            <li class="divider"></li>
-            <li><a href="#">About</a></li>
-            <li class="divider"></li>
-            <li class="has-dropdown">
-              <a href="#"><i class="fi-map"></i>Themes</a>
-              <ul id="mapthemes" class="dropdown">
-                <li><a id="urban" href="#">Urban</a></li>
-                <li><a id="transit" href="#">Transit</a></li>
-                <li><a id="water" href="#">Water</a></li>
-                <li><a id="inverseWater" href="#">InvWater</a></li>
-              </ul>
-            </li>
-            <li class="has-dropdown has-form">
-              <a href="#"><i class="fi-page-multiple"></i>Overlays</a>
-              <ul id="overlays" class="dropdown">
-                <input id="heatmap" type="checkbox"><label for="heatmap">Heatmap</label> <br>
-                <input id="bikeroute" type="checkbox"><label for="bikeroute">Bikepaths</label><br>
-                <input id="transit" type="checkbox"><label for="transit">Transit</label><br>
-                <input id="counties" type="checkbox"><label for="counties">Counties</label><br>
-              </ul>
-            </li>
-            <li class="divider"></li>
-            <li class="has-form">
-              <a id="cluster" class="button alert"><i class="fi-social-delicious"></i>Cluster</a>
-            </li>
-            <li class="has-form">
-              <a id="show_markers" class="button default">Show Markers</a>
-            </li>
-            <li class="has-form">
-              <a id="box-select" class="button default"><i class="fi-alert"></i>Selection</a>
-            </li>
-            <li class="divider"></li>
-          </ul>
+			<nav class="top-bar" data-topbar>
+			  <ul class="title-area">
+			    <li class="name">
+			      <h1><a href="#" class="text-glow">Urban Sprawl Portal</a></h1>
+			    </li>
+			    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+			  </ul>
 
-          <ul class="right">
-            <li class="divider"></li>
+			  <section class="top-bar-section">
+			    <!-- Right Nav Section -->
+			    <ul class="right">
+			    <li class="has-form">
+				  <div class="row collapse">
+				    <div class="large-10 small-11 columns">
+				      <input id="search-input" type="text" placeholder="Search Places...">
+				    </div>
+				    <div class="large-2 small-1 columns">
+				      <a href="#" class="alert button expand">Go</a>
+				    </div>
+				  </div>
+				</li>
+			     <li class="">
+	              <a href="http://foundation.zurb.com/docs" class="button success">Donate</a>
+	            </li>
+			    </ul>
 
-         <li class="has-form show-for-large-up">
-              <a href="http://foundation.zurb.com/docs" class="button success">Contribute</a>
-            </li>
-          </ul>
-        </section>
-      </nav>
+			    <!-- Left Nav Section -->
+			    <ul class="left">
+			     <li>
+	              <a href="#">About</a>
+	            </li>
+		        <li>
+					<a id = "box-select" class="button primary"><i class="fi-alert"></i>Selection</a>
+		        </li>	
+		        <li>					
+		        <a id = "invert-select" href="" class="button default">Invert Selection</a>
+		        </li>          
+			    </ul>
+			  </section>
+			</nav>
 
-    <!-- <div id="search">
-      <form action="" method="" id="s">
-        <div>
-          <label>Search New York by county</label>
-          <input type="search" value="Rensselaer" id="q"/>
-          <label>within <span id="dist"></span> km
-          <span id="of"></span></label>
-          <input type="submit" value="Search!" id="btn"/>
-        </div>
-      </form>
-    </div> -->
-      <!-- SIDEBAR OF TOOLS-->
+	      </section>
 
-<!--
-      <ul id="sidebar" class="side-nav">
-        <li><a href="#"><i class="fi-page-multiple"></i><span class="icon-title">Layers</span></a></li>
-        <li><a a href="#"><i class="fi-alert"></i><span class="icon-title">Selection</span></a></li>
-        <li><a href="#"><i class="fi-map"></i><span class="icon-title">Heatmap</span></a></li>
-        <li><a href="#"><i class="fi-graph-trend"></i><span class="icon-title">Trends</span></a></li>
-        <li><a href="#"><i class="fi-social-delicious"></i><span class="icon-title">Distance</span></a></li>
-      </ul>
-      -->
+	      <section class="right-small">
+	        <a class="right-off-canvas-toggle menu-icon" ><span></span></a>
+	      </section>
 
-  
-    <!-- ANALYSIS WINDOW PANE -->
-      <section id="map-results" style="display: none;"> </section>
+	    </nav>
 
-      <div id="info"></div>
-	</div><!--container-->
-  
-  <!-- SCRIPTS -->
-  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	    <!-- Histogram Tool Bar: LEFT SIDE -->
+	    <aside id="histogram" class="left-off-canvas-menu">
+	      <ul class="off-canvas-list">
+	        <li><h2>States</h2>
+	        <ul>
+	        <li>
+		      <span class="h-subject left">New York</span>
+		      <span class="h-amount right">
+		      	<span class="h-totals">3</span>
+		      	<span class="h-progress">
+		      		<span class="meter"></span>
+		      	</span>
+		      </span>
+		    </li>
+	        </ul>
+
+
+	        </li>
+
+			<li>
+				<h2>New York &gt;&gt; Counties
+				<button class="right tiny round alert btn-visualize">
+				<!-- http://jqueryui.com/autocomplete/#folding -->
+				<i class="fi-plus"></i>
+			    </button>
+				</h2>		
+
+		    </li>
+	        <li>
+	            <div class="checkbox">
+	       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
+		    		<label for="albany">
+				      <span class="h-subject left">Albany</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	        </li>
+	        <li>
+	            <div class="checkbox">
+	       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
+		    		<label for="bronx">
+				      <span class="h-subject left">Bronx</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	        </li>
+	        <li>
+	            <div class="checkbox">
+	       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
+		    		<label for="allegany">
+				      <span class="h-subject left">Allegany</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	        </li>
+	        <li><h2>Counties &gt;&gt; Characteristics</h2></li>
+	        <li>
+		      <span class="h-subject left">Population</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+	        <li>
+		      <span class="h-subject left">Housing</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+	        <li>
+		      <span class="h-subject left">Information Tech</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+	        <li>
+		      <span class="h-subject left">Health</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+	        <li>
+		      <span class="h-subject left">Educational Serv</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+	        <li>
+		      <span class="h-subject left">Retail Trade</span>
+		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+	        </li>
+
+	    </aside>
+
+		<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
+	    <aside class="right-off-canvas-menu">
+	      <ul class="off-canvas-list">
+			<li><h2>Themes</h2></li>
+	        <li>
+				<div class="radio">  
+				    <input id="urban" type="radio" name="theme" value="urban">  
+				    <label for="urban">Urban</label>  
+				</div>  
+	        </li>
+	        <li>
+				<div class="radio">  
+				    <input id="transit" type="radio" name="theme" value="transit">  
+				    <label for="transit">Transit</label>  
+				</div>  
+	        </li>
+	        <li>
+				<div class="radio">  
+				    <input id="water" type="radio" name="theme" value="water" checked>  
+				    <label for="water">Water</label>  
+				</div>  
+	        </li>
+	        <li><h2>Overlays</h2></li>
+	        <li>
+		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+					<input id="bikeroute" type="checkbox" name="overlay">
+					<span>
+						Bike Path
+						<span>Off</span>
+						<span>On</span>
+					</span>
+					<a></a>
+				</label>
+	        </li>
+	        <li>
+		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+					<input id="transit" type="checkbox" name="overlay">
+					<span>
+						Transit
+						<span>Off</span>
+						<span>On</span>
+					</span>
+					<a></a>
+				</label>
+	        </li>
+	        <li>
+		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+					<input id="counties" type="checkbox" name="overlay">
+					<span>
+						Counties
+						<span>Off</span>
+						<span>On</span>
+					</span>
+					<a></a>
+				</label>
+	        </li>
+	        <li><h2>Data Points</h2></li>
+	        <li>
+		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+					<input type="checkbox" name="marker">
+					<span>
+						Markers
+						<span>Show</span>
+						<span>Hide</span>
+					</span>
+					<a></a>
+				</label>
+	        </li>
+	        <li>
+		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+					<input type="checkbox" name="cluster">
+					<span>
+						Cluster
+						<span>No</span>
+						<span>Yes</span>
+					</span>
+					<a></a>
+				</label>
+	        </li>
+	      </ul>
+	    </aside>
+
+
+	    <section class="main-section">
+	      <div id="container">
+		      <div id="sprawl-map"></div>
+		      <aside id="info"></aside>
+		      <aside id="map-toggle"><a class="#"><i class="fi-map"></i></a></aside>
+
+		      <aside id="graph-overlay" style="display: none;" class="google-visualization-controls-theme-plus">
+				<div id="slider"></div>
+				<div id="chart"></div>
+		      </aside>
+	      </div>
+	    </section>
+
+	  <a class="exit-off-canvas"></a>
+
+	  </div>
+	</div>
+  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+  <script src="foundations/js/vendor/jquery.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-	
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
-  <script>$(document).foundation();</script>
-
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false&libraries=visualization"></script>
+  <script>
+  	$(document).foundation(); 
+  	google.load("visualization", "1", {packages:["corechart", "controls"]});
+	google.load("maps", "3", {other_params: 'sensor=false&libraries=places,visualization'});	
+/*	$('.switch-light').click(function() {
+	    var input = $(this).children("input");
+	    console.log(input);
+	    input.prop("checked", !input.prop("checked"));
+	});*/
+  </script>
   <script type="text/javascript" src="js/vendor/markerclusterer_packed.js"></script>
-  <script type="text/javascript" src="js/theme.js"></script>
-  <script type="text/javascript" src="js/theme_strategy.js"></script>
-  <script type="text/javascript" src="js/distancewidget.js"></script>
-	<script type="text/javascript" src="js/map.js"></script>
+  <script type="text/javascript" src="js/portal/theme.js"></script>
+  <script type="text/javascript" src="js/portal/theme_strategy.js"></script>
+  <script type="text/javascript" src="js/portaldistancewidget.js"></script>
+	<script type="text/javascript" src="js/portal/portal.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
