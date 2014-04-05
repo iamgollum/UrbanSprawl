@@ -46,30 +46,36 @@
 			    <ul class="right">
 			    <li class="has-form">
 				  <div class="row collapse">
-				    <div class="large-10 small-11 columns">
+				    <div class="large-10 small-10 columns">
 				      <input id="search-input" type="text" placeholder="Search Places...">
 				    </div>
-				    <div class="large-2 small-1 columns">
+				    <div class="large-2 small-2 columns">
 				      <a href="#" class="alert button expand">Go</a>
 				    </div>
 				  </div>
 				</li>
-			     <li class="">
-	              <a href="http://foundation.zurb.com/docs" class="button success">Donate</a>
-	            </li>
 			    </ul>
 
 			    <!-- Left Nav Section -->
 			    <ul class="left">
+			    <li class="divider"></li>
 			     <li>
+	              <a href="#">Overview</a>
+	            </li>
+	            <li class="divider"></li>
+	            <li>
 	              <a href="#">About</a>
 	            </li>
-		        <li>
-					<a id = "box-select" class="button primary"><i class="fi-alert"></i>Selection</a>
+	            <li class="divider"></li>
+		        <li class="has-form">
+					<a id = "box-select" class="button primary">Select</a>
 		        </li>	
-		        <li>					
-		        <a id = "invert-select" href="" class="button default">Invert Selection</a>
-		        </li>          
+		        <li class="has-form">					
+		        <a id = "invert-select" href="" class="button default warning">Invert Selection</a>
+		        </li class="has-form">  
+		  		<li>					
+		        <a id = "clear-select" href="" class="button default alert">Clear Selection</a>
+		        </li>        
 			    </ul>
 			  </section>
 			</nav>
@@ -86,104 +92,110 @@
 	    <aside id="histogram" class="left-off-canvas-menu">
 	      <ul class="off-canvas-list">
 	        <li><h2>States</h2>
-	        <ul>
-	        <li>
-		      <span class="h-subject left">New York</span>
-		      <span class="h-amount right">
-		      	<span class="h-totals">3</span>
-		      	<span class="h-progress">
-		      		<span class="meter"></span>
-		      	</span>
-		      </span>
-		    </li>
-	        </ul>
-
-
+		        <ul>
+			        <li>
+				      <span class="h-subject left">New York</span>
+				      <span class="h-amount right">
+				      	<span class="h-totals">3</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+				    </li>
+		        </ul>
 	        </li>
 
-			<li>
+		    <li>	
 				<h2>New York &gt;&gt; Counties
 				<button class="right tiny round alert btn-visualize">
 				<!-- http://jqueryui.com/autocomplete/#folding -->
 				<i class="fi-plus"></i>
 			    </button>
-				</h2>		
+				</h2>
+
+		    	<ul>
+				<li>
+		            <div class="checkbox">
+		       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
+			    		<label for="albany">
+					      <span class="h-subject left">Albany</span>
+					      <span class="right h-amount">
+					      	<span class="h-totals">6</span>
+					      	<span class="h-progress">
+					      		<span class="meter"></span>
+					      	</span>
+					      </span>
+				    	</label>     	
+		            </div>
+		        </li>
+		        <li>
+		            <div class="checkbox">
+		       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
+			    		<label for="bronx">
+					      <span class="h-subject left">Bronx</span>
+					      <span class="right h-amount">
+					      	<span class="h-totals">6</span>
+					      	<span class="h-progress">
+					      		<span class="meter"></span>
+					      	</span>
+					      </span>
+				    	</label>     	
+		            </div>
+		        </li>
+		        <li>
+		            <div class="checkbox">
+		       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
+			    		<label for="allegany">
+					      <span class="h-subject left">Allegany</span>
+					      <span class="right h-amount">
+					      	<span class="h-totals">6</span>
+					      	<span class="h-progress">
+					      		<span class="meter"></span>
+					      	</span>
+					      </span>
+				    	</label>     	
+		            </div>
+		        </li>
+		    	</ul>
 
 		    </li>
 	        <li>
-	            <div class="checkbox">
-	       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
-		    		<label for="albany">
-				      <span class="h-subject left">Albany</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	        </li>
-	        <li>
-	            <div class="checkbox">
-	       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
-		    		<label for="bronx">
-				      <span class="h-subject left">Bronx</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	        </li>
-	        <li>
-	            <div class="checkbox">
-	       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
-		    		<label for="allegany">
-				      <span class="h-subject left">Allegany</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	        </li>
-	        <li><h2>Counties &gt;&gt; Characteristics</h2></li>
-	        <li>
-		      <span class="h-subject left">Population</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
-	        <li>
-		      <span class="h-subject left">Housing</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
-	        <li>
-		      <span class="h-subject left">Information Tech</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
-	        <li>
-		      <span class="h-subject left">Health</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
-	        <li>
-		      <span class="h-subject left">Educational Serv</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
-	        <li>
-		      <span class="h-subject left">Retail Trade</span>
-		      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
-		      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
-	        </li>
+	        	<h2>Counties &gt;&gt; Characteristics</h2>
+	        	<ul>
+					<li>
+				      <span class="h-subject left">Population</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+			        <li>
+				      <span class="h-subject left">Housing</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+			        <li>
+				      <span class="h-subject left">Information Tech</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+			        <li>
+				      <span class="h-subject left">Health</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+			        <li>
+				      <span class="h-subject left">Educational Serv</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+			        <li>
+				      <span class="h-subject left">Retail Trade</span>
+				      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></a>
+				      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></a>
+			        </li>
+	        	</ul>
 
+	        
+	     	</li>
 	    </aside>
 
 		<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
@@ -286,26 +298,31 @@
 
 	  </div>
 	</div>
-  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-  <script src="foundations/js/vendor/jquery.js"></script>
+  
+  <!-- Vendor Scripts -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
+
+  <!-- Vendor Initialization -->
   <script>
   	$(document).foundation(); 
   	google.load("visualization", "1", {packages:["corechart", "controls"]});
 	google.load("maps", "3", {other_params: 'sensor=false&libraries=places,visualization'});	
-/*	$('.switch-light').click(function() {
-	    var input = $(this).children("input");
-	    console.log(input);
-	    input.prop("checked", !input.prop("checked"));
-	});*/
   </script>
-  <script type="text/javascript" src="js/vendor/markerclusterer_packed.js"></script>
-  <script type="text/javascript" src="js/portal/theme.js"></script>
-  <script type="text/javascript" src="js/portal/theme_strategy.js"></script>
-  <script type="text/javascript" src="js/portaldistancewidget.js"></script>
-	<script type="text/javascript" src="js/portal/portal.js"></script>
+
+  <!-- Vendor Scripts requiring Google API -->
+  <script type="text/javascript" src="js/vendor/markerclusterer.min.js"></script>
+
+  <!-- Support Scripts -->
+  <script type="text/javascript" src="js/portal/themes.js"></script>
+  <script type="text/javascript" src="js/portal/themestrategy.js"></script>
+  <script type="text/javascript" src="js/portal/distancewidget.js"></script>
+
+  <!--Primary Scripts -->
+  <script type="text/javascript" src="js/portal/portal.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
+
 </body>
 </html>

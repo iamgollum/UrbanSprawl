@@ -1,6 +1,6 @@
 jQuery(function( $ ){
 
-var GalleryComposite = function (pheading, cheading, id) {
+var HistogramComposite = function (pheading, cheading, id) {
     this.children = [];
     this.parent = null;
      
@@ -8,7 +8,7 @@ var GalleryComposite = function (pheading, cheading, id) {
         .append('<h2>' + heading + '</h2>');
 }
  
-GalleryComposite.prototype = {
+HistogramComposite.prototype = {
     add: function (child) {
         this.children.push(child);
         this.element.append(child.getElement());
@@ -71,7 +71,7 @@ var GalleryImage = function (src, id) {
         .attr('src', src);
 }
  
-GalleryImage.prototype = {
+Characteristic.prototype = {
     // Due to this being a leaf, it doesn't use these methods,
     // but must implement them to count as implementing the
     // Composite interface
@@ -101,6 +101,12 @@ GalleryImage.prototype = {
         return this.element;
     }
 }
+
+
+
+
+
+
 
 var container = new GalleryComposite('', 'allgalleries');
 var gallery1 = new GalleryComposite('Gallery 1', 'gallery1');
