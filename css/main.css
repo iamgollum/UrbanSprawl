@@ -5,6 +5,9 @@ body {
 	margin: 0; 
 	padding: 0;
 	position: relative;
+	font-family: 'Helvetica Neue', Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
+	-webkit-font-smoothing: antialiased;
+	text-shadow: 0 -1px rgba(0, 0, 0, .5);
 }
 
 .text-glow:hover, .text-glow:focus, .text-glow:active {

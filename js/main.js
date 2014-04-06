@@ -42,9 +42,17 @@ function main(){
 	});
 
   /* Map Toggle View */
-  $("#map-toggle").click(function(){
-    $("#graph-overlay").slideToggle("slow");
-  });
+	  $("#map-toggle").click(function(){
+	    $("#graph-overlay").slideToggle("slow");
+	  });
+
+	$("#invert-select").click(function(){
+	    Portal.invertSelection();
+	});
+
+	$("#clear-select").click(function(){
+	    Portal.clearSelection();
+	});
 
 }
 
