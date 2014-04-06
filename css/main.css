@@ -1,6 +1,7 @@
 html, body { 
 	height: 100% 
 }
+
 body { 
 	margin: 0; 
 	padding: 0;
@@ -329,7 +330,7 @@ background: #fff;
 .h-progress .meter{
 background: #008cba;
 display: block;
-width: 50%;
+/*width: 50%;*/
 height: inherit;
 }
 .h-progress, .h-progress .meter{

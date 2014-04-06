@@ -166,6 +166,10 @@ var nycounties = {
 		if (featureLength){
 			for (var i = 0; i < featureLength; i++){
 				if(currentFeature_or_Features[i].length){
+					
+					console.log(currentFeature_or_Features[i]);
+
+					currentFeature_or_Features[i].fillOpacity = 1;
 					for(var j = 0; j < currentFeature_or_Features[i].length; j++){
 						if(currentFeature_or_Features[i][j].geojsonProperties) {		
 							// init markers
@@ -175,6 +179,9 @@ var nycounties = {
 							var county = currentFeature_or_Features[i][j].geojsonProperties['name'];
 						    var state = currentFeature_or_Features[i][j].geojsonProperties['state'];
 							var kind = currentFeature_or_Features[i][j].geojsonProperties['kind'];
+
+							//.setStyle({"fillOpacity: 1"});
+
 
 						    var marker = new google.maps.Marker({
 						        position: center,
