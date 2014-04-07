@@ -166,9 +166,6 @@ var nycounties = {
 		if (featureLength){
 			for (var i = 0; i < featureLength; i++){
 				if(currentFeature_or_Features[i].length){
-					
-					console.log(currentFeature_or_Features[i]);
-
 					currentFeature_or_Features[i].fillOpacity = 1;
 					for(var j = 0; j < currentFeature_or_Features[i].length; j++){
 						if(currentFeature_or_Features[i][j].geojsonProperties) {		
@@ -365,12 +362,12 @@ var nycounties = {
 
 		// Bias the SearchBox results towards places that are within the bounds of the
 		// current map's viewport.
-		(function(themap) {
+		(function(searchBox) {
 			google.maps.event.addListener(themap, 'bounds_changed', function() {
 				var bounds = themap.getBounds();
 				searchBox.setBounds(bounds);
 			});
-		})(themap);
+		})(searchBox);
 	}
 
 	// ************************************************************************ 

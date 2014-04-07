@@ -1,19 +1,20 @@
 jQuery(function( $ ){
 
-var HistogramComposite = function (heading, pheading, id) {
+var HistogramComposite = function (heading,  id) {
     this.children = [];
     this.parent = null;
+    this.level = 1; //default, should be overridden by children
      
-    this.element = $('<li id="' + id + '" class="composite-characteristic"></li>')
-    var heading = (pheading) ? (pheading + "&gt;&gt;" + heading) : heading;
-    this.element.append('<h2>' + heading + '</h2>');
+    this.element = $('<li id="' + id + '" class=""></li>')
+    .append('h1');//default header
 }
  
 HistogramComposite.prototype = {
     add: function (child) {
         this.children.push(child);
-        this.element.append(child.getElement());
         child.setParent(this);
+        child.setLevel(this.level+1);
+        this.element.append(child.getElement());
     },
 
     contains: function (child) {
@@ -45,6 +46,16 @@ HistogramComposite.prototype = {
         this.parent = p;
     },
     getParent: function(){
+        return this.parent;
+    },
+    incrementLevel: function(){
+        if(this.parent){
+            level = this.parent.level + 1;
+            $(('h'+this.level)).replaceWith('<h' + level + '>' + heading + '</h' + level + '>');
+            this.level = level;
+        }
+    },
+    getLevel: function(){
         return this.parent;
     },
     hide: function () {
@@ -113,7 +124,7 @@ var CharacteristicStandard = function (subject, myNumCharacteristics, allNumChar
             .addClass('h-progress')
             .append('<span>')
             .addClass('meter')
-            .css('width', str(characteristicPercentage) + '%');
+            .css('width', (characteristicPercentage).toString() + '%');
     
     var totals = $('<span>')
         .addClass('h-totals')
@@ -121,13 +132,12 @@ var CharacteristicStandard = function (subject, myNumCharacteristics, allNumChar
         .wrap(progress);
 
     var histogram = $('<span>')
-        .addClass('h-amount right');
+        .addClass('h-amount right')
+        .wrap(totals);
 
     this.element = $('<span>')
         .addClass('h-subject left')
-        .before(histogram);
-
-    this.element.appendTo(this.parent.getElement());
+        .append(histogram);
 }
 CharacteristicStandard.prototype = new Characteristic();
 CharacteristicStandard.prototype.constructor = CharacteristicStandard;
@@ -138,11 +148,11 @@ var CharacteristicMultiSelect = function (subject, group, myNumCharacteristics, 
     //Call Parent
     CharacteristicStandard.call(this, subject, myNumCharacteristics, allNumCharacteristics)
     
-    var label = $('label')
+    var label = $('<label>')
             .attr('for', subject)
             .wrap(CharacteristicStandard.prototype.getElement());
 
-    var input = $('input')
+    var input = $('<input>')
             .attr('id', subject)
             .attr('type', 'checkbox')
             .attr('name', group)
@@ -163,25 +173,25 @@ CharacteristicMultiSelect.prototype.constructor = CharacteristicMultiSelect;
 var CharacteristicWithDataView = function (subject){
 
     var heatMapIcon = $('<i>')
-            .addClass('fi-paint-bucket')
+            .addClass('fi-paint-bucket');
 
     var btnHeatMap = $('<button>')
             .addClass('right tiny round warning btn-visualize')
+            .append(heatMapIcon);
 
     var chartIcon = $('<i>')
-            .addClass('fi-map')
+            .addClass('fi-map');
 
     var btnCharts = $('<button>')
             .addClass('right tiny round success btn-visualize')
+            .append(chartIcon);
 
     var subject = $('<span>')
-            .addClass('h-subject left')
+            .addClass('h-subject left');
 
     this.element = subject
                 .after(btnHeatMap)
-                .after(btnCharts)
-
-    this.element.appendTo(this.parent.element);
+                .after(btnCharts);
 
 }
 
@@ -189,27 +199,30 @@ CharacteristicWithDataView.prototype = new Characteristic();
 CharacteristicWithDataView.prototype.constructor = CharacteristicWithDataView;
 
 
+$(document).ready(function(){
 
-var States = new HistogramComposite(null, 'States');
-var NewYork = new CharacteristicStandard();
+var States = new HistogramComposite('States', 'states');
+var NewYork = new CharacteristicStandard('New York', 3, 63);
 
-var Counties = new HistogramComposite('State', 'Counties');
+var Counties = new HistogramComposite('Counties', 'Counties');
 Counties.setParent(States); //append all state counties with header dividing parent?
 
-var Albany = new CharacteristicMultiSelect();
-var Allegany = new CharacteristicMultiSelect();
-var Bronx = new CharacteristicMultiSelect();
+var NewYorkCounties = new HistogramComposite('NewYork', 'ny');
+NewYorkCounties.setParent(Counties);
 
-var Characteristics = new HistogramComposite(null, 'States');
+var Albany = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
+var Allegany = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
+var Bronx = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
+
+var Characteristics = new HistogramComposite('Characteristics', 'data');
 Characteristics.setParent(Counties);
 
-var Population = new CharacteristicWithDataView();
-var Housing = new CharacteristicWithDataView();
-var Information = new CharacteristicWithDataView();
-var Health = new CharacteristicWithDataView();
-var Educational = new CharacteristicWithDataView();
-var RetailTrade = new CharacteristicWithDataView();
-
+var Population = new CharacteristicWithDataView('Population');
+var Housing = new CharacteristicWithDataView('Housing');
+var Information = new CharacteristicWithDataView('Information');
+var Health = new CharacteristicWithDataView('Health');
+var Educational = new CharacteristicWithDataView('Educational');
+var RetailTrade = new CharacteristicWithDataView('RetailTrade');
 
 Characteristics.add(Population);
 Characteristics.add(Housing);
@@ -222,12 +235,22 @@ Counties.add(Albany);
 Counties.add(Allegany);
 Counties.add(Bronx);
 
-Counties.contains()
-
+Counties.contains(Characteristics);
+States.contains(Counties);
+States.add(NewYork);
+NewYorkCounties.add(Albany);
+NewYorkCounties.add(Allegany);
+NewYorkCounties.add(Bronx);
 
 // Make sure to add the top container to the body, 
 // otherwise it'll never show up.
-Histogram.getElement().appendTo('#histogram ul');
-Histogram.show();
+/*
+States.getElement().appendTo('#histogram ul');
+Counties.getElement().appendTo('#histogram ul');
+Characteristics.getElement().appendTo('#histogram ul');
+States.show();
+*/
+});
+
 
 });

@@ -89,9 +89,109 @@
 	    </nav>
 
 	    <!-- Histogram Tool Bar: LEFT SIDE -->
-	    <aside id="histogram" class="left-off-canvas-menu">
+<aside id="histogram" class="left-off-canvas-menu">
 	      <ul class="off-canvas-list">
-	      </ul>
+	        <li>
+		        <h2>States</h2>
+		       	<div class="clear">
+			      <span class="h-subject left">New York</span>
+			      <span class="right h-amount">
+			      	<span class="h-totals">3</span>
+			      	<span class="h-progress">
+			      		<span class="meter"></span>
+			      	</span>
+			      </span>
+			    </div>
+		       	<div class="clear">
+			      <span class="h-subject left">New York</span>
+			      <span class="right h-amount">
+			      	<span class="h-totals">3</span>
+			      	<span class="h-progress">
+			      		<span class="meter"></span>
+			      	</span>
+			      </span>
+			    </div>
+	        </li>
+
+		    </li>
+	        <li>
+	        	<h2>Counties</h2>
+	        	<ul class="off-canvas-list">
+	        	<li>
+	        		<h3>New York</h3>
+
+	            <div class="checkbox">
+	       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
+		    		<label for="albany">
+				      <span class="h-subject left">Albany</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	            <div class="checkbox">
+	       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
+		    		<label for="bronx">
+				      <span class="h-subject left">Bronx</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	            <div class="checkbox">
+	       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
+		    		<label for="allegany">
+				      <span class="h-subject left">Allegany</span>
+				      <span class="right h-amount">
+				      	<span class="h-totals">6</span>
+				      	<span class="h-progress">
+				      		<span class="meter"></span>
+				      	</span>
+				      </span>
+			    	</label>     	
+	            </div>
+	            </li>
+	            </ul>
+	        </li>
+	        <li><h2>Counties &gt;&gt; Characteristics</h2>
+
+	        	<div class="clear">
+			      <span class="h-subject left">Population</span>
+			      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+			      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+			    </div>
+				<div class="clear">
+					<span class="h-subject left">Housing</span>
+					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+				</div>
+					<div class="clear"><span class="h-subject left">Information Tech</span>
+					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+				</div>
+				<div class="clear">				
+					<span class="h-subject left">Health</span>
+					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+				</div>
+				<div class="clear">
+					<span class="h-subject left">Educational Serv</span>
+					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+				</div>
+				<div class="clear">
+					<span class="h-subject left">Retail Trade</span>
+					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+				</div>
+	        </li>
+
 	    </aside>
 
 		<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
@@ -218,6 +318,7 @@
   <script type="text/javascript" src="js/portal/distancewidget.js"></script>
 
   <!--Primary Scripts -->
+  <!--<script type="text/javascript" src="js/portal/views/off_canvas_left.js"></script>-->
   <script type="text/javascript" src="js/portal/portal.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 
