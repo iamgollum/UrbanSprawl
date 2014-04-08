@@ -173,7 +173,7 @@ var nycounties = {
 	this.themeStrategy = map_styles['water'];
 	this.infoBox = $("#info");
 
-	this.markers = [];
+	this.markers = {};
 	this.markersNumSelected = 0;
 
     this.MarkerCluster = null;
@@ -285,7 +285,7 @@ var nycounties = {
 						        });
 						    })(marker, i, portal);
 
-						    portal.markers.push(marker);
+						    portal.markers[marker.name] = marker;
 		  
 						}
 					}
@@ -293,7 +293,7 @@ var nycounties = {
 			}
 		}
 	
-	portal.markers.sort(compareMarkers);
+	//portal.markers.sort(compareMarkers);
 		
 	}
 
@@ -599,7 +599,7 @@ UrbanSprawlPortal.prototype.invertSelection = function(){
 
 		}
 	}
-	this.markersNumSelected = (this.markers.length - this.markersNumSelected);
+	this.markersNumSelected = (Object.keys(this.markers).length - this.markersNumSelected);
 	this.infoBox.html("Selected: " + this.markersNumSelected);
 	this.updateHistogram();
 
@@ -761,6 +761,35 @@ UrbanSprawlPortal.prototype.updateHistogram = function(){
 
 }
 
+
+UrbanSprawlPortal.prototype.newHeatMap = function(){
+
+	var totalPopulation = 0;
+	for (key in populationData) {totalPopulation += populationData[key];}
+
+	var heatmapData = [];
+	
+	var self = this;
+	$("#histogram input:checked").each(function () {
+		var county = $(this).attr("id");
+		var marker = self.markers[county];
+		if (county in populationData){
+			var weightedLoc = {
+			  location: marker.getPosition(),
+			  weight: (populationData[county]/totalPopulation)
+			};
+			heatmapData.push(weightedLoc); 
+	    }	        
+    });
+
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: heatmapData,
+    dissipating: false,
+    map: this.get('map')
+  });
+
+}
+
 UrbanSprawlPortal.prototype.loadDashboard = function(){
 
 	var datatable = new google.visualization.DataTable();
@@ -819,6 +848,30 @@ UrbanSprawlPortal.prototype.loadDashboard = function(){
     // Draw the dashboard
     draw(datatable);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 UrbanSprawlPortal.prototype.getJsonFromUrl = function(url){
     var json_data = [];

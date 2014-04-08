@@ -46,7 +46,6 @@ function main(){
   /* Map Toggle View */
 	  $("#map-toggle").click(function(){
 	    $("#graph-overlay").slideToggle("slow");
-	    Portal.loadDashboard();
 	  });
 
 	$("#invert-select").click(function(){
@@ -55,6 +54,15 @@ function main(){
 
 	$("#clear-select").click(function(){
 	    Portal.clearSelection();
+	});
+
+	$("#histogram").delegate("button", "click", function( event ) {
+	  if($(this).find('i').hasClass("fi-paint-bucket")){
+	  	Portal.newHeatMap();
+	  } else{
+	  	Portal.loadDashboard();
+	  	$("#graph-overlay").slideDown("slow");
+	  }
 	});
 
 }

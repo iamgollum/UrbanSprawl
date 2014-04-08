@@ -214,7 +214,7 @@ var CharacteristicWithDataView = function (name){
 
     var btnHeatMap = $('<button>')
             .addClass('right tiny round warning btn-visualize')
-            .append(heatMapIcon);
+            .append(heatMapIcon)
 
     var chartIcon = $('<i>')
             .addClass('fi-map');
@@ -229,6 +229,7 @@ var CharacteristicWithDataView = function (name){
 
     this.element = $('<div>')
         .addClass('clear')
+        .attr('id', name)
         .append(subject)
         .append(btnCharts)
         .append(btnHeatMap);
