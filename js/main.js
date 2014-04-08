@@ -4,7 +4,9 @@ function main(){
 		center: new google.maps.LatLng(42.792025, -75.435944),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true,
-		panControl: false,
+		disableDoubleClickZoom: false,
+		panControl: true,
+		draggable: false,
 	    mapTypeControl: true,
 	    mapTypeControlOptions: {
 	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -14,7 +16,7 @@ function main(){
 	      style: google.maps.ZoomControlStyle.SMALL,
 	      position: google.maps.ControlPosition.TOP_RIGHT
 	  	},
-	  	zoom: 6
+	  	zoom: 7
 	}
 
 	/* Aar*/
@@ -44,6 +46,7 @@ function main(){
   /* Map Toggle View */
 	  $("#map-toggle").click(function(){
 	    $("#graph-overlay").slideToggle("slow");
+	    Portal.loadDashboard();
 	  });
 
 	$("#invert-select").click(function(){

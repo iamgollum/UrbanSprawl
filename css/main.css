@@ -62,7 +62,7 @@ nav{
 #chart{
 margin: 0px auto;
 position: relative;
-width: 800px;
+width: 1400px;
 }
 
 #info{
@@ -98,7 +98,7 @@ width: 800px;
 }
 
 .warning{
-	background-color: orange !important;
+	background-color: #ED9124 !important;
 }
 
 .warning:hover, .warning:focus {
@@ -200,7 +200,7 @@ ul.off-canvas-list ul li{
 }
 
 ul.off-canvas-list li div{
-	padding-top: .25rem;
+	padding-top: .75rem;
 	padding-bottom: .25rem; 
 }
 
@@ -282,7 +282,6 @@ background-color: #aaa;
 box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
 }
 
-
 .checkbox label, .radio label {  
     display: inline-block;  
     cursor: pointer;  
@@ -356,7 +355,7 @@ display: block;
 height: inherit;
 }
 .h-progress, .h-progress .meter{
-	border-radius: 15px;
+	/*border-radius: 15px;*/
 }
 
 .h-totals{

@@ -1,3 +1,68 @@
+var populationData = {
+	"Albany":" 304204",
+    "Allegany":" 48946",
+    "Bronx":" 1385108",
+    "Broome":" 200600",
+    "Cattaraugus":" 80317",
+    "Cayuga":" 80026",
+    "Chautauqua":" 134905",
+    "Chemung":" 88830",
+    "Chenango":" 50477",
+    "Clinton":"82128",
+    "Columbia":"63096",
+    "Cortland":"49336",
+    "Delaware":"47980", 
+    "Dutchess":"297488", 
+    "Erie":"919040", 
+    "Essex":"39370",
+	"Franklin":"51599",
+	"Fulton":"55531",
+ 	"Genesee" :"60079",
+	"Greene" :"49221",
+    "Hamilton":"4836",
+    "Herkimer":"64519",
+	"Jefferson":"116229",
+	"Kings" :"2504700",
+  	"Lewis" :"27087",
+    "Livingston" :"65393",
+    "Madison":"73442",
+    "Monroe" :"744344",
+    "Montgomery":"50219", 
+    "Nassau":"1339532",
+    "New York":"1585873",
+  	"Niagara":"216469",
+	"Oneida":"234878",
+	"Onondaga":"467026",
+	"Ontario":"107931",
+	"Orange":"372813",
+	"Orleans":"42883",
+	"Oswego":"122109",
+	"Otsego":"62259",
+	"Putnam":"99710",
+	"Queens" :"2230722",
+	"Rensselaer" :"159429",
+	"Richmond" :"468730",
+	"Rockland":"311687",
+	"St. Lawrence":"111944",
+  	"Saratoga":"219607",
+ 	"Schenectady":"154727",
+    "Schoharie":"32749",
+	"Schuyler":"18343",
+	"Seneca":"35251",
+	"Steuben":"98990",
+	"Suffolk":"1493350",
+	"Sullivan":"77547",
+	"Tioga":"51125",
+	"Tompkins":"101564",
+	"Ulster":"182493",
+	"Warren":"65707",
+	"Washington":"63216",
+    "Wayne":"93772",
+	"Westchester":"949113",
+	"Wyoming":"42155",
+	"Yates":"25348"
+}
+
 var nycounties = {
 	"type": "FeatureCollection",
 	"properties": {
@@ -117,6 +182,7 @@ var nycounties = {
 
     this.countyInfoWindow = new google.maps.InfoWindow();
     this.currentFeature_or_Features = null;
+    this.histogram = $('#histogram');
 
 	/* Bind theme strategies with map */
 	for (key in this.styles){this.styles[key].bindTo('map', this);}
@@ -147,9 +213,19 @@ var nycounties = {
 	// PRIVATE FUNCTIONS 
 	// ONLY PRIVELEGED METHODS MAY VIEW/EDIT/INVOKE 
 	// ************************************************************************
+
+	var compareMarkers = function(a,b) {
+	  if (a.kind < b.kind)
+	     return -1;
+	  if (a.kind > b.kind)
+	    return 1;
+	  return 0;
+	}
+
 	var loadNewYorkData_ = function(){
 
 		// Set up county overlay by default
+		var state = nycounties.properties.kind;
 		portal.showGeoJSON_Feature(nycounties, this.countyInfoWindow, countyStyle);
 		currentFeature_or_Features = portal.currentFeature_or_Features;
 
@@ -164,6 +240,7 @@ var nycounties = {
 		}
 
 		if (featureLength){
+			
 			for (var i = 0; i < featureLength; i++){
 				if(currentFeature_or_Features[i].length){
 					currentFeature_or_Features[i].fillOpacity = 1;
@@ -173,9 +250,9 @@ var nycounties = {
 							var center = new google.maps.LatLng(
 								currentFeature_or_Features[i][j].geojsonProperties['center'][1],
 								currentFeature_or_Features[i][j].geojsonProperties['center'][0]);
-							var county = currentFeature_or_Features[i][j].geojsonProperties['name'];
-						    var state = currentFeature_or_Features[i][j].geojsonProperties['state'];
-							var kind = currentFeature_or_Features[i][j].geojsonProperties['kind'];
+							var countyname = currentFeature_or_Features[i][j].geojsonProperties['name'];
+						    var statename = currentFeature_or_Features[i][j].geojsonProperties['state'];
+							var county = currentFeature_or_Features[i][j].geojsonProperties['kind'];
 
 							//.setStyle({"fillOpacity: 1"});
 
@@ -183,11 +260,14 @@ var nycounties = {
 						    var marker = new google.maps.Marker({
 						        position: center,
 						        map: themap,
-						        title: county + " " + kind,
-						        parent: state,
+						        title: countyname + " " + county,
+						        root: state, 
+						        parent: statename,
+						        kind: county,
+						        kindTotal: featureLength,
+						        name: countyname,
 								icon: 'img/small_red.png',
 								selected: false,
-								state: 'Online',
 								id: i,
 								visible: true
 						    });
@@ -212,6 +292,8 @@ var nycounties = {
 				}
 			}
 		}
+	
+	portal.markers.sort(compareMarkers);
 		
 	}
 
@@ -310,9 +392,11 @@ var nycounties = {
 		        $("#box-select").css("color","#FFFFFF");
 		    }
 
-		    themap.setOptions({
-		        draggable: true
-		    });
+/*		    themap.setOptions({
+		        draggable: false
+		    });*/
+
+		    portal.updateHistogram();
 		});
 
 	}
@@ -517,6 +601,7 @@ UrbanSprawlPortal.prototype.invertSelection = function(){
 	}
 	this.markersNumSelected = (this.markers.length - this.markersNumSelected);
 	this.infoBox.html("Selected: " + this.markersNumSelected);
+	this.updateHistogram();
 
 }
 
@@ -525,8 +610,9 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 			this.markers[key].setIcon('img/small_red.png');
 			this.markers[key].selected = false;
 	}
-		this.markersNumSelected = 0;
-		this.infoBox.html("Selection Cleared!");
+	this.markersNumSelected = 0;
+	this.infoBox.html("Selection Cleared!");
+	this.histogram.empty();
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
@@ -589,25 +675,126 @@ UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
   addActions();
 }
 
-UrbanSprawlPortal.prototype.loadDashboard = function(data){
+function dynamicSortMultiple() {
+    /*
+     * save the arguments object as it will be overwritten
+     * note that arguments object is an array-like object
+     * consisting of the names of the properties to sort by
+     */
+    var props = arguments;
+    return function (obj1, obj2) {
+        var i = 0, result = 0, numberOfProperties = props.length;
+        /* try getting a different result from 0 (equal)
+         * as long as we have extra properties to compare
+         */
+        while(result === 0 && i < numberOfProperties) {
+            result = dynamicSort(props[i])(obj1, obj2);
+            i++;
+        }
+        return result;
+    }
+}
 
-	var data = google.visualization.arrayToDataTable([
-      ['Year', 'Albany', 'Bronx', 'Allegany'],
-      [new Date(2004, 6, 13),  1000,      400,    780],
-      [new Date(2005, 6, 13),  1170,      460,    510],
-      [new Date(2006, 6, 13),  660,       1120,   350],
-      [new Date(2007, 6, 13),  1030,      540,    230]
-    ]);
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
-	  // Define a slider control for the 'Donuts eaten' column
-	  var slider = new google.visualization.ControlWrapper({
-	    'controlType': 'DateRangeFilter',
-	    'containerId': 'slider',
-	    'options': {
-	      'filterColumnLabel': 'Year',
-	      'ui': {'labelStacking': 'vertical', 'format': { 'pattern': 'yyyy' }},
-	    }
-	  });
+UrbanSprawlPortal.prototype.updateHistogram = function(){
+
+	/*Only add parent once and type once*/
+	this.histogram.empty();
+	var States = null;
+	var Counties = null;
+	var NYCounties = null;
+	var specificCounty = null;
+	var firstSelected = true;
+	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
+
+	for (var key in this.markers) {
+		var m = this.markers[key];
+
+
+		if(m.selected){
+
+			if(firstSelected){  //ie. normally this would start a new feature collection
+				           //but we only have a new york county feature collection, so "hard code"
+				States = new HistogramComposite(m.root.capitalize(), m.root);
+				Counties = new HistogramComposite(m.kind.capitalize(), m.kind);
+				NYCounties = new HistogramComposite(m.parent.toUpperCase(), m.parent);
+
+				var NewYork = new CharacteristicStandard(m.parent.toUpperCase(), 
+														this.markersNumSelected, 
+														m.kindTotal);
+
+				States.getContainer().appendTo('#histogram');
+				States.add(NewYork);
+				States.contains(Counties);
+				Counties.add(NYCounties);
+
+				/* Not driven by data*/
+				var Characteristics = new HistogramComposite('Characteristic', 'data');
+				Counties.contains(Characteristics);
+
+				var Population = new CharacteristicWithDataView('Population');
+				var Housing = new CharacteristicWithDataView('Housing');
+				var Information = new CharacteristicWithDataView('Information');
+				var Health = new CharacteristicWithDataView('Health');
+				var Educational = new CharacteristicWithDataView('Educational');
+				var RetailTrade = new CharacteristicWithDataView('RetailTrade');
+
+
+				Characteristics.add(Population);
+				Characteristics.add(Housing);
+				Characteristics.add(Information);
+				Characteristics.add(Health);
+				Characteristics.add(Educational);
+				Characteristics.add(RetailTrade);
+				/* End not driven by data */
+				firstSelected = false;
+			}
+
+			specificCounty = new CharacteristicMultiSelect(m.name.capitalize(), m.name, 6, 6);
+			NYCounties.add(specificCounty);
+		} 
+	}
+	if(States){ States.show(); }
+
+}
+
+UrbanSprawlPortal.prototype.loadDashboard = function(){
+
+	var datatable = new google.visualization.DataTable();
+	datatable.addColumn('string', 'Year'); 
+	datatable.addRows(2);
+    datatable.setCell(0, 0, '2002');
+    datatable.setCell(1, 0, '2010');
+
+	$("#histogram input:checked").each(function () {
+		var county = $(this).attr("id");
+
+		if (county in populationData){
+	        var colIndex = datatable.addColumn( 'number', $(this).attr("id"));
+	        datatable.setCell(0, colIndex, populationData[county]);
+	        datatable.setCell(1, colIndex, (populationData[county] - (Math.random()*1000)));
+    	}
+
+    });
+
+  // Define a category picker for the 'Metric' column.
+  var categoryPicker = new google.visualization.ControlWrapper({
+    'controlType': 'CategoryFilter',
+    'containerId': 'slider',
+    'options': {
+      'filterColumnLabel': 'Year',
+      'ui': {
+        'allowTyping': false,
+        'allowMultiple': true,
+        'selectedValuesLayout': 'belowStacked',
+      }
+    },
+    // Define an initial state, i.e. a set of metrics to be initially selected.
+    'state': {'selectedValues': ['2002']}
+  });
 
   // Define a pie chart
   	var columnchart = new google.visualization.ChartWrapper({
@@ -616,16 +803,21 @@ UrbanSprawlPortal.prototype.loadDashboard = function(data){
 	    'options': {
 	      'title': 'Population Trends',
 	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
-	      'width': 800,
-	      'height': 500
+	      'width': 1400,
+	      'height': 600,
+	      'chartArea': {
+/*	      	'width' : '100%',
+	      	'height' : 600,*/
+	      },
+	      'bar': {groupWidth: "60%"},
 	    }
 	});
     // Create the dashboard.
   	var dashboard = new google.visualization.Dashboard(document.getElementById('graph-overlay')).
     // Configure the slider to affect the piechart
-    bind(slider, columnchart).
+    bind(categoryPicker, columnchart).
     // Draw the dashboard
-    draw(data);
+    draw(datatable);
 }
 
 UrbanSprawlPortal.prototype.getJsonFromUrl = function(url){

@@ -1,25 +1,31 @@
-jQuery(function( $ ){
-
 var HistogramComposite = function (heading,  id) {
     this.children = [];
     this.parent = null;
-    this.level = 1; //default, should be overridden by children
+    this.level = 2; //default, should be overridden by children
+    this.id = id;
+    this.heading = heading;
      
-    this.element = $('<li id="' + id + '" class=""></li>')
-    .append('h1');//default header
+    this.element = $('<li id="' + id + '"></li>')
+        .append('<h2>' + heading + '</h2>');
+
+    this.container = $('<ul class="off-canvas-list"></ul>')
+        .append(this.element);
 }
  
 HistogramComposite.prototype = {
     add: function (child) {
-        this.children.push(child);
-        child.setParent(this);
-        child.setLevel(this.level+1);
-        this.element.append(child.getElement());
+        child.setParent(this, isLevelUnder=true);
+        if (child.constructor == this.constructor){
+            this.element.append(child.getContainer()); //container under container
+        }else{
+            this.element.append(child.getElement()); //child under container
+        }
     },
 
     contains: function (child) {
         this.children.push(child);
-        child.setParent(this);
+        $(child.getContainer()).insertAfter(this.container); //container afte container
+        child.setParent(this, false);
     },
      
     remove: function (child) {    
@@ -42,21 +48,24 @@ HistogramComposite.prototype = {
         return this.children[i];
     },
 
-    setParent: function(p){
+    setParent: function(p, isLevelUnder){
         this.parent = p;
+        if(isLevelUnder){
+            var level = (this.parent.level + 1);
+            var header = '#' + this.id.toString() + ' h2';
+            level = level.toString();
+
+            this.element.find('h2').remove();
+            this.element.prepend($('<h' + level + '>' + this.heading + '</h' + level + '>'));
+        }
+        this.level = this.parent.level;
     },
     getParent: function(){
         return this.parent;
     },
-    incrementLevel: function(){
-        if(this.parent){
-            level = this.parent.level + 1;
-            $(('h'+this.level)).replaceWith('<h' + level + '>' + heading + '</h' + level + '>');
-            this.level = level;
-        }
-    },
+
     getLevel: function(){
-        return this.parent;
+        return this.level;
     },
     hide: function () {
         for (var node, i = 0; node = this.getChild(i); i++) {
@@ -76,12 +85,17 @@ HistogramComposite.prototype = {
      
     getElement: function () {
         return this.element;
+    },
+
+    getContainer: function () {
+        return this.container;
     }
 }
 
 var Characteristic = function () {
     this.children = [];
     this.parent = null;
+    this.level = 2;
      
 }
  
@@ -92,16 +106,21 @@ Characteristic.prototype = {
     add: function () { },
     remove: function () { },
     getChild: function () { },
+    contains: function() { },
+    getContainer: function() { },
 
 
-    setParent: function(p){
+    setParent: function(p, ui_sibling){
         this.parent = p;
+        level = this.parent.getLevel() + 1;
     },
 
     getParent: function(){
         return this.parent;
     },
-
+    getLevel: function(){
+        return this.level;
+    },
     hide: function () {
         this.element.hide(0);
     },
@@ -115,48 +134,66 @@ Characteristic.prototype = {
     }
 }
 
-var CharacteristicStandard = function (subject, myNumCharacteristics, allNumCharacteristics){
+var CharacteristicStandard = function (name, myNumCharacteristics, allNumCharacteristics){
 
-    var characteristicPercentage = ((myNumCharacteristics/allNumCharacteristics)*100);
+    var characteristicPercentage = Math.round(((myNumCharacteristics/allNumCharacteristics)*100));
+    characteristicPercentage = (characteristicPercentage).toString() + "%" 
 
+    /*
+    <div class="clear">
+      <span class="h-subject left">New York</span>
+      <span class="right h-amount">
+        <span class="h-totals">3</span>
+        <span class="h-progress">
+            <span class="meter" style="width: 5%;"></span>
+        </span>
+      </span>
+    </div>
+    */
+    var meter = $('<span>')
+            .addClass('meter')
+            .css('width', characteristicPercentage);
 
     var progress = $('<span>')
             .addClass('h-progress')
-            .append('<span>')
-            .addClass('meter')
-            .css('width', (characteristicPercentage).toString() + '%');
+            .append(meter);
     
     var totals = $('<span>')
         .addClass('h-totals')
         .html(myNumCharacteristics)
-        .wrap(progress);
 
     var histogram = $('<span>')
         .addClass('h-amount right')
-        .wrap(totals);
+        .append(totals)
+        .append(progress);
 
-    this.element = $('<span>')
+    var subject = $('<span>')
         .addClass('h-subject left')
+        .html(name)
+
+    this.element = $('<div>')
+        .addClass('clear')
+        .append(subject)
         .append(histogram);
 }
 CharacteristicStandard.prototype = new Characteristic();
 CharacteristicStandard.prototype.constructor = CharacteristicStandard;
 
 
-var CharacteristicMultiSelect = function (subject, group, myNumCharacteristics, allNumCharacteristics){
+var CharacteristicMultiSelect = function (name, group, myNumCharacteristics, allNumCharacteristics){
 
     //Call Parent
-    CharacteristicStandard.call(this, subject, myNumCharacteristics, allNumCharacteristics)
+    CharacteristicStandard.call(this, name, myNumCharacteristics, allNumCharacteristics);
     
     var label = $('<label>')
-            .attr('for', subject)
-            .wrap(CharacteristicStandard.prototype.getElement());
+            .attr('for', name)
+            .append(this.getElement());
 
     var input = $('<input>')
-            .attr('id', subject)
+            .attr('id', name)
             .attr('type', 'checkbox')
             .attr('name', group)
-            .attr('value', subject)
+            .attr('value', name)
             .attr('checked', true); //default have them all checked
 
     this.element = $('<div>')
@@ -170,7 +207,7 @@ CharacteristicMultiSelect.prototype.constructor = CharacteristicMultiSelect;
 
 
 
-var CharacteristicWithDataView = function (subject){
+var CharacteristicWithDataView = function (name){
 
     var heatMapIcon = $('<i>')
             .addClass('fi-paint-bucket');
@@ -187,11 +224,14 @@ var CharacteristicWithDataView = function (subject){
             .append(chartIcon);
 
     var subject = $('<span>')
-            .addClass('h-subject left');
+            .addClass('h-subject left')
+            .html(name);
 
-    this.element = subject
-                .after(btnHeatMap)
-                .after(btnCharts);
+    this.element = $('<div>')
+        .addClass('clear')
+        .append(subject)
+        .append(btnCharts)
+        .append(btnHeatMap);
 
 }
 
@@ -201,21 +241,19 @@ CharacteristicWithDataView.prototype.constructor = CharacteristicWithDataView;
 
 $(document).ready(function(){
 
+/*
 var States = new HistogramComposite('States', 'states');
 var NewYork = new CharacteristicStandard('New York', 3, 63);
 
 var Counties = new HistogramComposite('Counties', 'Counties');
-Counties.setParent(States); //append all state counties with header dividing parent?
 
 var NewYorkCounties = new HistogramComposite('NewYork', 'ny');
-NewYorkCounties.setParent(Counties);
 
 var Albany = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
 var Allegany = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
 var Bronx = new CharacteristicMultiSelect('Albany', 'ny', 6, 6);
 
 var Characteristics = new HistogramComposite('Characteristics', 'data');
-Characteristics.setParent(Counties);
 
 var Population = new CharacteristicWithDataView('Population');
 var Housing = new CharacteristicWithDataView('Housing');
@@ -224,33 +262,33 @@ var Health = new CharacteristicWithDataView('Health');
 var Educational = new CharacteristicWithDataView('Educational');
 var RetailTrade = new CharacteristicWithDataView('RetailTrade');
 
+*/
+
+// Make sure to add the top container to the body, 
+// otherwise it'll never show up.
+
+
+/*
+States.getContainer().appendTo('#histogram');
+
+States.add(NewYork);
+States.contains(Counties);
+
+
+Counties.add(NewYorkCounties);
+Counties.contains(Characteristics);
+
+NewYorkCounties.add(Albany);
+NewYorkCounties.add(Allegany);
+NewYorkCounties.add(Bronx);
+
 Characteristics.add(Population);
 Characteristics.add(Housing);
 Characteristics.add(Information);
 Characteristics.add(Health);
 Characteristics.add(Educational);
 Characteristics.add(RetailTrade);
-
-Counties.add(Albany);
-Counties.add(Allegany);
-Counties.add(Bronx);
-
-Counties.contains(Characteristics);
-States.contains(Counties);
-States.add(NewYork);
-NewYorkCounties.add(Albany);
-NewYorkCounties.add(Allegany);
-NewYorkCounties.add(Bronx);
-
-// Make sure to add the top container to the body, 
-// otherwise it'll never show up.
-/*
-States.getElement().appendTo('#histogram ul');
-Counties.getElement().appendTo('#histogram ul');
-Characteristics.getElement().appendTo('#histogram ul');
 States.show();
 */
-});
-
 
 });
