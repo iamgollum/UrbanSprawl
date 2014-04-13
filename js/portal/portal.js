@@ -182,7 +182,11 @@ var nycounties = {
 
     this.countyInfoWindow = new google.maps.InfoWindow();
     this.currentFeature_or_Features = null;
+
     this.histogram = $('#histogram');
+    this.pointCompositeContainer = null;
+    this.pointParentElement = null;
+    this.histogram.empty();
 
 	/* Bind theme strategies with map */
 	for (key in this.styles){this.styles[key].bindTo('map', this);}
@@ -257,35 +261,42 @@ var nycounties = {
 							//.setStyle({"fillOpacity: 1"});
 
 
-						    var marker = new google.maps.Marker({
+						    var marker = new google.maps.Marker({ //markers for this dataset are county level
+						    	id: i,
 						        position: center,
 						        map: themap,
-						        title: countyname + " " + county,
-						        root: state, 
-						        parent: statename,
-						        kind: county,
-						        kindTotal: featureLength,
-						        name: countyname,
 								icon: 'img/small_red.png',
 								selected: false,
-								id: i,
-								visible: true
+								visible: true,
+						        title: countyname + " " + county, //ie. Albany County
+						        root: state,                      //ie. State
+						        parent: statename,                //ie. NY
+						        kind: county,                     //ie. County
+						        kindTotal: featureLength,         //ie. 62
+						        name: countyname,                 //ie. Albany
+								kindDomElement: new CharacteristicMultiSelect(countyname.capitalize(), countyname, 6, 6)
 						    });
 
 						     //process multiple info windows
 						    (function(marker, i, portal) {
 						        // add click event
 						        google.maps.event.addListener(marker, 'click', function(event) {
-						        	marker.setIcon('img/small_yellow.png');
 						        	if(!marker.selected){
 						        		portal.markersNumSelected+=1;
 						        		marker.selected = true;
+						        		marker.setIcon('img/small_yellow.png');
+										portal.pointCompositeContainer.add(marker.kindDomElement);
+						        	} else {
+						        		portal.markersNumSelected-=1;
+						        		marker.selected = false;
+						        		marker.setIcon('img/small_red.png');
+						        		portal.pointCompositeContainer.remove(marker.kindDomElement);
 						        	}
+						        	portal.pointParentElement.setMeter(portal.markersNumSelected);
 								    portal.infoBox.html("Selected: " + portal.markersNumSelected);
 						        });
+						       portal.markers[marker.name] = marker;
 						    })(marker, i, portal);
-
-						    portal.markers[marker.name] = marker;
 		  
 						}
 					}
@@ -294,7 +305,6 @@ var nycounties = {
 		}
 	
 	//portal.markers.sort(compareMarkers);
-		
 	}
 
 	var enableBoxSelection_ = function(){
@@ -373,6 +383,7 @@ var nycounties = {
 					        	if(!current_marker.selected){
 					        		markersNumSelected+=1;
 					        		current_marker.selected = true;
+					        		portal.pointCompositeContainer.add(current_marker.kindDomElement);
 					        	}
 
 							} else {
@@ -387,6 +398,7 @@ var nycounties = {
 		        }
 		        portal.gribBoundingBox = null;
 		        portal.selecting = false;
+		        portal.pointParentElement.setMeter(markersNumSelected);
 				portal.infoBox.html("Selected: " + markersNumSelected);
 		        portal.markersNumSelected = markersNumSelected;
 		        $("#box-select").css("color","#FFFFFF");
@@ -395,8 +407,6 @@ var nycounties = {
 /*		    themap.setOptions({
 		        draggable: false
 		    });*/
-
-		    portal.updateHistogram();
 		});
 
 	}
@@ -453,6 +463,56 @@ var nycounties = {
 			});
 		})(searchBox);
 	}
+
+	var initializeHistogram_ = function(){
+	/* 
+	   THIS IS A HARD CODE FOR THE HISTOGRAM 
+	   ONLY DYNAMIC COMPONENT ARE THE COUNTIES
+
+	   IF PORTAL HAD ACCESS TO MORE DATA THEN THIS FUNCTION CAN BE MORE DYNAMIC
+	*/
+	var States = null;
+	var Counties = null;
+	var NYCounties = null;
+	//Normally this would be generated from the union for characteristics from all points and fill an array
+	var data = ['Population', 'Housing', 'Information', 'Health', 'Educational', 'RetailTrade']
+	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
+
+
+	var setRootView = function(){
+		m = portal.markers['Albany']; //hard code
+		States = new HistogramComposite(m.root.capitalize(), m.root);
+		Counties = new HistogramComposite(m.kind.capitalize(), m.kind);
+		NYCounties = new HistogramComposite(m.parent.toUpperCase(), m.parent);
+		
+		//Essential for point selection
+		portal.pointCompositeContainer = NYCounties;
+
+		var NewYork = new CharacteristicStandard(m.parent.toUpperCase(), 
+												0, 
+												m.kindTotal);
+		portal.pointParentElement = NewYork;
+		States.getContainer().appendTo('#histogram');
+		States.add(NewYork);
+		States.contains(Counties);
+		Counties.add(NYCounties)
+		/* Not driven by data*/
+	}
+
+	var setCharacteristicView = function(){
+		var Characteristics = new HistogramComposite('Characteristic', 'data');
+		for (var title = 0; title < data.length; title++) {
+			var ch = new CharacteristicWithDataView(data[title]);
+			Characteristics.add(ch);
+		}
+		Counties.contains(Characteristics);
+	}
+
+	setRootView();
+	setCharacteristicView();	
+	States.show();
+
+}
 
 	// ************************************************************************ 
 	// PRIVILEGED METHODS 
@@ -522,7 +582,7 @@ var nycounties = {
 
 	this.setInfoWindow = function(feature) {
 		var infowindow = portal.countyInfoWindow;
-		google.maps.event.addListener(feature, "click", function(event) {
+		google.maps.event.addListener(feature, "hover", function(event) {
 			var content = "<div id='infoBox'><strong>";
 			content += this.geojsonProperties['name'] + " " + this.geojsonProperties['kind'];
 			/*
@@ -563,7 +623,31 @@ var nycounties = {
 		}
 	}
 
+	this.showGeoJSON = function(){
+		infowindow = portal.countyInfoWindow;
+		currentFeature_or_Features = portal.currentFeature_or_Features;
+		if (!currentFeature_or_Features)
+			return;
 
+		featureLength = currentFeature_or_Features.length;
+		if (featureLength){
+			for (var i = 0; i < featureLength; i++){
+				if(currentFeature_or_Features[i].length){
+					for(var j = 0; j < currentFeature_or_Features[i].length; j++){
+						currentFeature_or_Features[i][j].setMap(this.get('map'));
+					}
+				}
+				else{
+					currentFeature_or_Features[i].setMap(this.get('map'));
+				}
+			}
+		}else{
+			currentFeature_or_Features.setMap(this.get('map'));
+		}
+		if (infowindow.getMap()){
+			infowindow.open();
+		}
+	}
 
  	// ************************************************************************ 
 	// EXECUTE ALL PORTAL DEFAULT COMPONENTS, LAYERS, DATA, AND EVENTS
@@ -575,6 +659,7 @@ var nycounties = {
 	
 	/* Data */
 	loadNewYorkData_();
+	initializeHistogram_();
 
 	/* Events */
 	enableBoxSelection_();
@@ -590,29 +675,33 @@ UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 UrbanSprawlPortal.prototype.invertSelection = function(){
 
 	for (var key in this.markers) {
-		if(this.markers[key].selected){
-			this.markers[key].setIcon('img/small_red.png');
-			this.markers[key].selected = false;
+		var marker = this.markers[key];
+		if(marker.selected){
+			marker.setIcon('img/small_red.png');
+			marker.selected = false;
+			this.pointCompositeContainer.remove(marker.kindDomElement);
 		} else{
-			this.markers[key].setIcon('img/small_yellow.png');
-			this.markers[key].selected = true;
+			marker.setIcon('img/small_yellow.png');
+			marker.selected = true;
+			this.pointCompositeContainer.add(marker.kindDomElement);
 
 		}
 	}
 	this.markersNumSelected = (Object.keys(this.markers).length - this.markersNumSelected);
+	this.pointParentElement.setMeter(this.markersNumSelected);
 	this.infoBox.html("Selected: " + this.markersNumSelected);
-	this.updateHistogram();
-
 }
 
 UrbanSprawlPortal.prototype.clearSelection = function(){
 	for (var key in this.markers) {
-			this.markers[key].setIcon('img/small_red.png');
-			this.markers[key].selected = false;
+		    var marker = this.markers[key];
+			marker.setIcon('img/small_red.png');
+			marker.selected = false;
+			this.pointCompositeContainer.remove(marker.kindDomElement);
 	}
 	this.markersNumSelected = 0;
+	this.pointParentElement.setMeter(this.markersNumSelected);
 	this.infoBox.html("Selection Cleared!");
-	this.histogram.empty();
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
@@ -627,53 +716,40 @@ UrbanSprawlPortal.prototype.toggleCluster = function(){
     this.cluster_on = true;
   } 
   else {
+  	this.markerCluster.setMap(null);
+  	/*
   	this.markerCluster.clearMarkers();
   	this.markerCluster = null;
     for (var i = 0, marker; marker = this.markers[i]; i++) {
       marker.setMap(this.get('map'));
-    }
+      marker.setVisible(true);
+    }*/
     this.cluster_on = false;
+    
   }
 
 }
 
-UrbanSprawlPortal.prototype.toggleOverlay = function(index){
+UrbanSprawlPortal.prototype.toggleOverlay = function(index, on){
+	if (index == "counties"){
+		if(!on){
+			this.clearGeoJSON();
+		} else{
+			this.showGeoJSON();
+		}
+		return;
+	}
 	this.overlays[index].setMap(this.overlays[index].getMap() ? null : this.get('map'));
 }
 
 UrbanSprawlPortal.prototype.toggleMarkers = function(){
-    for (var i = 0, marker; marker = this.markers[i]; i++) {
+    for (var key in this.markers) {
+     marker = this.markers[key];
       marker.setMap((this.markers_on) ? null : this.get('map'));
     }
     this.markers_on = (this.markers_on) ? false : true;
 }
 
-
-UrbanSprawlPortal.prototype.loadDistanceWidget = function(){
-
-
-/* NEED TO COMPLETE THIS AND HOOK IT IN */
-
-  distanceWidget = new DistanceWidget({
-    map: map,
-    distance: 50, // Starting distance in km.
-    maxDistance: 2500, // Twitter has a max distance of 2500km.
-    color: '#000000',
-    activeColor: '#5599bb',
-    sizerIcon: 'img/resize-off.png',
-    activeSizerIcon: 'img/resize.png'
-  });
-
-  google.maps.event.addListener(distanceWidget, 'distance_changed', updateDistance);
-
-  google.maps.event.addListener(distanceWidget, 'position_changed', updatePosition);
-
-  map.fitBounds(distanceWidget.get('bounds'));
-
-  updateDistance();
-  updatePosition();
-  addActions();
-}
 
 function dynamicSortMultiple() {
     /*
@@ -699,68 +775,6 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-UrbanSprawlPortal.prototype.updateHistogram = function(){
-
-	/*Only add parent once and type once*/
-	this.histogram.empty();
-	var States = null;
-	var Counties = null;
-	var NYCounties = null;
-	var specificCounty = null;
-	var firstSelected = true;
-	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
-
-	for (var key in this.markers) {
-		var m = this.markers[key];
-
-
-		if(m.selected){
-
-			if(firstSelected){  //ie. normally this would start a new feature collection
-				           //but we only have a new york county feature collection, so "hard code"
-				States = new HistogramComposite(m.root.capitalize(), m.root);
-				Counties = new HistogramComposite(m.kind.capitalize(), m.kind);
-				NYCounties = new HistogramComposite(m.parent.toUpperCase(), m.parent);
-
-				var NewYork = new CharacteristicStandard(m.parent.toUpperCase(), 
-														this.markersNumSelected, 
-														m.kindTotal);
-
-				States.getContainer().appendTo('#histogram');
-				States.add(NewYork);
-				States.contains(Counties);
-				Counties.add(NYCounties);
-
-				/* Not driven by data*/
-				var Characteristics = new HistogramComposite('Characteristic', 'data');
-				Counties.contains(Characteristics);
-
-				var Population = new CharacteristicWithDataView('Population');
-				var Housing = new CharacteristicWithDataView('Housing');
-				var Information = new CharacteristicWithDataView('Information');
-				var Health = new CharacteristicWithDataView('Health');
-				var Educational = new CharacteristicWithDataView('Educational');
-				var RetailTrade = new CharacteristicWithDataView('RetailTrade');
-
-
-				Characteristics.add(Population);
-				Characteristics.add(Housing);
-				Characteristics.add(Information);
-				Characteristics.add(Health);
-				Characteristics.add(Educational);
-				Characteristics.add(RetailTrade);
-				/* End not driven by data */
-				firstSelected = false;
-			}
-
-			specificCounty = new CharacteristicMultiSelect(m.name.capitalize(), m.name, 6, 6);
-			NYCounties.add(specificCounty);
-		} 
-	}
-	if(States){ States.show(); }
-
-}
-
 
 UrbanSprawlPortal.prototype.newHeatMap = function(){
 
@@ -776,7 +790,7 @@ UrbanSprawlPortal.prototype.newHeatMap = function(){
 		if (county in populationData){
 			var weightedLoc = {
 			  location: marker.getPosition(),
-			  weight: (populationData[county]/totalPopulation)
+			  weight: populationData[county]
 			};
 			heatmapData.push(weightedLoc); 
 	    }	        
@@ -791,6 +805,10 @@ UrbanSprawlPortal.prototype.newHeatMap = function(){
 }
 
 UrbanSprawlPortal.prototype.loadDashboard = function(){
+
+	if(this.markersNumSelected < 1){
+		return;
+	}
 
 	var datatable = new google.visualization.DataTable();
 	datatable.addColumn('string', 'Year'); 
@@ -871,9 +889,31 @@ UrbanSprawlPortal.prototype.loadDashboard = function(){
 
 
 
+var loadDistanceWidget = function(){
+/* NEED TO COMPLETE THIS AND HOOK IT IN */
 
+  distanceWidget = new DistanceWidget({
+    map: map,
+    distance: 50, // Starting distance in km.
+    maxDistance: 2500, // Twitter has a max distance of 2500km.
+    color: '#000000',
+    activeColor: '#5599bb',
+    sizerIcon: 'img/resize-off.png',
+    activeSizerIcon: 'img/resize.png'
+  });
 
-UrbanSprawlPortal.prototype.getJsonFromUrl = function(url){
+  google.maps.event.addListener(distanceWidget, 'distance_changed', updateDistance);
+
+  google.maps.event.addListener(distanceWidget, 'position_changed', updatePosition);
+
+  map.fitBounds(distanceWidget.get('bounds'));
+
+  updateDistance();
+  updatePosition();
+  addActions();
+}
+
+var getJsonFromUrl = function(url){
     var json_data = [];
 	var jqxhr = $.getJSON(url, function(json) {
 	  console.log( "success" );

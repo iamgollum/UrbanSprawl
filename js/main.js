@@ -32,14 +32,14 @@ function main(){
 	$('input[type=radio][name=theme]').change(function() {
 	    Portal.changeMapStyle($(this).attr('id'));
 	});
-	$('input[type=checkbox][name=overlay]').click(function() {
-		var selectedCheckboxValue = $(this + ':checked').val() || false;
-  		Portal.toggleOverlay($(this).attr('id'));
+	$('input[type=checkbox][name=overlay]').change(function() {
+		var selectedCheckboxValue = $(this).parent().find(':checked').val() || false;
+  		Portal.toggleOverlay($(this).attr('id'), selectedCheckboxValue);
 	});
-	$("input[type=checkbox][name=cluster]").click(function(){
+	$("input[type=checkbox][name=cluster]").change(function(){
 	    Portal.toggleCluster();
 	});
-	$('input[type=checkbox][name=marker]').click(function(){
+	$('input[type=checkbox][name=marker]').change(function(){
 	    Portal.toggleMarkers();
 	});
 
@@ -63,6 +63,11 @@ function main(){
 	  	Portal.loadDashboard();
 	  	$("#graph-overlay").slideDown("slow");
 	  }
+	});
+
+	$("#histogram").delegate("input", "click", function( event ) {
+		var county = $(this).attr("id");
+		//alert(county);
 	});
 
 }

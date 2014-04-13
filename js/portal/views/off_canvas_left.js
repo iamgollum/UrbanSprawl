@@ -14,6 +14,7 @@ var HistogramComposite = function (heading,  id) {
  
 HistogramComposite.prototype = {
     add: function (child) {
+        this.children.push(child);
         child.setParent(this, isLevelUnder=true);
         if (child.constructor == this.constructor){
             this.element.append(child.getContainer()); //container under container
@@ -32,7 +33,8 @@ HistogramComposite.prototype = {
         for (var node, i = 0; node = this.getChild(i); i++) {
             if (node == child) {
                 this.children.splice(i, 1);
-                this.element.detach(child.getElement());
+                //this.element.detach(child.getElement());
+                child.getElement().detach();
                 return true;
             }
              
@@ -50,6 +52,7 @@ HistogramComposite.prototype = {
 
     setParent: function(p, isLevelUnder){
         this.parent = p;
+
         if(isLevelUnder){
             var level = (this.parent.level + 1);
             var header = '#' + this.id.toString() + ' h2';
@@ -58,6 +61,7 @@ HistogramComposite.prototype = {
             this.element.find('h2').remove();
             this.element.prepend($('<h' + level + '>' + this.heading + '</h' + level + '>'));
         }
+        
         this.level = this.parent.level;
     },
     getParent: function(){
@@ -134,22 +138,11 @@ Characteristic.prototype = {
     }
 }
 
-var CharacteristicStandard = function (name, myNumCharacteristics, allNumCharacteristics){
+var CharacteristicStandard = function (name, amount, total){
 
-    var characteristicPercentage = Math.round(((myNumCharacteristics/allNumCharacteristics)*100));
+    var characteristicPercentage = Math.round(((amount/total)*100));
     characteristicPercentage = (characteristicPercentage).toString() + "%" 
 
-    /*
-    <div class="clear">
-      <span class="h-subject left">New York</span>
-      <span class="right h-amount">
-        <span class="h-totals">3</span>
-        <span class="h-progress">
-            <span class="meter" style="width: 5%;"></span>
-        </span>
-      </span>
-    </div>
-    */
     var meter = $('<span>')
             .addClass('meter')
             .css('width', characteristicPercentage);
@@ -160,7 +153,7 @@ var CharacteristicStandard = function (name, myNumCharacteristics, allNumCharact
     
     var totals = $('<span>')
         .addClass('h-totals')
-        .html(myNumCharacteristics)
+        .html(amount)
 
     var histogram = $('<span>')
         .addClass('h-amount right')
@@ -175,9 +168,20 @@ var CharacteristicStandard = function (name, myNumCharacteristics, allNumCharact
         .addClass('clear')
         .append(subject)
         .append(histogram);
+
+    var totalPossible = total;
+
+    this.setMeter = function(amount){
+        var p = Math.round(((amount/totalPossible)*100));
+        p = (p).toString() + "%";
+        this.element.find('.meter').css('width', p);
+        this.element.find('.h-totals').html(amount);
+    }
 }
 CharacteristicStandard.prototype = new Characteristic();
 CharacteristicStandard.prototype.constructor = CharacteristicStandard;
+
+
 
 
 var CharacteristicMultiSelect = function (name, group, myNumCharacteristics, allNumCharacteristics){
@@ -243,6 +247,9 @@ CharacteristicWithDataView.prototype.constructor = CharacteristicWithDataView;
 $(document).ready(function(){
 
 /*
+// TESTING COMPOSITE FRAMEWORK
+// ------------------------------
+
 var States = new HistogramComposite('States', 'states');
 var NewYork = new CharacteristicStandard('New York', 3, 63);
 
