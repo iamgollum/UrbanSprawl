@@ -1,3 +1,4 @@
+
 function main(){
 
 	var mapOptions = {
@@ -57,10 +58,12 @@ function main(){
 	});
 
 	$("#histogram").delegate("button", "click", function( event ) {
+	  var dataset = $(this).siblings('.h-subject').html();
+
 	  if($(this).find('i').hasClass("fi-paint-bucket")){
-	  	Portal.newHeatMap();
+	  	Portal.newHeatMap(dataset);
 	  } else{
-	  	Portal.loadDashboard();
+	  	Portal.loadDashboard(dataset);
 	  	$("#graph-overlay").slideDown("slow");
 	  }
 	});

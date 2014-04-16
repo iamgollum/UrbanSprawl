@@ -1,3 +1,5 @@
+:focus {outline:none;} ::-moz-focus-inner {border:0;}
+
 html, body { 
 	height: 100% 
 }
@@ -66,10 +68,10 @@ width: 1400px;
 }
 
 #info{
-	bottom: 3.2rem;
+	bottom: .20rem;
 	right: 2rem;
 	z-index: 1;
-	position: fixed;
+	position: absolute;
 	background-color: #999;
 	color: #333;
 	width: 17rem;
@@ -80,10 +82,10 @@ width: 1400px;
 	font-weight: bold;
 }
 #map-toggle{
-	bottom: 3.2rem;
+	bottom: .20rem;
 	right: 0.50rem;
 	z-index: 3;
-	position: fixed;
+	position: absolute;
 	font-size: 36px;
 	height: 2.8125rem;
 	line-height: 2.8125rem;
