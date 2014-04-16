@@ -17,14 +17,20 @@
 
 	var portal = this; //put this object into scope for private members
 
-	var countyStyle = {
-		strokeColor: "#444",
-		strokeOpacity: 1,
-		strokeWeight: 2,
-		fillColor: "#FFFFFF",
-		fillOpacity: 0		
-	}
+    var countyStyle = [];
+	for (var i = 0; i < nycounties.features.length; i++){
 
+        var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+		var style = {
+			strokeColor: "#444",
+			strokeOpacity: 1,
+			strokeWeight: 2,
+			fillColor: color,
+			fillOpacity: 1		
+		};
+		console.log(color);
+		countyStyle.push(style);
+	}
 
 	// ************************************************************************ 
 	// PUBLIC PROPERTIES -- ANYONE MAY READ/WRITE 
@@ -45,6 +51,7 @@
 
     this.countyInfoWindow = new google.maps.InfoWindow();
     this.currentFeature_or_Features = null;
+    this.geoJSON_On = true;
 
     this.histogram = $('#histogram');
     this.pointCompositeContainer = null;
@@ -189,6 +196,7 @@
 		$(window).keydown(function (evt) {
 		    if (evt.which === 16) { // shift
 		        portal.shiftPressed = true;
+		        portal.clearGeoJSON();
 		    }
 		}).keyup(function (evt) {
 		    if (evt.which === 16) { // shift
@@ -200,6 +208,7 @@
 		$("#box-select").click(function(){
 		    portal.selecting = true;
 		    $(this).css("color","#FFFFFF");
+		    if(!this.geoJSON_On) {portal.clearGeoJSON();}
 		});
 
 		 google.maps.event.addListener(themap, 'mousemove', function (e) {
@@ -277,6 +286,7 @@
 		    themap.setOptions({
 		        draggable: true
 		    });
+		    if(portal.geoJSON_On) {portal.showGeoJSON();}
 		});
 
 	}
@@ -571,7 +581,10 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 	}
 	this.markersNumSelected = 0;
 	this.pointParentElement.setMeter(this.markersNumSelected);
-	this.infoBox.html("Selection Cleared!");
+	var e = (this.heatmap) ? this.heatmap.heatmap.clear() : null;
+	$('#slider').empty();
+	$('#chart').empty();
+	this.infoBox.html("Portal Cleared!");
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
@@ -604,8 +617,10 @@ UrbanSprawlPortal.prototype.toggleOverlay = function(index, on){
 	if (index == "counties"){
 		if(!on){
 			this.clearGeoJSON();
+			this.geoJSON_On = false;
 		} else{
 			this.showGeoJSON();
+			this.geoJSON_On = true;
 		}
 		return;
 	}
@@ -667,8 +682,11 @@ UrbanSprawlPortal.prototype.newHeatMap = function(dataset){
 	if(this.markersNumSelected < 1){
 
 		var e = (this.heatmap) ? this.heatmap.heatmap.clear() : null;
+		$('#portal-title').html('');
 		return;
 	}
+	$("#graph-overlay").slideUp("slow");
+	$('#portal-title').html("Analyzing " + dataset + " Heatmap");
 
 	var self = this;
 	var heatmapData = [];
@@ -676,6 +694,7 @@ UrbanSprawlPortal.prototype.newHeatMap = function(dataset){
 	var totals = [];
 
 	this.applyDataSet(dataset);
+
 	for (key in this.currentDataSet) {
 
 		var amount = parseInt(this.currentDataSet[key].replace(/[^\d\.\-\ ]/g, ''));
@@ -701,18 +720,18 @@ UrbanSprawlPortal.prototype.newHeatMap = function(dataset){
     });
     // here is our dataset
     // important: a datapoint now contains lat, lng and count property!
-    var testData={
+    var weightedData={
             max: max,
             data: heatmapData
     };
     // now we can set the data
     google.maps.event.addListenerOnce(this.get('map'), "idle", function(){
         // this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
-        self.heatmap.setDataSet(testData);
+        self.heatmap.setDataSet(weightedData);
     });
 
-    this.map.fitBounds(bounds);
-    this.map.setZoom(8);
+/*    this.map.fitBounds(bounds);*/
+    this.map.setCenter(new google.maps.LatLng(42.792025, -75.435944));
 }
 
 UrbanSprawlPortal.prototype.loadDashboard = function(dataset){
@@ -724,8 +743,12 @@ UrbanSprawlPortal.prototype.loadDashboard = function(dataset){
 	if(this.markersNumSelected < 1){
 		$('#slider').empty();
 		$('#chart').empty();
+		$('#portal-title').html('');
 		return;
 	}
+
+	$('#portal-title').html("Analyzing " + dataset + " Charts");
+	$("#graph-overlay").slideDown("slow");
 
 	var datatable = new google.visualization.DataTable();
 	datatable.addColumn('string', 'Year'); 

@@ -70,6 +70,12 @@ position: relative;
 width: 1400px;
 }
 
+#portal-title{
+	font-size: 1.5rem;
+	width: 100%;
+	color: red;
+}
+
 section.left-small, section.right-small, section.bottom-small{
 	z-index: 9999;
 	border-right: none;

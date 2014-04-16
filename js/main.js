@@ -33,13 +33,16 @@ function main(){
 	$('input[type=radio][name=theme]').change(function() {
 	    Portal.changeMapStyle($(this).attr('id'));
 	});
+	
 	$('input[type=checkbox][name=overlay]').change(function() {
 		var selectedCheckboxValue = $(this).parent().find(':checked').val() || false;
   		Portal.toggleOverlay($(this).attr('id'), selectedCheckboxValue);
 	});
+
 	$("input[type=checkbox][name=cluster]").change(function(){
 	    Portal.toggleCluster();
 	});
+
 	$('input[type=checkbox][name=marker]').change(function(){
 	    Portal.toggleMarkers();
 	});
@@ -55,6 +58,7 @@ function main(){
 
 	$("#clear-select").click(function(){
 	    Portal.clearSelection();
+	    $('#portal-title').html('');
 	});
 
 	$("#histogram").delegate("button", "click", function( event ) {
@@ -64,13 +68,11 @@ function main(){
 	  	Portal.newHeatMap(dataset);
 	  } else{
 	  	Portal.loadDashboard(dataset);
-	  	$("#graph-overlay").slideDown("slow");
 	  }
 	});
 
 	$("#histogram").delegate("input", "click", function( event ) {
 		var county = $(this).attr("id");
-		//alert(county);
 	});
 
 }

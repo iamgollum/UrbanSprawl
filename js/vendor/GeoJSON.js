@@ -1,3 +1,6 @@
+/* I modified this to accept different colorings per point -- Aaron Tobias*/
+
+
 var GeoJSON = function( geojson, options ){
 
 	var _geometryToGoogleMaps = function( geojsonGeometry, options, geojsonProperties ){
@@ -199,7 +202,10 @@ var GeoJSON = function( geojson, options ){
 			}else{
 				obj = [];
 				for (var i = 0; i < geojson.features.length; i++){
-					obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, opts, geojson.features[i].properties));
+					//itrerate through options
+					//seperate fils for each feature
+					var nopts = (opts.length == geojson.features.length) ? opts[i] : opts;
+					obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, nopts, geojson.features[i].properties));
 				}
 			}
 			break;
