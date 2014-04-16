@@ -22,14 +22,7 @@
   </head>
 
 <body>
-	<div class="off-canvas-wrap">
-	  <div class="inner-wrap">
-
-	    <nav class="tab-bar">
-	      <section class="left-small">
-	        <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
-	      </section>
-		
+	    <nav class="tab-bar">		
 		  <!-- TOP NAV BAR -->
 	      <section class="middle tab-bar-section">
 
@@ -82,211 +75,217 @@
 
 	      </section>
 
-	      <section class="right-small">
-	        <a class="right-off-canvas-toggle menu-icon" ><span></span></a>
-	      </section>
-
 	    </nav>
 
 	    <!-- Histogram Tool Bar: LEFT SIDE -->
-<aside id="histogram" class="left-off-canvas-menu">
-	      <ul class="off-canvas-list">
-	        <li>
-		        <h2>States</h2>
-		       	<div class="clear">
-			      <span class="h-subject left">New York</span>
-			      <span class="right h-amount">
-			      	<span class="h-totals">3</span>
-			      	<span class="h-progress">
-			      		<span class="meter"></span>
-			      	</span>
-			      </span>
-			    </div>
-		       	<div class="clear">
-			      <span class="h-subject left">New York</span>
-			      <span class="right h-amount">
-			      	<span class="h-totals">3</span>
-			      	<span class="h-progress">
-			      		<span class="meter"></span>
-			      	</span>
-			      </span>
-			    </div>
-	        </li>
 
-		    </li>
-	        <li>
-	        	<h2>Counties</h2>
-	        	<ul class="off-canvas-list">
-	        	<li>
-	        		<h3>New York</h3>
+	    <section class="main-section off-canvas-wrap" data-offcanvas>
+	      <div id="container" class="inner-wrap">
 
-	            <div class="checkbox">
-	       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
-		    		<label for="albany">
-				      <span class="h-subject left">Albany</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	            <div class="checkbox">
-	       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
-		    		<label for="bronx">
-				      <span class="h-subject left">Bronx</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	            <div class="checkbox">
-	       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
-		    		<label for="allegany">
-				      <span class="h-subject left">Allegany</span>
-				      <span class="right h-amount">
-				      	<span class="h-totals">6</span>
-				      	<span class="h-progress">
-				      		<span class="meter"></span>
-				      	</span>
-				      </span>
-			    	</label>     	
-	            </div>
-	            </li>
-	            </ul>
-	        </li>
-	        <li><h2>Counties &gt;&gt; Characteristics</h2>
+		      <section class="left-small">
+		        <a class="left-off-canvas-toggle" >Data View</a>
+		      </section>
 
-	        	<div class="clear">
-			      <span class="h-subject left">Population</span>
-			      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-			      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-			    </div>
-				<div class="clear">
-					<span class="h-subject left">Housing</span>
-					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-				</div>
-					<div class="clear"><span class="h-subject left">Information Tech</span>
-					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-				</div>
-				<div class="clear">				
-					<span class="h-subject left">Health</span>
-					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-				</div>
-				<div class="clear">
-					<span class="h-subject left">Educational Serv</span>
-					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-				</div>
-				<div class="clear">
-					<span class="h-subject left">Retail Trade</span>
-					<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
-					<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
-				</div>
-	        </li>
+				<aside id="histogram" class="left-off-canvas-menu">
+					      <ul class="off-canvas-list">
+					        <li>
+						        <h2>States</h2>
+						       	<div class="clear">
+							      <span class="h-subject left">New York</span>
+							      <span class="right h-amount">
+							      	<span class="h-totals">3</span>
+							      	<span class="h-progress">
+							      		<span class="meter"></span>
+							      	</span>
+							      </span>
+							    </div>
+						       	<div class="clear">
+							      <span class="h-subject left">New York</span>
+							      <span class="right h-amount">
+							      	<span class="h-totals">3</span>
+							      	<span class="h-progress">
+							      		<span class="meter"></span>
+							      	</span>
+							      </span>
+							    </div>
+					        </li>
 
-	    </aside>
+						    </li>
+					        <li>
+					        	<h2>Counties</h2>
+					        	<ul class="off-canvas-list">
+					        	<li>
+					        		<h3>New York</h3>
 
-		<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
-	    <aside class="right-off-canvas-menu">
-	      <ul class="off-canvas-list">
-			<li><h2>Themes</h2></li>
-	        <li>
-				<div class="radio">  
-				    <input id="urban" type="radio" name="theme" value="urban">  
-				    <label for="urban">Urban</label>  
-				</div>  
-	        </li>
-	        <li>
-				<div class="radio">  
-				    <input id="transit" type="radio" name="theme" value="transit">  
-				    <label for="transit">Transit</label>  
-				</div>  
-	        </li>
-	        <li>
-				<div class="radio">  
-				    <input id="water" type="radio" name="theme" value="water" checked>  
-				    <label for="water">Water</label>  
-				</div>  
-	        </li>
-	        <li><h2>Overlays</h2></li>
-	        <li>
-		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
-					<input id="bikeroute" type="checkbox" name="overlay">
-					<span>
-						Bike Path
-						<span>Off</span>
-						<span>On</span>
-					</span>
-					<a></a>
-				</label>
-	        </li>
-	        <li>
-		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
-					<input id="transit" type="checkbox" name="overlay">
-					<span>
-						Transit
-						<span>Off</span>
-						<span>On</span>
-					</span>
-					<a></a>
-				</label>
-	        </li>
-	        <li>
-		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
-					<input id="counties" type="checkbox" name="overlay" checked="checked">
-					<span>
-						Counties
-						<span>Off</span>
-						<span>On</span>
-					</span>
-					<a></a>
-				</label>
-	        </li>
-	        <li><h2>Data Points</h2></li>
-	        <li>
-		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
-					<input type="checkbox" name="marker">
-					<span>
-						Markers
-						<span>Show</span>
-						<span>Hide</span>
-					</span>
-					<a></a>
-				</label>
-	        </li>
-	        <li>
-		    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
-					<input type="checkbox" name="cluster">
-					<span>
-						Cluster
-						<span>No</span>
-						<span>Yes</span>
-					</span>
-					<a></a>
-				</label>
-	        </li>
-	      </ul>
-	    </aside>
+					            <div class="checkbox">
+					       	        <input id="albany" type="checkbox" name="counties" value="albany" checked>  
+						    		<label for="albany">
+								      <span class="h-subject left">Albany</span>
+								      <span class="right h-amount">
+								      	<span class="h-totals">6</span>
+								      	<span class="h-progress">
+								      		<span class="meter"></span>
+								      	</span>
+								      </span>
+							    	</label>     	
+					            </div>
+					            <div class="checkbox">
+					       	        <input id="bronx" type="checkbox" name="counties" value="bronx" checked>  
+						    		<label for="bronx">
+								      <span class="h-subject left">Bronx</span>
+								      <span class="right h-amount">
+								      	<span class="h-totals">6</span>
+								      	<span class="h-progress">
+								      		<span class="meter"></span>
+								      	</span>
+								      </span>
+							    	</label>     	
+					            </div>
+					            <div class="checkbox">
+					       	        <input id="allegany" type="checkbox" name="counties" value="allegany" checked>  
+						    		<label for="allegany">
+								      <span class="h-subject left">Allegany</span>
+								      <span class="right h-amount">
+								      	<span class="h-totals">6</span>
+								      	<span class="h-progress">
+								      		<span class="meter"></span>
+								      	</span>
+								      </span>
+							    	</label>     	
+					            </div>
+					            </li>
+					            </ul>
+					        </li>
+					        <li><h2>Counties &gt;&gt; Characteristics</h2>
 
+					        	<div class="clear">
+							      <span class="h-subject left">Population</span>
+							      <button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+							      <button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+							    </div>
+								<div class="clear">
+									<span class="h-subject left">Housing</span>
+									<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+									<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+								</div>
+									<div class="clear"><span class="h-subject left">Information Tech</span>
+									<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+									<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+								</div>
+								<div class="clear">				
+									<span class="h-subject left">Health</span>
+									<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+									<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+								</div>
+								<div class="clear">
+									<span class="h-subject left">Educational Serv</span>
+									<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+									<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+								</div>
+								<div class="clear">
+									<span class="h-subject left">Retail Trade</span>
+									<button class="right tiny round warning btn-visualize"><i class="fi-map"></i></button>
+									<button class="right tiny round success btn-visualize"><i class="fi-paint-bucket"></i></button>
+								</div>
+					        </li>
 
-	    <section class="main-section">
-	      <div id="container">
+					    </aside>
+
 		      <div id="sprawl-map"></div>
 		      <aside id="info"></aside>
-		      <aside id="map-toggle"><a class="#"><i class="fi-map"></i></a></aside>
+		      <section id="map-toggle" class="bottom-small"><a class="#">Graph View</a></section>
 
 		      <aside id="graph-overlay" style="display: none;" class="google-visualization-controls-theme-plus">
 				<div id="slider"></div>
 				<div id="chart"></div>
 		      </aside>
+
+			  <section class="right-small">
+		        <a class="right-off-canvas-toggle" >Theme View</a>
+		      </section>
+
+				<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
+			    <aside class="right-off-canvas-menu">
+			      <ul class="off-canvas-list">
+					<li><h2>Themes</h2></li>
+			        <li>
+						<div class="radio">  
+						    <input id="urban" type="radio" name="theme" value="urban">  
+						    <label for="urban">Urban</label>  
+						</div>  
+			        </li>
+			        <li>
+						<div class="radio">  
+						    <input id="transit" type="radio" name="theme" value="transit">  
+						    <label for="transit">Transit</label>  
+						</div>  
+			        </li>
+			        <li>
+						<div class="radio">  
+						    <input id="water" type="radio" name="theme" value="water" checked>  
+						    <label for="water">Water</label>  
+						</div>  
+			        </li>
+			        <li><h2>Overlays</h2></li>
+			        <li>
+				    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+							<input id="bikeroute" type="checkbox" name="overlay">
+							<span>
+								Bike Path
+								<span>Off</span>
+								<span>On</span>
+							</span>
+							<a></a>
+						</label>
+			        </li>
+			        <li>
+				    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+							<input id="transit" type="checkbox" name="overlay">
+							<span>
+								Transit
+								<span>Off</span>
+								<span>On</span>
+							</span>
+							<a></a>
+						</label>
+			        </li>
+			        <li>
+				    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+							<input id="counties" type="checkbox" name="overlay" checked="checked">
+							<span>
+								Counties
+								<span>Off</span>
+								<span>On</span>
+							</span>
+							<a></a>
+						</label>
+			        </li>
+			        <li><h2>Data Points</h2></li>
+			        <li>
+				    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+							<input type="checkbox" name="marker">
+							<span>
+								Markers
+								<span>Show</span>
+								<span>Hide</span>
+							</span>
+							<a></a>
+						</label>
+			        </li>
+			        <li>
+				    	<label class="switch-light switch-candy switch-candy-blue" onclick="">
+							<input type="checkbox" name="cluster">
+							<span>
+								Cluster
+								<span>No</span>
+								<span>Yes</span>
+							</span>
+							<a></a>
+						</label>
+			        </li>
+			      </ul>
+			    </aside>
+
 	      </div>
 	    </section>
 

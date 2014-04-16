@@ -274,9 +274,9 @@
 		        $("#box-select").css("color","#FFFFFF");
 		    }
 
-/*		    themap.setOptions({
-		        draggable: false
-		    });*/
+		    themap.setOptions({
+		        draggable: true
+		    });
 		});
 
 	}

@@ -6,8 +6,8 @@ function main(){
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true,
 		disableDoubleClickZoom: false,
-		panControl: true,
-		draggable: false,
+		panControl: false,
+		draggable: true,
 	    mapTypeControl: true,
 	    mapTypeControlOptions: {
 	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
