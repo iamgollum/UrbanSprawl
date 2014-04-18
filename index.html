@@ -52,10 +52,7 @@
         	<a id ="clear-select" href="#" class="button default alert">Clear All</a>
         </li>  
         <li class="divider"></li>
-    </ul>
-
-    <ul>
-		<li><a id="portal-title" href="#"></a></li>
+        <li><a id="portal-title" href="#"></a></li>
     </ul>
 
     <!-- Top Bar Left Nav Elements -->
@@ -83,7 +80,7 @@
 	      <div id="container" class="inner-wrap">
 
 		      <section class="left-small">
-		        <a class="left-off-canvas-toggle" >Data View</a>
+		        <a class="left-off-canvas-toggle" >Analyze</a>
 		      </section>
 
 				<aside id="histogram" class="left-off-canvas-menu">
@@ -193,7 +190,7 @@
 
 		      <div id="sprawl-map"></div>
 		      <aside id="info"></aside>
-		      <section id="map-toggle" class="bottom-small"><a class="#">Graph View</a></section>
+		      <section id="map-toggle" class="bottom-small"><a class="#">Dashboard</a></section>
 
 		      <aside id="graph-overlay" style="display: none;" class="google-visualization-controls-theme-plus">
 				<div id="slider"></div>
@@ -201,7 +198,7 @@
 		      </aside>
 
 			  <section class="right-small">
-		        <a class="right-off-canvas-toggle" >Theme View</a>
+		        <a class="right-off-canvas-toggle" >Settings</a>
 		      </section>
 
 				<!-- Theme and Data Management Tool Bar: RIGHT SIDE -->
@@ -299,8 +296,6 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="foundations/js/foundation.min.js"></script>
-  <script type="text/javascript" src="js/heatmap/src/heatmap.js"></script>
-
 
   <!-- Vendor Initialization -->
   <script>
@@ -312,18 +307,19 @@
   <!-- Vendor Scripts requiring Google API -->
   <script type="text/javascript" src="js/vendor/markerclusterer.min.js"></script>
   <script type="text/javascript" src="js/vendor/GeoJSON.js"></script>
-  <script type="text/javascript" src="js/heatmap/src/heatmap-gmaps.js"></script>
-
 
   <!-- Support Scripts -->
+  <script type="text/javascript" src="js/data.js"></script>
+  <script type="text/javascript" src="js/utilities.js"></script>
+
+   <!--Primary Scripts -->
   <script type="text/javascript" src="js/portal/themes.js"></script>
   <script type="text/javascript" src="js/portal/themestrategy.js"></script>
   <script type="text/javascript" src="js/portal/distancewidget.js"></script>
-
-  <!--Primary Scripts -->
-  <script type="text/javascript" src="js/data.js"></script>
   <script type="text/javascript" src="js/portal/views/off_canvas_left.js"></script>
   <script type="text/javascript" src="js/portal/portal.js"></script>
+
+  <!-- Main Application Script -->
   <script type="text/javascript" src="js/main.js"></script>
 
 </body>

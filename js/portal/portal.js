@@ -17,21 +17,6 @@
 
 	var portal = this; //put this object into scope for private members
 
-    var countyStyle = [];
-	for (var i = 0; i < nycounties.features.length; i++){
-
-        var color = '#'+Math.floor(Math.random()*16777215).toString(16);
-		var style = {
-			strokeColor: "#444",
-			strokeOpacity: 1,
-			strokeWeight: 2,
-			fillColor: color,
-			fillOpacity: 1		
-		};
-		console.log(color);
-		countyStyle.push(style);
-	}
-
 	// ************************************************************************ 
 	// PUBLIC PROPERTIES -- ANYONE MAY READ/WRITE 
 	// ************************************************************************
@@ -57,6 +42,14 @@
     this.pointCompositeContainer = null;
     this.pointParentElement = null;
     this.histogram.empty();
+
+	var defaultGeoJSON_Style = {
+		strokeColor: "#444",
+		strokeOpacity: 1,
+		strokeWeight: 2,
+		fillColor: "#FFFFFF",
+		fillOpacity: 0		
+	}
  
 
 	/* Bind theme strategies with map */
@@ -67,12 +60,6 @@
 		'transit' : new google.maps.TransitLayer(),
 		'counties' : new function(){},
 	}
-
-    this.heatmap = new HeatmapOverlay(this.get('map'), {
-        "radius":20,
-        "visible":true, 
-        "opacity":60
-    });
 
  	// ************************************************************************ 
 	// PRIVATE VARIABLES FROM PUBLIC VARIABLES
@@ -107,7 +94,7 @@
 
 		// Set up county overlay by default
 		var state = nycounties.properties.kind;
-		portal.showGeoJSON_Feature(nycounties, this.countyInfoWindow, countyStyle);
+		portal.showGeoJSON_Feature(nycounties, this.countyInfoWindow, this.defaultGeoJSON_Style);
 		currentFeature_or_Features = portal.currentFeature_or_Features;
 
 		if(!currentFeature_or_Features) { alert("initialize portal.currentFeature_or_Features first"); return; }
@@ -139,7 +126,7 @@
 
 
 						    var marker = new google.maps.Marker({ //markers for this dataset are county level
-						    	id: i,
+						    	id: i,                            //ie. Needed for GeoJSON overlay switching
 						        position: center,
 						        map: themap,
 								icon: 'img/small_red.png',
@@ -424,7 +411,9 @@
 	 * @constructor
 	 */
 	this.showGeoJSON_Feature = function(geojson, infowindow, style){
+		var style = (style) ? style : defaultGeoJSON_Style;
 		portal.clearGeoJSON(infowindow);
+
 		portal.currentFeature_or_Features = new GeoJSON(geojson, style || null);
 		currentFeature_or_Features = portal.currentFeature_or_Features;
 		featureLength = currentFeature_or_Features.length;
@@ -529,6 +518,10 @@
 		}
 	}
 
+	this.resetGeoJSON_Styles = function(){
+		this.showGeoJSON_Feature(nycounties, this.infowindow, defaultGeoJSON_Style);
+	}
+
  	// ************************************************************************ 
 	// EXECUTE ALL PORTAL DEFAULT COMPONENTS, LAYERS, DATA, AND EVENTS
 	// ************************************************************************
@@ -544,6 +537,8 @@
 	/* Events */
 	enableBoxSelection_();
 	enablePlacesSearch_();
+
+	/* Tests */
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
@@ -552,6 +547,185 @@ UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 // ************************************************************************ 
 // PUBLIC METHODS -- ANYONE MAY READ/WRITE 
 // ************************************************************************
+
+UrbanSprawlPortal.prototype.applyDataSet = function(dataset){
+
+	data = window[dataset];
+	//parse RDF JSON Data
+	var header = data.head.vars; //object, subject, no predicate
+	var results = data.results.bindings;
+
+	
+	this.currentDataSet = {};
+	for (var i = 0; i < results.length; i++) {
+		//create hashtable of object : subject for fast lookup
+		var sub = results[i][header[0]].value;
+		var data = results[i][header[1]].value;
+		this.currentDataSet[sub] = data;
+	};
+}
+
+
+UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
+
+	/* Reset */
+	if(this.markersNumSelected < 1){
+		$('#portal-title').html('');
+		return;
+	}
+
+	$("#graph-overlay").slideUp("slow");
+	$('#portal-title').html("Analyzing " + dataset + " Heatmap");
+
+	var self = this;
+	var gradient = ChoroplethHughes[dataset];
+	var selectedPoints = {};
+
+	this.applyDataSet(dataset);
+
+	//Extract selected markers into hashmap
+	$("#histogram input:checked").each(function () {
+		//subjectClass == county
+		selectedPoints[$(this).attr("id")] = true;  
+    });
+
+
+
+	var normalizedWeights = function(data, arbRange){
+		var max = 0;
+		var min = 1.7976931348623157E+10308;
+		var totals = {};
+
+		for (subject in selectedPoints) {
+			var amount = parseInt(data[subject].replace(/[^\d\.\-\ ]/g, ''));
+			totals[subject] = amount;
+			max = (max < amount) ? amount : max;
+			min = (min > amount) ? amount : min;
+		}
+
+		var weightRange = max - min;
+
+		for(subject in totals){
+			var zeroToOne = ((totals[subject] - min)/weightRange); 
+			var scaled = Math.ceil(zeroToOne * (arbRange-1));
+			totals[subject] = scaled;
+		}
+		return totals;
+
+	}(self.currentDataSet, gradient.length)
+
+	var getWeightColor_ = function(normalizedWeight){
+			return {
+				strokeColor: "#444",
+				strokeOpacity: 1,
+				strokeWeight: 2,
+				fillColor: gradient[normalizedWeight],
+				fillOpacity: 1		
+			};
+	}
+
+	var choropleth = [];
+
+	//Go through marker subjects that are enabled
+	for (subject in this.currentDataSet){
+		var marker = self.markers[subject];
+		var featureID = marker.id;
+		if(subject in normalizedWeights){
+			var weight = normalizedWeights[subject];
+			choropleth[featureID] = getWeightColor_(weight);  
+		}
+    }
+    //Generate choropleth fill, all features undefined will show default fill
+    this.showGeoJSON_Feature(nycounties, this.infowindow, choropleth);
+}
+
+
+
+UrbanSprawlPortal.prototype.generateDashboard = function(dataset){
+
+	this.applyDataSet(dataset);
+
+	var self = this;
+
+	if(this.markersNumSelected < 1){
+		$('#slider').empty();
+		$('#chart').empty();
+		$('#portal-title').html('');
+		return;
+	}
+
+	$('#portal-title').html("Analyzing " + dataset + " Charts");
+	$("#graph-overlay").slideDown("slow");
+
+	var datatable = new google.visualization.DataTable();
+	datatable.addColumn('string', 'Year'); 
+	datatable.addRows(2);
+    datatable.setCell(0, 0, '2000');
+    datatable.setCell(1, 0, '2010');
+
+	$("#histogram input:checked").each(function () {
+		var subject = $(this).attr("id");
+
+		if (subject in self.currentDataSet){
+	        var colIndex = datatable.addColumn( 'number', $(this).attr("id"));
+	        var amount = parseInt(self.currentDataSet[subject].replace(/[^\d\.\-\ ]/g, ''));
+	        datatable.setCell(0, colIndex, amount);
+	        datatable.setCell(1, colIndex, Math.ceil(amount - (Math.random()*(amount/2)) )) ;
+    	}
+    });
+
+
+    /*
+function disposeShit()
+{
+    chart.visualization.clearChart();
+    control.visualization.dispose();
+   dashboard.dispose();
+}
+
+    */
+
+  // Define a category picker for the 'Metric' column.
+  var categoryPicker = new google.visualization.ControlWrapper({
+    'controlType': 'CategoryFilter',
+    'containerId': 'slider',
+    'options': {
+      'filterColumnLabel': 'Year',
+      'ui': {
+        'allowTyping': false,
+        'allowMultiple': true,
+        'selectedValuesLayout': 'belowStacked',
+      }
+    },
+    // Define an initial state, i.e. a set of metrics to be initially selected.
+    'state': {'selectedValues': ['2000']}
+  });
+
+  // Define a column chart
+  	var columnchart = new google.visualization.ChartWrapper({
+	    'chartType': 'ColumnChart',
+	    'containerId': 'chart',
+	    'options': {
+	      'title': dataset + ' Trends',
+	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
+	      'width': 1400,
+	      'height': 600,
+	      'chartArea': {
+/*	      	'width' : '100%',
+	      	'height' : 600,*/
+	      },
+	      'bar': {groupWidth: "60%"},
+	    }
+	});
+    // Create the dashboard.
+  	var dashboard = new google.visualization.Dashboard(document.getElementById('graph-overlay')).
+    // Configure the slider to affect the piechart
+    bind(categoryPicker, columnchart).
+    // Draw the dashboard
+    draw(datatable);
+}
+
+
 UrbanSprawlPortal.prototype.invertSelection = function(){
 
 	for (var key in this.markers) {
@@ -636,195 +810,9 @@ UrbanSprawlPortal.prototype.toggleMarkers = function(){
 }
 
 
-function dynamicSortMultiple() {
-    /*
-     * save the arguments object as it will be overwritten
-     * note that arguments object is an array-like object
-     * consisting of the names of the properties to sort by
-     */
-    var props = arguments;
-    return function (obj1, obj2) {
-        var i = 0, result = 0, numberOfProperties = props.length;
-        /* try getting a different result from 0 (equal)
-         * as long as we have extra properties to compare
-         */
-        while(result === 0 && i < numberOfProperties) {
-            result = dynamicSort(props[i])(obj1, obj2);
-            i++;
-        }
-        return result;
-    }
-}
 
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-UrbanSprawlPortal.prototype.applyDataSet = function(dataset){
-
-	data = window[dataset];
-	//parse RDF JSON Data
-	var header = data.head.vars; //object, subject, no predicate
-	var results = data.results.bindings;
-
-	
-	this.currentDataSet = {};
-	for (var i = 0; i < results.length; i++) {
-		//create hashtable of object : subject for fast lookup
-		var sub = results[i][header[0]].value;
-		var data = results[i][header[1]].value;
-		this.currentDataSet[sub] = data;
-	};
-}
-
-UrbanSprawlPortal.prototype.newHeatMap = function(dataset){
-
-	if(this.markersNumSelected < 1){
-
-		var e = (this.heatmap) ? this.heatmap.heatmap.clear() : null;
-		$('#portal-title').html('');
-		return;
-	}
-	$("#graph-overlay").slideUp("slow");
-	$('#portal-title').html("Analyzing " + dataset + " Heatmap");
-
-	var self = this;
-	var heatmapData = [];
-	var totalAmount, max = 0;
-	var totals = [];
-
-	this.applyDataSet(dataset);
-
-	for (key in this.currentDataSet) {
-
-		var amount = parseInt(this.currentDataSet[key].replace(/[^\d\.\-\ ]/g, ''));
-		totalAmount += amount;
-		totals[key] = amount;
-		max = (max < amount) ? amount : max;
-	}
-
-	var bounds = new google.maps.LatLngBounds();
-	$("#histogram input:checked").each(function () {
-		//subjectClass == county
-		var subject = $(this).attr("id");
-		var marker = self.markers[subject];
-		if (subject in totals){
-			var weightedLoc = {
-			  lat: marker.getPosition().lat(),
-			  lng: marker.getPosition().lng(),
-			  count: totals[subject]
-			};
-			heatmapData.push(weightedLoc); 
-			bounds.extend(marker.getPosition());
-	    }	        
-    });
-    // here is our dataset
-    // important: a datapoint now contains lat, lng and count property!
-    var weightedData={
-            max: max,
-            data: heatmapData
-    };
-    // now we can set the data
-    google.maps.event.addListenerOnce(this.get('map'), "idle", function(){
-        // this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
-        self.heatmap.setDataSet(weightedData);
-    });
-
-/*    this.map.fitBounds(bounds);*/
-    this.map.setCenter(new google.maps.LatLng(42.792025, -75.435944));
-}
-
-UrbanSprawlPortal.prototype.loadDashboard = function(dataset){
-
-	this.applyDataSet(dataset);
-
-	var self = this;
-
-	if(this.markersNumSelected < 1){
-		$('#slider').empty();
-		$('#chart').empty();
-		$('#portal-title').html('');
-		return;
-	}
-
-	$('#portal-title').html("Analyzing " + dataset + " Charts");
-	$("#graph-overlay").slideDown("slow");
-
-	var datatable = new google.visualization.DataTable();
-	datatable.addColumn('string', 'Year'); 
-	datatable.addRows(2);
-    datatable.setCell(0, 0, '2000');
-    datatable.setCell(1, 0, '2010');
-
-	$("#histogram input:checked").each(function () {
-		var subject = $(this).attr("id");
-
-		if (subject in self.currentDataSet){
-	        var colIndex = datatable.addColumn( 'number', $(this).attr("id"));
-	        var amount = parseInt(self.currentDataSet[subject].replace(/[^\d\.\-\ ]/g, ''));
-	        datatable.setCell(0, colIndex, amount);
-	        datatable.setCell(1, colIndex, Math.ceil(amount - (Math.random()*(amount/2)) )) ;
-    	}
-
-    });
-
-    /*
-function disposeShit()
-{
-    chart.visualization.clearChart();
-    control.visualization.dispose();
-   dashboard.dispose();
-}
-
-    */
-
-  // Define a category picker for the 'Metric' column.
-  var categoryPicker = new google.visualization.ControlWrapper({
-    'controlType': 'CategoryFilter',
-    'containerId': 'slider',
-    'options': {
-      'filterColumnLabel': 'Year',
-      'ui': {
-        'allowTyping': false,
-        'allowMultiple': true,
-        'selectedValuesLayout': 'belowStacked',
-      }
-    },
-    // Define an initial state, i.e. a set of metrics to be initially selected.
-    'state': {'selectedValues': ['2000']}
-  });
-
-  // Define a column chart
-  	var columnchart = new google.visualization.ChartWrapper({
-	    'chartType': 'ColumnChart',
-	    'containerId': 'chart',
-	    'options': {
-	      'title': dataset + ' Trends',
-	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
-	      'width': 1400,
-	      'height': 600,
-	      'chartArea': {
-/*	      	'width' : '100%',
-	      	'height' : 600,*/
-	      },
-	      'bar': {groupWidth: "60%"},
-	    }
-	});
-    // Create the dashboard.
-  	var dashboard = new google.visualization.Dashboard(document.getElementById('graph-overlay')).
-    // Configure the slider to affect the piechart
-    bind(categoryPicker, columnchart).
-    // Draw the dashboard
-    draw(datatable);
-}
-
-
-
-
-
-
+/* 
 var loadDistanceWidget = function(){
-/* NEED TO COMPLETE THIS AND HOOK IT IN */
 
   distanceWidget = new DistanceWidget({
     map: map,
@@ -846,22 +834,4 @@ var loadDistanceWidget = function(){
   updatePosition();
   addActions();
 }
-
-var getJsonFromUrl = function(url){
-    var json_data = [];
-	var jqxhr = $.getJSON(url, function(json) {
-	  console.log( "success" );
-	  json_data = json
-	})
-	.done(function() {
-		console.log( "second success" );
-	})
-	.fail(function() {
-		console.log( "error" );
-	})
-	.always(function() {
-		console.log( "complete" );
-	});
-
-	return json_data;
-}
+*/

@@ -65,9 +65,9 @@ function main(){
 	  var dataset = $(this).siblings('.h-subject').html();
 
 	  if($(this).find('i').hasClass("fi-paint-bucket")){
-	  	Portal.newHeatMap(dataset);
+	  	Portal.generateHeatmap(dataset);
 	  } else{
-	  	Portal.loadDashboard(dataset);
+	  	Portal.generateDashboard(dataset);
 	  }
 	});
 
