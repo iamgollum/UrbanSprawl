@@ -22,26 +22,39 @@
 	// ************************************************************************
 	this.set('map', new google.maps.Map(document.getElementById('sprawl-map'), options) );
 	
+	// UI Elements 
+	// ******************************************************
+	this.UI_SubjectTitle = $('#portal-title');
+	this.UI_LatLng = $("#latlan");
+	this.UI_MarkerStatus = $('#marker-status'); //Need to create this...
+
+	this.UI_Histogram = $('#histogram');
+	this.UI_MarkerSelectedContainer = null;
+    this.UI_MarkerSelectedParentContainer = null;
+    this.UI_Histogram.empty();
+
+	this.UI_Dashboard = $('#dashboard');
+    this.UI_DashboardSlider = $('#slider');
+	this.UI_DashboardComboChart = $('#chart');
+
+
+
+	// Map Effecting Variables
+	// ******************************************************
 	this.styles = map_styles; 
 	this.themeStrategy = map_styles['water'];
-	this.infoBox = $("#info");
 
 	this.markers = {};
 	this.currentDataSet = {};
 	this.markersNumSelected = 0;
+	this.markers_on = true;
 
     this.MarkerCluster = null;
     this.cluster_on = false;    
-    this.markers_on = true;
 
     this.countyInfoWindow = new google.maps.InfoWindow();
     this.currentFeature_or_Features = null;
     this.geoJSON_On = true;
-
-    this.histogram = $('#histogram');
-    this.pointCompositeContainer = null;
-    this.pointParentElement = null;
-    this.histogram.empty();
 
 	var defaultGeoJSON_Style = {
 		strokeColor: "#444",
@@ -71,7 +84,7 @@
     (function(portal, themap) {
 	    google.maps.event.addListener(themap,'center_changed', function(e) {
 	    	window.setTimeout(function() {
-	      		portal.infoBox.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6));
+	      		portal.UI_LatLng.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6));
 	    	}, 200);
 	    });
 	})(portal, themap);
@@ -149,15 +162,15 @@
 						        		portal.markersNumSelected+=1;
 						        		marker.selected = true;
 						        		marker.setIcon('img/small_yellow.png');
-										portal.pointCompositeContainer.add(marker.kindDomElement);
+										portal.UI_MarkerSelectedContainer.add(marker.kindDomElement);
 						        	} else {
 						        		portal.markersNumSelected-=1;
 						        		marker.selected = false;
 						        		marker.setIcon('img/small_red.png');
-						        		portal.pointCompositeContainer.remove(marker.kindDomElement);
+						        		portal.UI_MarkerSelectedContainer.remove(marker.kindDomElement);
 						        	}
-						        	portal.pointParentElement.setMeter(portal.markersNumSelected);
-								    portal.infoBox.html("Selected: " + portal.markersNumSelected);
+						        	portal.UI_MarkerSelectedParentContainer.setMeter(portal.markersNumSelected);
+								    portal.UI_MarkerStatus.html("Selected: " + portal.markersNumSelected);
 						        });
 						       portal.markers[marker.name] = marker;
 						    })(marker, i, portal);
@@ -249,7 +262,7 @@
 					        	if(!current_marker.selected){
 					        		markersNumSelected+=1;
 					        		current_marker.selected = true;
-					        		portal.pointCompositeContainer.add(current_marker.kindDomElement);
+					        		portal.UI_MarkerSelectedContainer.add(current_marker.kindDomElement);
 					        	}
 
 							} else {
@@ -264,8 +277,8 @@
 		        }
 		        portal.gribBoundingBox = null;
 		        portal.selecting = false;
-		        portal.pointParentElement.setMeter(markersNumSelected);
-				portal.infoBox.html("Selected: " + markersNumSelected);
+		        portal.UI_MarkerSelectedParentContainer.setMeter(markersNumSelected);
+				portal.UI_MarkerStatus.html("Selected: " + markersNumSelected);
 		        portal.markersNumSelected = markersNumSelected;
 		        $("#box-select").css("color","#FFFFFF");
 		    }
@@ -353,13 +366,13 @@
 		NYCounties = new HistogramComposite(m.parent.toUpperCase(), m.parent);
 		
 		//Essential for point selection
-		portal.pointCompositeContainer = NYCounties;
+		portal.UI_MarkerSelectedContainer = NYCounties;
 
 		var NewYork = new CharacteristicStandard(m.parent.toUpperCase(), 
 												0, 
 												m.kindTotal);
-		portal.pointParentElement = NewYork;
-		States.getContainer().appendTo('#histogram');
+		portal.UI_MarkerSelectedParentContainer = NewYork;
+		States.getContainer().appendTo(this.UI_Histogram);
 		States.add(NewYork);
 		States.contains(Counties);
 		Counties.add(NYCounties)
@@ -527,7 +540,7 @@
 	// ************************************************************************
 
 	/* Comonents */
-    this.infoBox.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6))
+    this.UI_LatLng.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6))
 	this.themeStrategy.execute();
 	
 	/* Data */
@@ -565,17 +578,20 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset){
 	};
 }
 
+UrbanSprawlPortal.prototype.slideToggleDashboard = function(){
+	    this.UI_Dashboard.slideToggle("slow");
+}
 
 UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	/* Reset */
 	if(this.markersNumSelected < 1){
-		$('#portal-title').html('');
+		this.UI_SubjectTitle.html('');
 		return;
 	}
 
-	$("#graph-overlay").slideUp("slow");
-	$('#portal-title').html("Analyzing " + dataset + " Heatmap");
+	this.UI_Dashboard.slideUp("slow");
+	this.UI_SubjectTitle.html("Analyzing " + dataset + " Heatmap");
 
 	var self = this;
 	var gradient = ChoroplethHughes[dataset];
@@ -584,7 +600,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	this.applyDataSet(dataset);
 
 	//Extract selected markers into hashmap
-	$("#histogram input:checked").each(function () {
+	this.UI_Histogram.find("input:checked").each(function () {
 		//subjectClass == county
 		selectedPoints[$(this).attr("id")] = true;  
     });
@@ -648,13 +664,13 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset){
 	var self = this;
 
 	if(this.markersNumSelected < 1){
-		$('#slider').empty();
-		$('#chart').empty();
-		$('#portal-title').html('');
+		this.UI_DashboardSlider.empty();
+		this.UI_DashboardComboChart.empty();
+		self.UI_SubjectTitle.html('');
 		return;
 	}
 
-	$('#portal-title').html("Analyzing " + dataset + " Charts");
+	this.UI_SubjectTitle.html("Analyzing " + dataset + " Charts");
 	$("#graph-overlay").slideDown("slow");
 
 	var datatable = new google.visualization.DataTable();
@@ -663,7 +679,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset){
     datatable.setCell(0, 0, '2000');
     datatable.setCell(1, 0, '2010');
 
-	$("#histogram input:checked").each(function () {
+	this.UI_Histogram.find("input:checked").each(function () {
 		var subject = $(this).attr("id");
 
 		if (subject in self.currentDataSet){
@@ -733,17 +749,17 @@ UrbanSprawlPortal.prototype.invertSelection = function(){
 		if(marker.selected){
 			marker.setIcon('img/small_red.png');
 			marker.selected = false;
-			this.pointCompositeContainer.remove(marker.kindDomElement);
+			this.UI_MarkerSelectedContainer.remove(marker.kindDomElement);
 		} else{
 			marker.setIcon('img/small_yellow.png');
 			marker.selected = true;
-			this.pointCompositeContainer.add(marker.kindDomElement);
+			this.UI_MarkerSelectedContainer.add(marker.kindDomElement);
 
 		}
 	}
 	this.markersNumSelected = (Object.keys(this.markers).length - this.markersNumSelected);
-	this.pointParentElement.setMeter(this.markersNumSelected);
-	this.infoBox.html("Selected: " + this.markersNumSelected);
+	this.UI_MarkerSelectedParentContainer.setMeter(this.markersNumSelected);
+	this.UI_MarkerStatus.html("Selected: " + this.markersNumSelected);
 }
 
 UrbanSprawlPortal.prototype.clearSelection = function(){
@@ -751,14 +767,14 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 		    var marker = this.markers[key];
 			marker.setIcon('img/small_red.png');
 			marker.selected = false;
-			this.pointCompositeContainer.remove(marker.kindDomElement);
+			this.UI_MarkerSelectedContainer.remove(marker.kindDomElement);
 	}
 	this.markersNumSelected = 0;
-	this.pointParentElement.setMeter(this.markersNumSelected);
+	this.UI_MarkerSelectedParentContainer.setMeter(this.markersNumSelected);
 	var e = (this.heatmap) ? this.heatmap.heatmap.clear() : null;
-	$('#slider').empty();
-	$('#chart').empty();
-	this.infoBox.html("Portal Cleared!");
+	this.UI_DashboardSlider.empty();
+	this.UI_DashboardComboChart.empty();
+	this.UI_MarkerStatus.html("Portal Cleared!");
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){

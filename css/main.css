@@ -43,9 +43,9 @@ nav{
   top: 0px;
   left: 0px;
   z-index: 0;
-  border-right: .3rem inset #DFDAD5;
-  border-left: .3rem inset #DFDAD5;
-  border-bottom: .3rem inset #DFDAD5;
+  border-right: .3rem inset #eee;
+  border-left: .3rem inset #eee;
+  border-bottom: .3rem inset #eee;
 }
 
 /* Fix img stretch for fluid container */
@@ -54,7 +54,7 @@ nav{
 }
 
 
-#graph-overlay{
+#dashboard{
 	background: white;
 	position: absolute;
 	width: 100%;
@@ -76,17 +76,31 @@ width: 1400px;
 	color: red;
 }
 
-section.left-small, section.right-small, section.bottom-small{
+
+/*
+ul li {
+    color: grey;
+    background: #fefefe;
+    padding: 14px 24px 10px;
+    margin: 0px -6px 0 10px;
+    position: relative;
+    float: left;
+    text-align: center;
+    z-index: 1;
+}
+
+ul li.active::before,
+ul li.active::after {
+    background-color: #fff;
+    border-bottom-color: #fff;
+}
+*/
+
+section.tab-small{
+	width: 60%;
 	z-index: 9999;
-	border-right: none;
+	/* border-right: none; */
 	box-shadow: none;
-
-	background-color:#DFDAD5;
-
-/* 	height: auto;
-	width: 7rem; */
-	width: auto;
-	line-height: 1.25rem;
 
 	-moz-box-shadow: 3px 3px 25px #685447 inset;
 	-webkit-box-shadow: 3px 3px 25px #685447 inset;
@@ -96,56 +110,98 @@ section.left-small, section.right-small, section.bottom-small{
 	padding: .75rem;
 }
 
-section.left-small a, section.right-small a, section.bottom-small a{
-color: #000;
+section.tab-small::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; left: 0;
+    width: 70%;
+    height: 100%;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 2px 0 2px 2px;
+    border-radius: 8px 0 0 0;
+    -webkit-transform: skewX(-20deg);
+       -moz-transform: skewX(-20deg);
+         -o-transform: skewX(-20deg);
+            transform: skewX(-20deg);
+    background-color: inherit;
+    z-index: -1;
+}
+
+section.tab-small::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; right: 0;
+    width: 70%;
+    height: 100%;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 2px 2px 2px 0;
+    border-radius: 0 8px 0 0;
+    -webkit-transform: skewX(20deg);
+       -moz-transform: skewX(20deg);
+         -o-transform: skewX(20deg);
+            transform: skewX(20deg);
+    background-color: inherit;
+    z-index: -1;
+}
+
+
+section.tab-small a{
+color: #fff;
+min-width: 100%;
+display: inline-block;
+width: 100%;
+text-align: center;
+}
+
+
+section.left-small, section.right-small{
+top: 45%;
+width: 30em;
 }
 
 section.right-small{
-	top: 50%;
-	right: .25rem;
+	right: -13.5em;
 
-  -webkit-border-top-left-radius: 1.5rem;
-  -webkit-border-top-right-radius: 0rem;
-  -webkit-border-bottom-right-radius: 0rem;
-  -webkit-border-bottom-left-radius: 1.5prem;
+transform:rotate(-90deg);
+-ms-transform:rotate(-90deg); /* IE 9 */
+-webkit-transform:rotate(-90deg); /* Opera, Chrome, and Safari */
 
-  -moz-border-radius-topleft: 1.5rem;
-  -moz-border-radius-topright: 0rem;
-  -moz-border-radius-bottomright: 0rem;
-  -moz-border-radius-bottomleft: 1.5rem;
+  -webkit-border-top-left-radius: 2rem;
+  -webkit-border-top-right-radius: 2rem;
 
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 0rem;
-  border-bottom-right-radius: 0rem;
-  border-bottom-left-radius: 1.5rem;
+  -moz-border-radius-topleft: 2rem;
+  -moz-border-radius-topright: 2rem;
+
+	border-top-left-radius: 2rem;
+	border-top-right-radius: 2rem;
 }
 
 section.left-small{
+   left: -13.5em;
 
-   top: 50%;
-   left: .25rem;
+	transform:rotate(90deg);
+	-ms-transform:rotate(90deg); /* IE 9 */
+	-webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
 
-  -webkit-border-top-left-radius: 0rem;
+  -webkit-border-top-left-radius: 1.5rem;
   -webkit-border-top-right-radius: 1.5rem;
-  -webkit-border-bottom-right-radius: 1.5rem;
-  -webkit-border-bottom-left-radius: 0prem;
 
-  -moz-border-radius-topleft: 0rem;
+  -moz-border-radius-topleft: 1.5rem;
   -moz-border-radius-topright: 1.5rem;
-  -moz-border-radius-bottomright: 1.5rem;
-  -moz-border-radius-bottomleft: 0rem;
 
-  border-top-left-radius: 0px;
-  border-top-right-radius: 1.5rem;
-  border-bottom-right-radius: 1.5rem;
-  border-bottom-left-radius: 0rem;
+	border-top-left-radius: 1.5rem;
+	border-top-right-radius: 1.5rem;
 }
 
 section.bottom-small{
 
 	position: absolute;
 	bottom: .20rem;
-	left: 45%;
+	left: 20%;
 
   -webkit-border-top-left-radius: 1.5rem;
   -webkit-border-top-right-radius: 1.5rem;

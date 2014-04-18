@@ -49,7 +49,7 @@ function main(){
 
   /* Map Toggle View */
 	  $("#map-toggle").click(function(){
-	    $("#graph-overlay").slideToggle("slow");
+	  	Portal.slideToggleDashboard();
 	  });
 
 	$("#invert-select").click(function(){
@@ -58,7 +58,6 @@ function main(){
 
 	$("#clear-select").click(function(){
 	    Portal.clearSelection();
-	    $('#portal-title').html('');
 	});
 
 	$("#histogram").delegate("button", "click", function( event ) {
@@ -71,6 +70,7 @@ function main(){
 	  }
 	});
 
+	//Dynamic additions and removal from heatmap and charts
 	$("#histogram").delegate("input", "click", function( event ) {
 		var county = $(this).attr("id");
 	});
