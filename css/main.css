@@ -70,11 +70,6 @@ position: relative;
 width: 1400px;
 }
 
-#portal-title{
-	font-size: 1.5rem;
-	width: 100%;
-	color: red;
-}
 
 
 /*
@@ -151,7 +146,6 @@ section.tab-small::after {
 
 section.tab-small a{
 color: #fff;
-min-width: 100%;
 display: inline-block;
 width: 100%;
 text-align: center;
@@ -219,8 +213,59 @@ section.bottom-small{
   border-bottom-left-radius: 0rem;
 }
 
+section.top-small{
+	position: absolute;
+	top: .20rem;
+	left: 20%;
 
-#info{
+transform:rotate(180deg);
+-ms-transform:rotate(180deg); /* IE 9 */
+-webkit-transform:rotate(180deg); /* Opera, Chrome, and Safari */
+
+  -webkit-border-top-left-radius: 2.5rem;
+  -webkit-border-top-right-radius: 2.5rem;
+
+  -moz-border-radius-topleft: 2.0rem;
+  -moz-border-radius-topright: 2.0rem;
+
+  border-top-left-radius: 2.5em;
+  border-top-right-radius: 2.5rem;
+}
+
+#portal-title {
+	font-size: 1.5rem;
+}
+
+section.top-small div {
+	transform:rotate(180deg);
+	-ms-transform:rotate(180deg); /* IE 9 */
+	-webkit-transform:rotate(180deg); /* Opera, Chrome, and Safari */
+} 
+
+section.top-small span{
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+	color: #fff;
+}
+
+section.top-small span:first-child{
+	margin-bottom: .5rem;
+}
+
+#histogram{
+	height: 50em;
+}
+#location, #features{
+	height: 25em;
+	overflow: auto;
+	overflow-x: hidden;
+}
+#features{
+	padding-top: 2em;
+}
+
+#latlng{
 	bottom: 2rem;
 	right: .5rem;
 	z-index: 1;
@@ -234,6 +279,7 @@ section.bottom-small{
 	text-align: center;
 	font-weight: bold;
 }
+
 .warning{
 	background-color: #ED9124 !important;
 }
@@ -336,9 +382,9 @@ ul.off-canvas-list ul li{
 	padding-top: 1rem;
 }
 
-ul.off-canvas-list li div{
-	padding-top: .75rem;
-	padding-bottom: .25rem; 
+#features ul.off-canvas-list li div{
+padding-top: .75rem;
+padding-bottom: .25rem;
 }
 
 ul.off-canvas-list li h2{
@@ -382,16 +428,16 @@ font-weight: inherit;
 }
 
 .move-right>.inner-wrap {
--webkit-transform: translate3d(350px, 0, 0);
--moz-transform: translate3d(350px, 0, 0);
--ms-transform: translate3d(350px, 0, 0);
--o-transform: translate3d(350px, 0, 0);
-transform: translate3d(350px, 0, 0);
+-webkit-transform: translate3d(280px, 0, 0);
+-moz-transform: translate3d(280px, 0, 0);
+-ms-transform: translate3d(280px, 0, 0);
+-o-transform: translate3d(280px, 0, 0);
+transform: translate3d(280px, 0, 0);
 }
 
 
 .left-off-canvas-menu{
-	width: 350px;
+	width: 280px;
 }
 
 

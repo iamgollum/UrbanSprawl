@@ -25,13 +25,12 @@
 	// UI Elements 
 	// ******************************************************
 	this.UI_SubjectTitle = $('#portal-title');
-	this.UI_LatLng = $("#latlan");
+	this.UI_LatLng = $("#latlng");
 	this.UI_MarkerStatus = $('#marker-status'); //Need to create this...
 
 	this.UI_Histogram = $('#histogram');
 	this.UI_MarkerSelectedContainer = null;
     this.UI_MarkerSelectedParentContainer = null;
-    this.UI_Histogram.empty();
 
 	this.UI_Dashboard = $('#dashboard');
     this.UI_DashboardSlider = $('#slider');
@@ -372,7 +371,7 @@
 												0, 
 												m.kindTotal);
 		portal.UI_MarkerSelectedParentContainer = NewYork;
-		States.getContainer().appendTo(this.UI_Histogram);
+		portal.UI_Histogram.find("#location").append(States.getContainer());
 		States.add(NewYork);
 		States.contains(Counties);
 		Counties.add(NYCounties)
@@ -385,7 +384,8 @@
 			var ch = new CharacteristicWithDataView(data[title]);
 			Characteristics.add(ch);
 		}
-		Counties.contains(Characteristics);
+		//Counties.contains(Characteristics);
+		portal.UI_Histogram.find("#features").append(Characteristics.getContainer());
 	}
 
 	setRootView();
