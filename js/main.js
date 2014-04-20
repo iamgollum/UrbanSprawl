@@ -49,7 +49,7 @@ function main(){
 
   /* Map Toggle View */
 	  $("#map-toggle").click(function(){
-	  	Portal.slideToggleDashboard();
+	  	Portal.slideToggleDashboard($(this));
 	  });
 
 	$("#invert-select").click(function(){

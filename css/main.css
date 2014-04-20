@@ -33,7 +33,7 @@ nav{
 }
 #container {
   position: relative;
-  min-height: 800px;
+  min-height: 830px;
   background-color: black;
 }
 #sprawl-map{ 
@@ -71,6 +71,46 @@ width: 1400px;
 }
 
 
+#heatmap-key{
+	position: absolute;
+	top: 1rem;
+	left: 5%;
+	width: 12em;
+	background: #fff;
+	height: auto;
+	padding-top: .5rem;
+	padding-bottom: 0.5rem;
+	overflow: auto;
+	display: none;
+}
+
+#heatmap-key ul{
+	margin-left: 0rem;
+}
+#heatmap-key h5{
+	text-align: center;
+}
+
+#heatmap-key ul li{
+	padding: .25em;
+	clear: both;
+	list-style: none;
+}
+
+#heatmap-key ul li span.color-block{
+	height: 2em;
+	width: 2em;
+	display: inline-block;
+	float: left;
+}
+
+#heatmap-key ul li span.block-range{
+	height: 2em;
+	width: auto;
+	display: inline-block;
+	float: left;
+	margin-left: 1em;
+}
 
 /*
 ul li {
@@ -254,10 +294,10 @@ section.top-small span:first-child{
 }
 
 #histogram{
-	height: 50em;
+	height: 54em;
 }
 #location, #features{
-	height: 25em;
+	height: 26em;
 	overflow: auto;
 	overflow-x: hidden;
 }
@@ -435,6 +475,9 @@ font-weight: inherit;
 transform: translate3d(280px, 0, 0);
 }
 
+.off-canvas-wrap.move-right, .off-canvas-wrap.move-left {
+height: auto;
+}
 
 .left-off-canvas-menu{
 	width: 280px;
@@ -567,6 +610,7 @@ margin-top: 20px; */
 #slider {
     width: 400px;
     margin: 2em auto;
+    margin-top: 5em;
 }
 
 

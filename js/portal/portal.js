@@ -26,7 +26,7 @@
 	// ******************************************************
 	this.UI_SubjectTitle = $('#portal-title');
 	this.UI_LatLng = $("#latlng");
-	this.UI_MarkerStatus = $('#marker-status'); //Need to create this...
+	this.UI_MarkerStatus = $('#marker-status'); 
 
 	this.UI_Histogram = $('#histogram');
 	this.UI_MarkerSelectedContainer = null;
@@ -35,17 +35,21 @@
 	this.UI_Dashboard = $('#dashboard');
     this.UI_DashboardSlider = $('#slider');
 	this.UI_DashboardComboChart = $('#chart');
+	this.UI_Heatmap_Key = $('#heatmap-key');
 
 
 
 	// Map Effecting Variables
 	// ******************************************************
 	this.styles = map_styles; 
+	/* Bind theme strategies with map */
+	for (key in this.styles){this.styles[key].bindTo('map', this);}
 	this.themeStrategy = map_styles['water'];
+
 
 	this.markers = {};
 	this.currentDataSet = {};
-	this.markersNumSelected = 0;
+	this.set('markersNumSelected', 0);
 	this.markers_on = true;
 
     this.MarkerCluster = null;
@@ -63,15 +67,17 @@
 		fillOpacity: 0		
 	}
  
-
-	/* Bind theme strategies with map */
-	for (key in this.styles){this.styles[key].bindTo('map', this);}
-
 	this.overlays = {
 		'bikeroute' : new google.maps.BicyclingLayer(),
 		'transit' : new google.maps.TransitLayer(),
 		'counties' : new function(){},
 	}
+
+
+	// State Variables, persists across all views (aka. var history)
+	// ******************************************************
+	this.STATE_Time_Period = ["2000", "2010"];
+
 
  	// ************************************************************************ 
 	// PRIVATE VARIABLES FROM PUBLIC VARIABLES
@@ -85,6 +91,16 @@
 	    	window.setTimeout(function() {
 	      		portal.UI_LatLng.html(themap.getCenter().lat().toPrecision(8) + ", " + themap.getCenter().lng().toPrecision(6));
 	    	}, 200);
+	    });
+	})(portal, themap);
+
+
+    (function(portal, themap) {
+	    google.maps.event.addListener(this,'markersNumSelected_changed', function(e) {
+	    	alert('changed');
+	    	if(portal.markersNumSelected < 1){
+	    		portal.resetGeoJSON_Styles();
+	    	}
 	    });
 	})(portal, themap);
 
@@ -578,10 +594,6 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset){
 	};
 }
 
-UrbanSprawlPortal.prototype.slideToggleDashboard = function(){
-	    this.UI_Dashboard.slideToggle("slow");
-}
-
 UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	/* Reset */
@@ -592,10 +604,12 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	this.UI_Dashboard.slideUp("slow");
 	this.UI_SubjectTitle.html("Analyzing " + dataset + " Heatmap");
+	// /this.toggleMarkers();
 
 	var self = this;
 	var gradient = ChoroplethHughes[dataset];
 	var selectedPoints = {};
+	var max = 0;
 
 	this.applyDataSet(dataset);
 
@@ -608,7 +622,6 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 
 	var normalizedWeights = function(data, arbRange){
-		var max = 0;
 		var min = 1.7976931348623157E+10308;
 		var totals = {};
 
@@ -640,6 +653,65 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 			};
 	}
 
+	var createColorBlockElement___ = function(color){
+		return $('<span>').attr('class', 'color-block').css('backgroundColor', color);
+	}
+
+	var createBlockRangeElement___ = function(lower, upper){
+		var oLower = lower;
+		var oUpper = upper;
+		var text = "";
+		lower = Math.ceil( ((lower * max)/max)*100 ).toString() + '%';
+		upper = Math.ceil( ((upper * max)/max)*100 ).toString() + '%';
+
+		if(upper == '100%'){upper = '99%'; }
+
+		if(oLower == (1/gradient.length) ){
+			text = "Less than " + upper;
+		} else if(oLower == 1) {
+			text = "Greater than 99%";
+		} else{
+			text = lower + " to " + upper;
+		}
+
+		return $('<span>').attr('class', 'block-range').html(text);
+	}
+
+	var createKeyEntry__ = function(colorElem, rangeElem){
+		return $('<li>').append(colorElem).append(rangeElem);
+	}
+
+
+	var getHeatmapkey_ = function(){
+		var bins = gradient.length;
+		var container = self.UI_Heatmap_Key.find('ul');
+		container.empty();
+		var interval = 2;
+		var i = 1;
+
+		var list = createKeyEntry__(
+			createColorBlockElement___(gradient[0]),
+			createBlockRangeElement___( (1/bins) ,  ((2)/bins) )
+			)
+		container.append(list);
+
+		while(interval < bins){
+			var list = createKeyEntry__(
+				createColorBlockElement___(gradient[i]),
+				createBlockRangeElement___( (interval/bins) ,  ((interval+1)/bins) )
+				)
+			container.append(list);
+			interval++;
+			i++;
+		}
+
+		var list = createKeyEntry__(
+			createColorBlockElement___(gradient[i]),
+			createBlockRangeElement___( (interval/bins) ,  ((interval+1)/bins) )
+			)
+		container.append(list);
+	}();
+
 	var choropleth = [];
 
 	//Go through marker subjects that are enabled
@@ -653,6 +725,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
     }
     //Generate choropleth fill, all features undefined will show default fill
     this.showGeoJSON_Feature(nycounties, this.infowindow, choropleth);
+    this.UI_Heatmap_Key.show();
 }
 
 
@@ -671,7 +744,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset){
 	}
 
 	this.UI_SubjectTitle.html("Analyzing " + dataset + " Charts");
-	$("#graph-overlay").slideDown("slow");
+	this.UI_Dashboard.slideDown("slow");
 
 	var datatable = new google.visualization.DataTable();
 	datatable.addColumn('string', 'Year'); 
@@ -714,7 +787,7 @@ function disposeShit()
       }
     },
     // Define an initial state, i.e. a set of metrics to be initially selected.
-    'state': {'selectedValues': ['2000']}
+    'state': {'selectedValues': self.STATE_Time_Period}
   });
 
   // Define a column chart
@@ -734,11 +807,17 @@ function disposeShit()
 	    }
 	});
     // Create the dashboard.
-  	var dashboard = new google.visualization.Dashboard(document.getElementById('graph-overlay')).
+  	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard')).
     // Configure the slider to affect the piechart
     bind(categoryPicker, columnchart).
     // Draw the dashboard
     draw(datatable);
+
+   google.visualization.events.addListener(categoryPicker, 'statechange', function () {
+   	
+   	self.STATE_Time_Period = categoryPicker.getState().selectedValues;
+   	console.log(self.STATE_Time_Period);
+   });
 }
 
 
@@ -753,6 +832,10 @@ UrbanSprawlPortal.prototype.invertSelection = function(){
 		} else{
 			marker.setIcon('img/small_yellow.png');
 			marker.selected = true;
+/*			if(marker.name == "Suffolk"){
+				alert("YOU SHOULD FUCKING TURN YELLOW");
+				alert(marker.getIcon());
+			}*/
 			this.UI_MarkerSelectedContainer.add(marker.kindDomElement);
 
 		}
@@ -770,10 +853,11 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 			this.UI_MarkerSelectedContainer.remove(marker.kindDomElement);
 	}
 	this.markersNumSelected = 0;
+	this.resetGeoJSON_Styles();
 	this.UI_MarkerSelectedParentContainer.setMeter(this.markersNumSelected);
-	var e = (this.heatmap) ? this.heatmap.heatmap.clear() : null;
 	this.UI_DashboardSlider.empty();
 	this.UI_DashboardComboChart.empty();
+	this.UI_Heatmap_Key.hide();
 	this.UI_MarkerStatus.html("Portal Cleared!");
 }
 
@@ -823,6 +907,18 @@ UrbanSprawlPortal.prototype.toggleMarkers = function(){
       marker.setMap((this.markers_on) ? null : this.get('map'));
     }
     this.markers_on = (this.markers_on) ? false : true;
+}
+
+UrbanSprawlPortal.prototype.slideToggleDashboard = function(button){
+    var self = this;
+
+    this.UI_Dashboard.slideToggle("slow", function (){
+	    if(self.UI_Dashboard.css('display') == "none"){
+			button.html("Dashboard");
+	    } else {
+	    	button.html("GeoInterface");
+	    }
+	});  
 }
 
 
