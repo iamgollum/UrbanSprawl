@@ -1,3 +1,8 @@
+/*
+http://107.170.106.235/json/converted_RDF_JSON/
+INTEGRATE REST OF DATA ... make sub category for housing?
+*/
+
 
 var ChoroplethHughes = {
  "Population": ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#084594'],

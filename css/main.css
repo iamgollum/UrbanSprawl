@@ -134,15 +134,16 @@ ul li.active::after {
 section.tab-small{
 	width: 60%;
 	z-index: 9999;
+		color: #fff;
 	/* border-right: none; */
 	box-shadow: none;
+/* 	background:  */
 
-	-moz-box-shadow: 3px 3px 25px #685447 inset;
-	-webkit-box-shadow: 3px 3px 25px #685447 inset;
-	-o-box-shadow: 3px 3px 25px #685447 inset;
-	-ms-box-shadow: 3px 3px 25px #685447 inset;
-	box-shadow: 3px 3px 25px #685447 inset;
 	padding: .75rem;
+	font-size: 1.5rem;
+}
+
+section.tab-small div{
 }
 
 section.tab-small::before {
@@ -162,6 +163,12 @@ section.tab-small::before {
             transform: skewX(-20deg);
     background-color: inherit;
     z-index: -1;
+
+	-moz-box-shadow: 3px 3px 25px #685447 inset;
+	-webkit-box-shadow: 3px 3px 25px #685447 inset;
+	-o-box-shadow: 3px 3px 25px #685447 inset;
+	-ms-box-shadow: 3px 3px 25px #685447 inset;
+	box-shadow: 3px 3px 25px #685447 inset;
 }
 
 section.tab-small::after {
@@ -181,51 +188,57 @@ section.tab-small::after {
             transform: skewX(20deg);
     background-color: inherit;
     z-index: -1;
+
+    -moz-box-shadow: 3px 3px 25px #685447 inset;
+	-webkit-box-shadow: 3px 3px 25px #685447 inset;
+	-o-box-shadow: 3px 3px 25px #685447 inset;
+	-ms-box-shadow: 3px 3px 25px #685447 inset;
+	box-shadow: 3px 3px 25px #685447 inset;
 }
 
 
 section.tab-small a{
-color: #fff;
 display: inline-block;
 width: 100%;
 text-align: center;
+color: inherit;
 }
 
 
 section.left-small, section.right-small{
 top: 45%;
-width: 30em;
+width: 28em;
 }
 
 section.right-small{
-	right: -13.5em;
+	right: -12.9em;
 
-transform:rotate(-90deg);
--ms-transform:rotate(-90deg); /* IE 9 */
--webkit-transform:rotate(-90deg); /* Opera, Chrome, and Safari */
+	transform:rotate(-90deg);
+	-ms-transform:rotate(-90deg); /* IE 9 */
+	-webkit-transform:rotate(-90deg); /* Opera, Chrome, and Safari */
 
-  -webkit-border-top-left-radius: 2rem;
-  -webkit-border-top-right-radius: 2rem;
+	-webkit-border-top-left-radius: 2rem;
+	-webkit-border-top-right-radius: 2rem;
 
-  -moz-border-radius-topleft: 2rem;
-  -moz-border-radius-topright: 2rem;
+	-moz-border-radius-topleft: 2rem;
+	-moz-border-radius-topright: 2rem;
 
 	border-top-left-radius: 2rem;
 	border-top-right-radius: 2rem;
 }
 
 section.left-small{
-   left: -13.5em;
+	left: -12.9em;
 
 	transform:rotate(90deg);
 	-ms-transform:rotate(90deg); /* IE 9 */
 	-webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
 
-  -webkit-border-top-left-radius: 1.5rem;
-  -webkit-border-top-right-radius: 1.5rem;
+	-webkit-border-top-left-radius: 1.5rem;
+	-webkit-border-top-right-radius: 1.5rem;
 
-  -moz-border-radius-topleft: 1.5rem;
-  -moz-border-radius-topright: 1.5rem;
+	-moz-border-radius-topleft: 1.5rem;
+	-moz-border-radius-topright: 1.5rem;
 
 	border-top-left-radius: 1.5rem;
 	border-top-right-radius: 1.5rem;
@@ -272,8 +285,9 @@ transform:rotate(180deg);
   border-top-right-radius: 2.5rem;
 }
 
-#portal-title {
-	font-size: 1.5rem;
+#marker-status{
+	font-size: 1.2rem;
+	color: red;
 }
 
 section.top-small div {
@@ -286,7 +300,6 @@ section.top-small span{
 	width: 100%;
 	text-align: center;
 	display: inline-block;
-	color: #fff;
 }
 
 section.top-small span:first-child{

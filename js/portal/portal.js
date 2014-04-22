@@ -37,13 +37,20 @@
 	this.UI_DashboardComboChart = $('#chart');
 	this.UI_Heatmap_Key = $('#heatmap-key');
 
+	// SHARED UI Elements 
+	// ******************************************************
+	this.set('UI_Tab_Buttons', $(".tab-small") );
+
 
 
 	// Map Effecting Variables
 	// ******************************************************
 	this.styles = map_styles; 
 	/* Bind theme strategies with map */
-	for (key in this.styles){this.styles[key].bindTo('map', this);}
+	for (key in this.styles){
+		this.styles[key].bindTo('map', this);
+		this.styles[key].bindTo('UI_Tab_Buttons', this);
+	}
 	this.themeStrategy = map_styles['water'];
 
 
