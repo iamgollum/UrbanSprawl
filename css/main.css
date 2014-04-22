@@ -132,7 +132,7 @@ ul li.active::after {
 */
 
 section.tab-small{
-	width: 60%;
+	width: 50%;
 	z-index: 9999;
 		color: #fff;
 	/* border-right: none; */
@@ -204,6 +204,10 @@ text-align: center;
 color: inherit;
 }
 
+section.tab-small a:hover{
+color: red; /* #0078a0 */
+}
+
 
 section.left-small, section.right-small{
 top: 45%;
@@ -248,7 +252,7 @@ section.bottom-small{
 
 	position: absolute;
 	bottom: .20rem;
-	left: 20%;
+	left: 25%;
 
   -webkit-border-top-left-radius: 1.5rem;
   -webkit-border-top-right-radius: 1.5rem;
@@ -269,7 +273,7 @@ section.bottom-small{
 section.top-small{
 	position: absolute;
 	top: .20rem;
-	left: 20%;
+	left: 25%;
 
 transform:rotate(180deg);
 -ms-transform:rotate(180deg); /* IE 9 */
@@ -480,6 +484,15 @@ vertical-align: middle;
 font-weight: inherit;
 }
 
+ul.off-canvas-list ul.off-canvas-list li div{
+	padding-left: .75rem;
+	padding-right: .75rem;
+}
+
+ul.off-canvas-list ul.off-canvas-list li .h-subject{
+	/* font-style: italic; */
+}
+
 .move-right>.inner-wrap {
 -webkit-transform: translate3d(280px, 0, 0);
 -moz-transform: translate3d(280px, 0, 0);
@@ -488,6 +501,9 @@ font-weight: inherit;
 transform: translate3d(280px, 0, 0);
 }
 
+.off-canvas-wrap{
+	overflow-y: hidden;
+}
 .off-canvas-wrap.move-right, .off-canvas-wrap.move-left {
 height: auto;
 }
@@ -623,7 +639,7 @@ margin-top: 20px; */
 #slider {
     width: 400px;
     margin: 2em auto;
-    margin-top: 5em;
+    margin-top: 6em;
 }
 
 

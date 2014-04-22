@@ -23,8 +23,10 @@ MapThemeStrategy.prototype = Object.create(MapStrategy.prototype);
 // of other methods. This pattern is called a Template Method, and you'll see
 // the benefits later on.
 MapThemeStrategy.prototype.execute = function() {
-  this.setTheme();
-  //add other methods to enhance the template effect
+	 //add other methods to enhance the template effect
+	if (this.get('map') && this.get('UI_Tab_Buttons')) {
+		this.setTheme();
+	}
 };
 MapThemeStrategy.prototype.setTheme = function() {
 	throw new Error('MapStrategy#setTheme needs to be overridden.')
@@ -37,28 +39,22 @@ MapThemeStrategy.prototype.setTheme = function() {
 var UrbanTheme = function() {};
 UrbanTheme.prototype = Object.create(MapThemeStrategy.prototype);
 UrbanTheme.prototype.setTheme = function() {
-	if (this.get('map') && this.get('UI_Tab_Buttons')) {
   		this.get('map').setOptions({styles: urbanTheme}); /* default theme */
 		this.get('UI_Tab_Buttons').css('color', '#fff');
 		this.get('UI_Tab_Buttons').css('textShadow', '0px 0px 15px #000');
-	}
 };
 
 var TransitTheme = function() {};
 TransitTheme.prototype = Object.create(MapThemeStrategy.prototype);
 TransitTheme.prototype.setTheme = function() {
-	if (this.get('map') && this.get('UI_Tab_Buttons')) {
   		this.get('map').setOptions({styles: transitTheme}); /* default theme */
 		this.get('UI_Tab_Buttons').css('color', '#000');
-	
-	}	
 };
  
 var InverseWaterTheme = function() {};
 InverseWaterTheme.prototype = Object.create(MapThemeStrategy.prototype);
 InverseWaterTheme.prototype.setTheme = function() {
-	if (this.get('map') && this.get('UI_Tab_Buttons')) {
   		this.get('map').setOptions({styles: inverseWaterTheme}); /* default theme */
 		this.get('UI_Tab_Buttons').css('color', '#fff');
-	}
+		this.get('UI_Tab_Buttons').css('textShadow', '0px 0px 15px #000');
 };

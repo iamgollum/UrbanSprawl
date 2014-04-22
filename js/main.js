@@ -61,12 +61,14 @@ function main(){
 	});
 
 	$("#histogram").delegate("button", "click", function( event ) {
-	  var dataset = $(this).siblings('.h-subject').html();
+	  var node = $(this).siblings('.h-subject');
+	  var dataset = node.html();
+	  var years = node.data('timeline').split(',');
 
 	  if($(this).find('i').hasClass("fi-paint-bucket")){
 	  	Portal.generateHeatmap(dataset);
 	  } else{
-	  	Portal.generateDashboard(dataset);
+	  	Portal.generateDashboard(dataset, years);
 	  }
 	});
 

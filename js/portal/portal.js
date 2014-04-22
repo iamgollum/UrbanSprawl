@@ -41,8 +41,6 @@
 	// ******************************************************
 	this.set('UI_Tab_Buttons', $(".tab-small") );
 
-
-
 	// Map Effecting Variables
 	// ******************************************************
 	this.styles = map_styles; 
@@ -83,7 +81,7 @@
 
 	// State Variables, persists across all views (aka. var history)
 	// ******************************************************
-	this.STATE_Time_Period = ["2000", "2010"];
+	this.STATE_Time_Period = ["2000", "2011"];
 
 
  	// ************************************************************************ 
@@ -371,13 +369,20 @@
 	   THIS IS A HARD CODE FOR THE HISTOGRAM 
 	   ONLY DYNAMIC COMPONENT ARE THE COUNTIES
 
-	   IF PORTAL HAD ACCESS TO MORE DATA THEN THIS FUNCTION CAN BE MORE DYNAMIC
+	   IF PORTAL HAD ACCESS TO MORE DATA FROM API THEN THIS FUNCTION CAN BE MORE DYNAMIC
 	*/
 	var States = null;
 	var Counties = null;
 	var NYCounties = null;
 	//Normally this would be generated from the union for characteristics from all points and fill an array
-	var data = ['Population', 'Housing', 'Information', 'Health', 'Educational', 'RetailTrade']
+	var data = {
+			'Educational' : '', 
+			'Health' : '', 
+		    'Information' : '', 
+			'Population' : '', 
+            'RetailTrade' : '',
+            'Housing' : ['Occupied', 'Vacant'], 
+	         };
 	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
 
 
@@ -402,9 +407,20 @@
 	}
 
 	var setCharacteristicView = function(){
-		var Characteristics = new HistogramComposite('Characteristic', 'data');
-		for (var title = 0; title < data.length; title++) {
-			var ch = new CharacteristicWithDataView(data[title]);
+		var Characteristics = new HistogramComposite('Characteristics', 'data');
+		for (var title in data) {
+			var ch = "";
+			if(data[title] instanceof Array){
+				ch = new HistogramComposite(title, title.toLowerCase(), Characteristics);
+
+				for (var i = 0; i < data[title].length; i++) {
+					sub = new CharacteristicWithDataView(data[title][i]);
+					ch.add(sub);
+				};
+			} else{
+				ch = new CharacteristicWithDataView(title);
+			}
+
 			Characteristics.add(ch);
 		}
 		//Counties.contains(Characteristics);
@@ -584,21 +600,113 @@ UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 // PUBLIC METHODS -- ANYONE MAY READ/WRITE 
 // ************************************************************************
 
-UrbanSprawlPortal.prototype.applyDataSet = function(dataset){
+UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 
-	data = window[dataset];
+	data = window[dataset + "_" + year];
 	//parse RDF JSON Data
 	var header = data.head.vars; //object, subject, no predicate
 	var results = data.results.bindings;
 
-	
-	this.currentDataSet = {};
+	if(!(dataset in this.currentDataSet) ){
+		this.currentDataSet[dataset] = {};
+	}
+
+
 	for (var i = 0; i < results.length; i++) {
 		//create hashtable of object : subject for fast lookup
-		var sub = results[i][header[0]].value;
-		var data = results[i][header[1]].value;
-		this.currentDataSet[sub] = data;
+		var subject = results[i][header[0]].value;
+		var value = results[i][header[1]].value;
+		if(!(subject in this.currentDataSet[dataset]) ){
+			this.currentDataSet[dataset][subject] = {};
+		}
+		this.currentDataSet[dataset][subject][year] = value.replace(/[^\d\.\-\ ]/g, '');
 	};
+}
+
+
+UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
+
+	if(this.markersNumSelected < 1){
+		this.UI_DashboardSlider.empty();
+		this.UI_DashboardComboChart.empty();
+		self.UI_SubjectTitle.html('');
+		return;
+	}
+	this.UI_SubjectTitle.html("Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts");
+
+	for (var i = 0; i < years.length; i++) {
+		this.applyDataSet(dataset, years[i]);
+	};
+
+	var self = this;
+	var dataset = this.currentDataSet[dataset];
+
+
+	var datatable = new google.visualization.DataTable();
+	datatable.addColumn('string', 'Year'); 
+	datatable.addRows(2);
+	for (var i = 0; i < years.length; i++) {
+	    datatable.setCell(i, 0, years[i]);
+	}
+
+	this.UI_Histogram.find("input:checked").each(function () {
+		var subject = $(this).attr("id");
+		var first = true;
+		var colIndex = 0;
+		if (subject in dataset){
+			var colIndex = datatable.addColumn( 'number', $(this).attr("id") );
+			for (var i = 0; i < years.length; i++) {
+					var year = years[i];
+			        var amount = parseInt(dataset[subject][year]);
+			        datatable.setCell(i, colIndex, amount);
+			}
+		}
+    });
+
+  // Define a category picker for the 'Metric' column.
+  var categoryPicker = new google.visualization.ControlWrapper({
+    'controlType': 'CategoryFilter',
+    'containerId': 'slider',
+    'options': {
+      'filterColumnLabel': 'Year',
+      'ui': {
+        'allowTyping': false,
+        'allowMultiple': true,
+        'selectedValuesLayout': 'belowStacked',
+      }
+    },
+    // Define an initial state, i.e. a set of metrics to be initially selected.
+    'state': {'selectedValues': self.STATE_Time_Period}
+  });
+
+  // Define a column chart
+  	var columnchart = new google.visualization.ChartWrapper({
+	    'chartType': 'ColumnChart',
+	    'containerId': 'chart',
+	    'options': {
+	      'title': dataset + ' Trends',
+	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
+	      'width': 1400,
+	      'height': 600,
+	      'chartArea': {
+/*	      	'width' : '100%',
+	      	'height' : 600,*/
+	      },
+	      'bar': {groupWidth: "60%"},
+	    }
+	});
+    // Create the dashboard.
+  	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard')).
+    // Configure the slider to affect the piechart
+    bind(categoryPicker, columnchart).
+    // Draw the dashboard
+    draw(datatable);
+
+    google.visualization.events.addListener(categoryPicker, 'statechange', function () {
+   		self.STATE_Time_Period = categoryPicker.getState().selectedValues;
+   });
+	
+	this.UI_Dashboard.slideDown("slow");
 }
 
 UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
@@ -610,7 +718,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	}
 
 	this.UI_Dashboard.slideUp("slow");
-	this.UI_SubjectTitle.html("Analyzing " + dataset + " Heatmap");
+	this.UI_SubjectTitle.html("Analyzing 2011 " + dataset + " Heatmap");
 	// /this.toggleMarkers();
 
 	var self = this;
@@ -618,7 +726,8 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	var selectedPoints = {};
 	var max = 0;
 
-	this.applyDataSet(dataset);
+	this.applyDataSet(dataset, '2011');
+	var data = self.currentDataSet[dataset];
 
 	//Extract selected markers into hashmap
 	this.UI_Histogram.find("input:checked").each(function () {
@@ -633,7 +742,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 		var totals = {};
 
 		for (subject in selectedPoints) {
-			var amount = parseInt(data[subject].replace(/[^\d\.\-\ ]/g, ''));
+			var amount = parseInt(data[subject]['2011']);
 			totals[subject] = amount;
 			max = (max < amount) ? amount : max;
 			min = (min > amount) ? amount : min;
@@ -648,7 +757,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 		}
 		return totals;
 
-	}(self.currentDataSet, gradient.length)
+	}(data, gradient.length)
 
 	var getWeightColor_ = function(normalizedWeight){
 			return {
@@ -722,7 +831,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	var choropleth = [];
 
 	//Go through marker subjects that are enabled
-	for (subject in this.currentDataSet){
+	for (subject in data){
 		var marker = self.markers[subject];
 		var featureID = marker.id;
 		if(subject in normalizedWeights){
@@ -733,98 +842,6 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
     //Generate choropleth fill, all features undefined will show default fill
     this.showGeoJSON_Feature(nycounties, this.infowindow, choropleth);
     this.UI_Heatmap_Key.show();
-}
-
-
-
-UrbanSprawlPortal.prototype.generateDashboard = function(dataset){
-
-	this.applyDataSet(dataset);
-
-	var self = this;
-
-	if(this.markersNumSelected < 1){
-		this.UI_DashboardSlider.empty();
-		this.UI_DashboardComboChart.empty();
-		self.UI_SubjectTitle.html('');
-		return;
-	}
-
-	this.UI_SubjectTitle.html("Analyzing " + dataset + " Charts");
-	this.UI_Dashboard.slideDown("slow");
-
-	var datatable = new google.visualization.DataTable();
-	datatable.addColumn('string', 'Year'); 
-	datatable.addRows(2);
-    datatable.setCell(0, 0, '2000');
-    datatable.setCell(1, 0, '2010');
-
-	this.UI_Histogram.find("input:checked").each(function () {
-		var subject = $(this).attr("id");
-
-		if (subject in self.currentDataSet){
-	        var colIndex = datatable.addColumn( 'number', $(this).attr("id"));
-	        var amount = parseInt(self.currentDataSet[subject].replace(/[^\d\.\-\ ]/g, ''));
-	        datatable.setCell(0, colIndex, amount);
-	        datatable.setCell(1, colIndex, Math.ceil(amount - (Math.random()*(amount/2)) )) ;
-    	}
-    });
-
-
-    /*
-function disposeShit()
-{
-    chart.visualization.clearChart();
-    control.visualization.dispose();
-   dashboard.dispose();
-}
-
-    */
-
-  // Define a category picker for the 'Metric' column.
-  var categoryPicker = new google.visualization.ControlWrapper({
-    'controlType': 'CategoryFilter',
-    'containerId': 'slider',
-    'options': {
-      'filterColumnLabel': 'Year',
-      'ui': {
-        'allowTyping': false,
-        'allowMultiple': true,
-        'selectedValuesLayout': 'belowStacked',
-      }
-    },
-    // Define an initial state, i.e. a set of metrics to be initially selected.
-    'state': {'selectedValues': self.STATE_Time_Period}
-  });
-
-  // Define a column chart
-  	var columnchart = new google.visualization.ChartWrapper({
-	    'chartType': 'ColumnChart',
-	    'containerId': 'chart',
-	    'options': {
-	      'title': dataset + ' Trends',
-	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
-	      'width': 1400,
-	      'height': 600,
-	      'chartArea': {
-/*	      	'width' : '100%',
-	      	'height' : 600,*/
-	      },
-	      'bar': {groupWidth: "60%"},
-	    }
-	});
-    // Create the dashboard.
-  	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard')).
-    // Configure the slider to affect the piechart
-    bind(categoryPicker, columnchart).
-    // Draw the dashboard
-    draw(datatable);
-
-   google.visualization.events.addListener(categoryPicker, 'statechange', function () {
-   	
-   	self.STATE_Time_Period = categoryPicker.getState().selectedValues;
-   	console.log(self.STATE_Time_Period);
-   });
 }
 
 
@@ -866,6 +883,13 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 	this.UI_DashboardComboChart.empty();
 	this.UI_Heatmap_Key.hide();
 	this.UI_MarkerStatus.html("Portal Cleared!");
+
+	var self = this;
+	setTimeout(function(){
+		self.UI_MarkerStatus.html("Selected: 0");
+	}, 1000);
+
+	this.UI_SubjectTitle.html("Analyzing New York Counties");
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){

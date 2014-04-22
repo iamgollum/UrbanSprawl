@@ -229,6 +229,7 @@ var CharacteristicWithDataView = function (name){
 
     var subject = $('<span>')
             .addClass('h-subject left')
+            .attr('data-timeline', '2000,2011')
             .html(name);
 
     this.element = $('<div>')
@@ -237,6 +238,15 @@ var CharacteristicWithDataView = function (name){
         .append(subject)
         .append(btnCharts)
         .append(btnHeatMap);
+
+    //must be a better way of doing this, maybe keeping a data structure in this element
+    this.addYear = function(year){
+        //range = this.element.find('.h-subject').data('timeline').split(',');
+    }
+
+    this.getTimeline = function(){
+        //range = this.element.find('.h-subject').data('timeline').split(',');
+    }
 
 }
 
