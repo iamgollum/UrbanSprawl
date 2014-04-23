@@ -302,11 +302,10 @@
 		        portal.markersNumSelected = markersNumSelected;
 		        $("#box-select").css("color","#FFFFFF");
 		    }
-
+	        if(portal.geoJSON_On) {portal.showGeoJSON();}
 		    themap.setOptions({
 		        draggable: true
 		    });
-		    if(portal.geoJSON_On) {portal.showGeoJSON();}
 		});
 
 	}
@@ -632,6 +631,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
 		self.UI_SubjectTitle.html('');
 		return;
 	}
+	var title = dataset;
 	this.UI_SubjectTitle.html("Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts");
 
 	for (var i = 0; i < years.length; i++) {
@@ -684,7 +684,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
 	    'chartType': 'ColumnChart',
 	    'containerId': 'chart',
 	    'options': {
-	      'title': dataset + ' Trends',
+	      'title': title + ' Trends',
 	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
 	      'width': 1400,
 	      'height': 600,

@@ -212,6 +212,8 @@ color: red; /* #0078a0 */
 section.left-small, section.right-small{
 top: 45%;
 width: 28em;
+border-right: none;
+border-left: none;
 }
 
 section.right-small{
@@ -416,11 +418,15 @@ top: 7px;
 /*** 
 Off Canvas 
 **/
+ul.off-canvas-list{
+	clear: both;
+}
 
 ul.off-canvas-list ul{
 list-style-type: none;
 padding: 0;
 margin: 0;
+clear: both; /* fix popping out issue covering buttons */
 }
 
 
