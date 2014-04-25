@@ -214,7 +214,7 @@ var GeoJSON = function( geojson, options ){
 
 					var nopts = (opts.length == geojson.features.length) ? opts[i] : opts;
 					nopts = (nopts) ? nopts : defaultGeoJSON_Style;
-					console.log(nopts);
+/*					console.log(nopts);*/
 					obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, nopts, geojson.features[i].properties));
 				}
 /*					console.log("NEW SECTION");

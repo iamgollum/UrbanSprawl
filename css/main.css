@@ -497,8 +497,8 @@ font-weight: inherit;
 }
 
 ul.off-canvas-list ul.off-canvas-list li div{
-	padding-left: .75rem;
-	padding-right: .75rem;
+/* 	padding-left: .75rem;
+padding-right: .75rem; */
 }
 
 ul.off-canvas-list ul.off-canvas-list li .h-subject{

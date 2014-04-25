@@ -73,14 +73,336 @@ var nycounties = {
   ]
 }
 
+var CountyWaterAndLandAreas = {
+  "head": {
+    "vars": [ "county" , "waterarea" , "landarea" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "county": { "type": "literal" , "value": "Monroe" } ,
+        "waterarea": { "type": "literal" , "value": "706.31" } ,
+        "landarea": { "type": "literal" , "value": "659.29" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Richmond" } ,
+        "waterarea": { "type": "literal" , "value": "44.02" } ,
+        "landarea": { "type": "literal" , "value": "58.48" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rensselaer" } ,
+        "waterarea": { "type": "literal" , "value": "11.43" } ,
+        "landarea": { "type": "literal" , "value": "653.96" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Steuben" } ,
+        "waterarea": { "type": "literal" , "value": "11.45" } ,
+        "landarea": { "type": "literal" , "value": "1,392.64" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schoharie" } ,
+        "waterarea": { "type": "literal" , "value": "4.34" } ,
+        "landarea": { "type": "literal" , "value": "622.02" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Nassau" } ,
+        "waterarea": { "type": "literal" , "value": "166.39" } ,
+        "landarea": { "type": "literal" , "value": "286.69" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oswego" } ,
+        "waterarea": { "type": "literal" , "value": "358.88" } ,
+        "landarea": { "type": "literal" , "value": "953.3" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oneida" } ,
+        "waterarea": { "type": "literal" , "value": "44.41" } ,
+        "landarea": { "type": "literal" , "value": "1,212.70" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orleans" } ,
+        "waterarea": { "type": "literal" , "value": "426.07" } ,
+        "landarea": { "type": "literal" , "value": "391.4" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Fulton" } ,
+        "waterarea": { "type": "literal" , "value": "36.73" } ,
+        "landarea": { "type": "literal" , "value": "496.17" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ulster" } ,
+        "waterarea": { "type": "literal" , "value": "34.28" } ,
+        "landarea": { "type": "literal" , "value": "1,126.48" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Greene" } ,
+        "waterarea": { "type": "literal" , "value": "10.38" } ,
+        "landarea": { "type": "literal" , "value": "647.75" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Suffolk" } ,
+        "waterarea": { "type": "literal" , "value": "1460.87" } ,
+        "landarea": { "type": "literal" , "value": "912.2" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Lewis" } ,
+        "waterarea": { "type": "literal" , "value": "14.47" } ,
+        "landarea": { "type": "literal" , "value": "1,275.42" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Putnam" } ,
+        "waterarea": { "type": "literal" , "value": "14.97" } ,
+        "landarea": { "type": "literal" , "value": "231.28" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chenango" } ,
+        "waterarea": { "type": "literal" , "value": "4.34" } ,
+        "landarea": { "type": "literal" , "value": "894.36" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Westchester" } ,
+        "waterarea": { "type": "literal" , "value": "67.26" } ,
+        "landarea": { "type": "literal" , "value": "432.82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tioga" } ,
+        "waterarea": { "type": "literal" , "value": "4.21" } ,
+        "landarea": { "type": "literal" , "value": "518.69" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Seneca" } ,
+        "waterarea": { "type": "literal" , "value": "65.6" } ,
+        "landarea": { "type": "literal" , "value": "324.91" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cortland" } ,
+        "waterarea": { "type": "literal" , "value": "1.87" } ,
+        "landarea": { "type": "literal" , "value": "499.65" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schuyler" } ,
+        "waterarea": { "type": "literal" , "value": "13.51" } ,
+        "landarea": { "type": "literal" , "value": "328.71" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Hamilton" } ,
+        "waterarea": { "type": "literal" , "value": "87.41" } ,
+        "landarea": { "type": "literal" , "value": "1,720.39" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Broome" } ,
+        "waterarea": { "type": "literal" , "value": "8.64" } ,
+        "landarea": { "type": "literal" , "value": "706.82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Dutchess" } ,
+        "waterarea": { "type": "literal" , "value": "23.78" } ,
+        "landarea": { "type": "literal" , "value": "801.59" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Columbia" } ,
+        "waterarea": { "type": "literal" , "value": "12.54" } ,
+        "landarea": { "type": "literal" , "value": "635.73" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Kings" } ,
+        "waterarea": { "type": "literal" , "value": "26.29" } ,
+        "landarea": { "type": "literal" , "value": "70.61" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Jefferson" } ,
+        "waterarea": { "type": "literal" , "value": "584.88" } ,
+        "landarea": { "type": "literal" , "value": "1,272.20" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cayuga" } ,
+        "waterarea": { "type": "literal" , "value": "170.46" } ,
+        "landarea": { "type": "literal" , "value": "693.18" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Yates" } ,
+        "waterarea": { "type": "literal" , "value": "37.52" } ,
+        "landarea": { "type": "literal" , "value": "338.24" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chemung" } ,
+        "waterarea": { "type": "literal" , "value": "2.62" } ,
+        "landarea": { "type": "literal" , "value": "408.17" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Allegany" } ,
+        "waterarea": { "type": "literal" , "value": "4.2" } ,
+        "landarea": { "type": "literal" , "value": "1,030.22" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Albany" } ,
+        "waterarea": { "type": "literal" , "value": "9.76" } ,
+        "landarea": { "type": "literal" , "value": "523.45" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Delaware" } ,
+        "waterarea": { "type": "literal" , "value": "21.67" } ,
+        "landarea": { "type": "literal" , "value": "1,446.37" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orange" } ,
+        "waterarea": { "type": "literal" , "value": "22.21" } ,
+        "landarea": { "type": "literal" , "value": "816.34" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ontario" } ,
+        "waterarea": { "type": "literal" , "value": "18.05" } ,
+        "landarea": { "type": "literal" , "value": "644.38" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chautauqua" } ,
+        "waterarea": { "type": "literal" , "value": "437.97" } ,
+        "landarea": { "type": "literal" , "value": "1,062.05" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wyoming" } ,
+        "waterarea": { "type": "literal" , "value": "3.53" } ,
+        "landarea": { "type": "literal" , "value": "592.91" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Queens" } ,
+        "waterarea": { "type": "literal" , "value": "69.04" } ,
+        "landarea": { "type": "literal" , "value": "109.24" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Otsego" } ,
+        "waterarea": { "type": "literal" , "value": "12.31" } ,
+        "landarea": { "type": "literal" , "value": "1,002.80" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "St. Lawrence" } ,
+        "waterarea": { "type": "literal" , "value": "135.88" } ,
+        "landarea": { "type": "literal" , "value": "2,685.60" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Genesee" } ,
+        "waterarea": { "type": "literal" , "value": "1.22" } ,
+        "landarea": { "type": "literal" , "value": "494.11" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Montgomery" } ,
+        "waterarea": { "type": "literal" , "value": "5.51" } ,
+        "landarea": { "type": "literal" , "value": "404.82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Clinton" } ,
+        "waterarea": { "type": "literal" , "value": "78.67" } ,
+        "landarea": { "type": "literal" , "value": "1,038.95" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Warren" } ,
+        "waterarea": { "type": "literal" , "value": "62.37" } ,
+        "landarea": { "type": "literal" , "value": "869.29" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Niagara" } ,
+        "waterarea": { "type": "literal" , "value": "616.89" } ,
+        "landarea": { "type": "literal" , "value": "522.95" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Onondaga" } ,
+        "waterarea": { "type": "literal" , "value": "25.4" } ,
+        "landarea": { "type": "literal" , "value": "780.29" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rockland" } ,
+        "waterarea": { "type": "literal" , "value": "25.12" } ,
+        "landarea": { "type": "literal" , "value": "174.22" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Erie" } ,
+        "waterarea": { "type": "literal" , "value": "182.68" } ,
+        "landarea": { "type": "literal" , "value": "1,044.21" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Franklin" } ,
+        "waterarea": { "type": "literal" , "value": "65.95" } ,
+        "landarea": { "type": "literal" , "value": "1,631.49" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schenectady" } ,
+        "waterarea": { "type": "literal" , "value": "3.52" } ,
+        "landarea": { "type": "literal" , "value": "206.1" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Bronx" } ,
+        "waterarea": { "type": "literal" , "value": "15.4" } ,
+        "landarea": { "type": "literal" , "value": "42.03" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Herkimer" } ,
+        "waterarea": { "type": "literal" , "value": "47.1" } ,
+        "landarea": { "type": "literal" , "value": "1,411.25" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tompkins" } ,
+        "waterarea": { "type": "literal" , "value": "15.57" } ,
+        "landarea": { "type": "literal" , "value": "476.05" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Saratoga" } ,
+        "waterarea": { "type": "literal" , "value": "31.87" } ,
+        "landarea": { "type": "literal" , "value": "811.84" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cattaraugus" } ,
+        "waterarea": { "type": "literal" , "value": "12.4" } ,
+        "landarea": { "type": "literal" , "value": "1,309.85" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wayne" } ,
+        "waterarea": { "type": "literal" , "value": "779.93" } ,
+        "landarea": { "type": "literal" , "value": "604.21" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Essex" } ,
+        "waterarea": { "type": "literal" , "value": "119.7" } ,
+        "landarea": { "type": "literal" , "value": "1,796.80" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Madison" } ,
+        "waterarea": { "type": "literal" , "value": "5.69" } ,
+        "landarea": { "type": "literal" , "value": "655.86" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Livingston" } ,
+        "waterarea": { "type": "literal" , "value": "8.32" } ,
+        "landarea": { "type": "literal" , "value": "632.13" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "New York" } ,
+        "waterarea": { "type": "literal" , "value": "10.81" } ,
+        "landarea": { "type": "literal" , "value": "22.96" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Washington" } ,
+        "waterarea": { "type": "literal" , "value": "10.4" } ,
+        "landarea": { "type": "literal" , "value": "835.44" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Sullivan" } ,
+        "waterarea": { "type": "literal" , "value": "27.14" } ,
+        "landarea": { "type": "literal" , "value": "969.71" }
+      }
+    ]
+  }
+}
+
+
 var ChoroplethHughes = {
  "Population": ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#084594'],
  "Occupied": ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#005a32'],
  "Vacant": ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#005a32'],
- "Information": ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'],
+ "Technology": ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'],
  "Health": ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d'],
  "Education": ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'],
  "Retail": ['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'],
+ "Manufactering": ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177'], 
 }
 
 
@@ -2637,7 +2959,7 @@ var Vacant_2011 = {
 }
 
 
-var Information_2000 = {
+var Technology_2000 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -2896,7 +3218,7 @@ var Information_2000 = {
 }
 
 
-var Information_2011 = {
+var Technology_2011 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -3666,6 +3988,522 @@ var Health_2011 = {
       {
         "county": { "type": "literal" , "value": "Oneida" } ,
         "establishment": { "type": "literal" , "value": "607" }
+      }
+    ]
+  }
+}
+
+var Manufactering_2000 = {
+  "head": {
+    "vars": [ "county" , "establishment" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "county": { "type": "literal" , "value": "Chautauqua" } ,
+        "establishment": { "type": "literal" , "value": "226" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Yates" } ,
+        "establishment": { "type": "literal" , "value": "26" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Greene" } ,
+        "establishment": { "type": "literal" , "value": "32" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Richmond" } ,
+        "establishment": { "type": "literal" , "value": "165" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Delaware" } ,
+        "establishment": { "type": "literal" , "value": "56" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rockland" } ,
+        "establishment": { "type": "literal" , "value": "308" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Queens" } ,
+        "establishment": { "type": "literal" , "value": "1866" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wyoming" } ,
+        "establishment": { "type": "literal" , "value": "62" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oswego" } ,
+        "establishment": { "type": "literal" , "value": "93" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "New York" } ,
+        "establishment": { "type": "literal" , "value": "4188" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Columbia" } ,
+        "establishment": { "type": "literal" , "value": "81" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chenango" } ,
+        "establishment": { "type": "literal" , "value": "82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Clinton" } ,
+        "establishment": { "type": "literal" , "value": "92" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chemung" } ,
+        "establishment": { "type": "literal" , "value": "98" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orange" } ,
+        "establishment": { "type": "literal" , "value": "336" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Montgomery" } ,
+        "establishment": { "type": "literal" , "value": "84" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Bronx" } ,
+        "establishment": { "type": "literal" , "value": "483" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Franklin" } ,
+        "establishment": { "type": "literal" , "value": "29" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Albany" } ,
+        "establishment": { "type": "literal" , "value": "247" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ontario" } ,
+        "establishment": { "type": "literal" , "value": "165" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Dutchess" } ,
+        "establishment": { "type": "literal" , "value": "201" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orleans" } ,
+        "establishment": { "type": "literal" , "value": "43" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Herkimer" } ,
+        "establishment": { "type": "literal" , "value": "72" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Onondaga" } ,
+        "establishment": { "type": "literal" , "value": "506" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Suffolk" } ,
+        "establishment": { "type": "literal" , "value": "2477" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Genesee" } ,
+        "establishment": { "type": "literal" , "value": "100" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Steuben" } ,
+        "establishment": { "type": "literal" , "value": "81" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Sullivan" } ,
+        "establishment": { "type": "literal" , "value": "54" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schoharie" } ,
+        "establishment": { "type": "literal" , "value": "25" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tompkins" } ,
+        "establishment": { "type": "literal" , "value": "96" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Westchester" } ,
+        "establishment": { "type": "literal" , "value": "826" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Madison" } ,
+        "establishment": { "type": "literal" , "value": "67" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Fulton" } ,
+        "establishment": { "type": "literal" , "value": "106" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schuyler" } ,
+        "establishment": { "type": "literal" , "value": "23" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Saratoga" } ,
+        "establishment": { "type": "literal" , "value": "138" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cortland" } ,
+        "establishment": { "type": "literal" , "value": "70" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wayne" } ,
+        "establishment": { "type": "literal" , "value": "143" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schenectady" } ,
+        "establishment": { "type": "literal" , "value": "119" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Kings" } ,
+        "establishment": { "type": "literal" , "value": "2427" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Allegany" } ,
+        "establishment": { "type": "literal" , "value": "59" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Lewis" } ,
+        "establishment": { "type": "literal" , "value": "26" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Livingston" } ,
+        "establishment": { "type": "literal" , "value": "57" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ulster" } ,
+        "establishment": { "type": "literal" , "value": "208" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Monroe" } ,
+        "establishment": { "type": "literal" , "value": "975" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Hamilton" } ,
+        "establishment": { "type": "literal" , "value": "4" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Washington" } ,
+        "establishment": { "type": "literal" , "value": "106" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cayuga" } ,
+        "establishment": { "type": "literal" , "value": "91" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Putnam" } ,
+        "establishment": { "type": "literal" , "value": "79" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Broome" } ,
+        "establishment": { "type": "literal" , "value": "233" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cattaraugus" } ,
+        "establishment": { "type": "literal" , "value": "99" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "St. Lawrence" } ,
+        "establishment": { "type": "literal" , "value": "86" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Nassau" } ,
+        "establishment": { "type": "literal" , "value": "1579" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Jefferson" } ,
+        "establishment": { "type": "literal" , "value": "84" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oneida" } ,
+        "establishment": { "type": "literal" , "value": "268" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Essex" } ,
+        "establishment": { "type": "literal" , "value": "36" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Otsego" } ,
+        "establishment": { "type": "literal" , "value": "78" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Erie" } ,
+        "establishment": { "type": "literal" , "value": "1188" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Niagara" } ,
+        "establishment": { "type": "literal" , "value": "305" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rensselaer" } ,
+        "establishment": { "type": "literal" , "value": "109" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Seneca" } ,
+        "establishment": { "type": "literal" , "value": "37" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Warren" } ,
+        "establishment": { "type": "literal" , "value": "88" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tioga" } ,
+        "establishment": { "type": "literal" , "value": "41" }
+      }
+    ]
+  }
+}
+
+var Manufactering_2011 = {
+  "head": {
+    "vars": [ "county" , "establishment" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "county": { "type": "literal" , "value": "Essex" } ,
+        "establishment": { "type": "literal" , "value": "27" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Putnam" } ,
+        "establishment": { "type": "literal" , "value": "90" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Lewis" } ,
+        "establishment": { "type": "literal" , "value": "23" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Delaware" } ,
+        "establishment": { "type": "literal" , "value": "31" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Westchester" } ,
+        "establishment": { "type": "literal" , "value": "605" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Yates" } ,
+        "establishment": { "type": "literal" , "value": "40" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Queens" } ,
+        "establishment": { "type": "literal" , "value": "1296" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chautauqua" } ,
+        "establishment": { "type": "literal" , "value": "199" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wayne" } ,
+        "establishment": { "type": "literal" , "value": "137" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rensselaer" } ,
+        "establishment": { "type": "literal" , "value": "97" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Montgomery" } ,
+        "establishment": { "type": "literal" , "value": "68" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Columbia" } ,
+        "establishment": { "type": "literal" , "value": "68" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Hamilton" } ,
+        "establishment": { "type": "literal" , "value": "3" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tompkins" } ,
+        "establishment": { "type": "literal" , "value": "86" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cortland" } ,
+        "establishment": { "type": "literal" , "value": "58" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Jefferson" } ,
+        "establishment": { "type": "literal" , "value": "66" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Steuben" } ,
+        "establishment": { "type": "literal" , "value": "78" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Livingston" } ,
+        "establishment": { "type": "literal" , "value": "60" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rockland" } ,
+        "establishment": { "type": "literal" , "value": "254" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ulster" } ,
+        "establishment": { "type": "literal" , "value": "174" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wyoming" } ,
+        "establishment": { "type": "literal" , "value": "46" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schuyler" } ,
+        "establishment": { "type": "literal" , "value": "33" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Clinton" } ,
+        "establishment": { "type": "literal" , "value": "85" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chenango" } ,
+        "establishment": { "type": "literal" , "value": "75" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Otsego" } ,
+        "establishment": { "type": "literal" , "value": "53" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Broome" } ,
+        "establishment": { "type": "literal" , "value": "182" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Warren" } ,
+        "establishment": { "type": "literal" , "value": "79" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tioga" } ,
+        "establishment": { "type": "literal" , "value": "40" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "New York" } ,
+        "establishment": { "type": "literal" , "value": "2144" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Herkimer" } ,
+        "establishment": { "type": "literal" , "value": "61" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Sullivan" } ,
+        "establishment": { "type": "literal" , "value": "50" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schenectady" } ,
+        "establishment": { "type": "literal" , "value": "106" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Fulton" } ,
+        "establishment": { "type": "literal" , "value": "82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Madison" } ,
+        "establishment": { "type": "literal" , "value": "61" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ontario" } ,
+        "establishment": { "type": "literal" , "value": "159" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chemung" } ,
+        "establishment": { "type": "literal" , "value": "83" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orleans" } ,
+        "establishment": { "type": "literal" , "value": "40" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Erie" } ,
+        "establishment": { "type": "literal" , "value": "1016" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Greene" } ,
+        "establishment": { "type": "literal" , "value": "29" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Bronx" } ,
+        "establishment": { "type": "literal" , "value": "348" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Seneca" } ,
+        "establishment": { "type": "literal" , "value": "40" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oneida" } ,
+        "establishment": { "type": "literal" , "value": "237" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Genesee" } ,
+        "establishment": { "type": "literal" , "value": "98" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cattaraugus" } ,
+        "establishment": { "type": "literal" , "value": "79" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schoharie" } ,
+        "establishment": { "type": "literal" , "value": "20" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "St. Lawrence" } ,
+        "establishment": { "type": "literal" , "value": "76" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Monroe" } ,
+        "establishment": { "type": "literal" , "value": "871" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Allegany" } ,
+        "establishment": { "type": "literal" , "value": "48" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Washington" } ,
+        "establishment": { "type": "literal" , "value": "90" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oswego" } ,
+        "establishment": { "type": "literal" , "value": "82" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Richmond" } ,
+        "establishment": { "type": "literal" , "value": "135" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Nassau" } ,
+        "establishment": { "type": "literal" , "value": "1076" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Dutchess" } ,
+        "establishment": { "type": "literal" , "value": "202" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orange" } ,
+        "establishment": { "type": "literal" , "value": "311" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Onondaga" } ,
+        "establishment": { "type": "literal" , "value": "439" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Albany" } ,
+        "establishment": { "type": "literal" , "value": "241" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Suffolk" } ,
+        "establishment": { "type": "literal" , "value": "2089" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Niagara" } ,
+        "establishment": { "type": "literal" , "value": "261" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Kings" } ,
+        "establishment": { "type": "literal" , "value": "1774" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Franklin" } ,
+        "establishment": { "type": "literal" , "value": "25" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cayuga" } ,
+        "establishment": { "type": "literal" , "value": "94" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Saratoga" } ,
+        "establishment": { "type": "literal" , "value": "133" }
       }
     ]
   }

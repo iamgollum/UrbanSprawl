@@ -59,7 +59,8 @@ Array.prototype.repeat= function(what, L){
 
 
 	this.markers = {};
-	this.currentDataSet = {};
+	this.place_markers = [];
+	this.cachedDataSets = {};
 	this.set('markersNumSelected', 0);
 	this.markers_on = true;
 
@@ -85,9 +86,12 @@ Array.prototype.repeat= function(what, L){
 	}
 
 
-	// State Variables, persists across all views (aka. var history)
+	// State Variables, persists across all views (aka. view history)
 	// ******************************************************
 	this.STATE_Time_Period = ["2000", "2011"];
+	this.STATE_Heatmap_Title = "";
+	this.STATE_Charts_Title = "";
+	this.STATE_Default_Title = "Analyzing New York Counties";
 
 
  	// ************************************************************************ 
@@ -318,20 +322,19 @@ Array.prototype.repeat= function(what, L){
 
 	var enablePlacesSearch_ = function(){
 		var searchBox = new google.maps.places.SearchBox((document.getElementById('search-input')));
-
-		place_markers = [];
 		// [START region_getplaces]
 		// Listen for the event fired when the user selects an item from the
 		// pick list. Retrieve the matching places for that item.
+
 		google.maps.event.addListener(searchBox, 'places_changed', function() {
 			var places = searchBox.getPlaces();
 
-			for (var i = 0, marker; marker = place_markers[i]; i++) {
+			for (var i = 0, marker; i < portal.place_markers.length; i++) {
+			  marker = portal.place_markers[i];
 			  marker.setMap(null);
 			}
 
 			// For each place, get the icon, place name, and location.
-			place_markers = [];
 			var bounds = new google.maps.LatLngBounds();
 			for (var i = 0, place; place = places[i]; i++) {
 			  var image = {
@@ -350,7 +353,7 @@ Array.prototype.repeat= function(what, L){
 			    position: place.geometry.location
 			  });
 
-			  place_markers.push(marker);
+			  portal.place_markers.push(marker);
 
 			  bounds.extend(place.geometry.location);
 			}
@@ -381,12 +384,9 @@ Array.prototype.repeat= function(what, L){
 	var NYCounties = null;
 	//Normally this would be generated from the union for characteristics from all points and fill an array
 	var data = {
-			'Education' : '', 
-			'Health' : '', 
-		    'Information' : '', 
 			'Population' : '', 
-            'Retail' : '',
-            'Housing' : ['Occupied', 'Vacant'], 
+			'Housing' : ['Occupied', 'Vacant'], 
+            'Businesses' : ['Education', 'Health', 'Manufactering', 'Technology'],
 	         };
 	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
 
@@ -622,8 +622,8 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 	var header = data.head.vars; //object, subject, no predicate
 	var results = data.results.bindings;
 
-	if(!(dataset in this.currentDataSet) ){
-		this.currentDataSet[dataset] = {};
+	if(!(dataset in this.cachedDataSets) ){
+		this.cachedDataSets[dataset] = {};
 	}
 
 
@@ -631,10 +631,10 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 		//create hashtable of object : subject for fast lookup
 		var subject = results[i][header[0]].value;
 		var value = results[i][header[1]].value;
-		if(!(subject in this.currentDataSet[dataset]) ){
-			this.currentDataSet[dataset][subject] = {};
+		if(!(subject in this.cachedDataSets[dataset]) ){
+			this.cachedDataSets[dataset][subject] = {};
 		}
-		this.currentDataSet[dataset][subject][year] = value.replace(/[^\d\.\-\ ]/g, '');
+		this.cachedDataSets[dataset][subject][year] = value.replace(/[^\d\.\-\ ]/g, '');
 	};
 }
 
@@ -645,11 +645,12 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 	if(this.markersNumSelected < 1){
 		this.UI_DashboardSlider.empty();
 		this.UI_DashboardComboChart.empty();
-		this.UI_SubjectTitle.html('Analyzing New York Counties');
+		this.UI_SubjectTitle.html(this.STATE_Default_Title);
 		return;
 	}
 	var title = dataset;
-	this.UI_SubjectTitle.html("Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts");
+	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts";
+	this.UI_SubjectTitle.html(this.STATE_Charts_Title);
 
 	for (var i = 0; i < years.length; i++) {
 		this.applyDataSet("Population", years[i]);
@@ -657,7 +658,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 	};
 
 	var self = this;
-	var dataset = this.currentDataSet[dataset];
+	var dataset = this.cachedDataSets[dataset];
 
 
 	var datatable = new google.visualization.DataTable();
@@ -677,12 +678,12 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 					var year = years[i];
 			        var amount = parseInt(dataset[subject][year]);
 /*			        if(title == "Vacant" || title = "Occupied"){
-			        	var total = self.currentDataSet['Vacant'] + self.currentDataSet['Housing'];
+			        	var total = self.cachedDataSets['Vacant'] + self.cachedDataSets['Housing'];
 			        	amount = Math.ceil( (amount/total) * 100);
 
 			        } else if*/
 			        if(title != "Population"){
-			        	amount = amount/ self.currentDataSet['Population'][subject][year];
+			        	amount = amount/ self.cachedDataSets['Population'][subject][year];
 			        }
 			        datatable.setCell(i, colIndex, amount);
 			}
@@ -764,7 +765,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	/* Reset */
 	if(this.markersNumSelected < 1){
-		this.UI_SubjectTitle.html('Analyzing New York Counties');
+		this.UI_SubjectTitle.html(this.STATE_Default_Title);
 		return;
 	}
 
@@ -779,7 +780,8 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	} else {
 		title += ' Density (By Square Mile)';
 	}
-	this.UI_SubjectTitle.html("Analyzing 2011 " + title + " Heatmap");
+	this.STATE_Heatmap_Title = "Analyzing 2011 " + title + " Heatmap";
+	this.UI_SubjectTitle.html(this.STATE_Heatmap_Title);
 	// /this.toggleMarkers();
 
 	var self = this;
@@ -790,7 +792,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	this.applyDataSet('Population', '2011');
 	this.applyDataSet(dataset, '2011');
-	var data = self.currentDataSet[dataset];
+	var data = self.cachedDataSets[dataset];
 
 	//Extract selected markers into hashmap
 	this.UI_Histogram.find("input:checked").each(function () {
@@ -808,7 +810,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 			var amount = (subject in data) ? parseInt(data[subject]['2011']) : -1;
 
 	        if(dataset != "Population"){
-	        	amount = (amount/self.currentDataSet['Population'][subject]['2011']);
+	        	amount = (amount/self.cachedDataSets['Population'][subject]['2011']);
 	        }
 			totals[subject] = amount;
 			//Ignore subjects that have no data
@@ -959,6 +961,12 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 			marker.selected = false;
 			this.UI_MarkerSelectedContainer.remove(marker.kindDomElement);
 	}
+
+    for (var i = 0; i < this.place_markers.length; i++) {
+		  var marker = this.place_markers[i];
+		  marker.setMap(null);
+    };
+
 	this.markersNumSelected = 0;
 	this.resetGeoJSON_Styles();
 	this.UI_MarkerSelectedParentContainer.setMeter(this.markersNumSelected);
@@ -972,7 +980,9 @@ UrbanSprawlPortal.prototype.clearSelection = function(){
 		self.UI_MarkerStatus.html("Selected: 0");
 	}, 1000);
 
-	this.UI_SubjectTitle.html("Analyzing New York Counties");
+	this.UI_SubjectTitle.html(this.STATE_Default_Title);
+	this.STATE_Heatmap_Title = null;
+	this.STATE_Charts_Title = null;
 }
 
 UrbanSprawlPortal.prototype.changeMapStyle = function(index){
@@ -993,7 +1003,7 @@ UrbanSprawlPortal.prototype.toggleCluster = function(){
   	this.markerCluster = null;
     for (var i = 0, marker; marker = this.markers[i]; i++) {
       marker.setMap(this.get('map'));
-      marker.setVisible(true);
+      marker.setVisible(true)
     }*/
     this.cluster_on = false;
     
@@ -1029,8 +1039,10 @@ UrbanSprawlPortal.prototype.slideToggleDashboard = function(button){
     this.UI_Dashboard.slideToggle("slow", function (){
 	    if(self.UI_Dashboard.css('display') == "none"){
 			button.html("Dashboard");
+			self.UI_SubjectTitle.html(self.STATE_Heatmap_Title || self.STATE_Default_Title);
 	    } else {
 	    	button.html("GeoInterface");
+	    	self.UI_SubjectTitle.html(self.STATE_Charts_Title || self.STATE_Default_Title);
 	    }
 	});  
 }
