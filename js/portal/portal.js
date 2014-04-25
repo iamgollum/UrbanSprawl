@@ -1,3 +1,9 @@
+
+Array.prototype.repeat= function(what, L){
+ while(L) this[--L]= what;
+ return this;
+}
+
 /**
  * A singelton instance of the Urban Sprawl Assessment Portal.
  * 
@@ -375,11 +381,11 @@
 	var NYCounties = null;
 	//Normally this would be generated from the union for characteristics from all points and fill an array
 	var data = {
-			'Educational' : '', 
+			'Education' : '', 
 			'Health' : '', 
 		    'Information' : '', 
 			'Population' : '', 
-            'RetailTrade' : '',
+            'Retail' : '',
             'Housing' : ['Occupied', 'Vacant'], 
 	         };
 	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
@@ -599,8 +605,18 @@ UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 // PUBLIC METHODS -- ANYONE MAY READ/WRITE 
 // ************************************************************************
 
+UrbanSprawlPortal.prototype.findModel = function(dataset){
+	var model = window[dataset + "" + Model]
+	if(typeof(model) == 'function' ){
+		return model;
+	}
+
+	alert('Dataset does not exist - NOOOOOOOO!');
+}
+
 UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 
+	//data = this.findModel(dataset).getFromYear(year);
 	data = window[dataset + "_" + year];
 	//parse RDF JSON Data
 	var header = data.head.vars; //object, subject, no predicate
@@ -623,18 +639,20 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 }
 
 
-UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
+UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartType){
+
 
 	if(this.markersNumSelected < 1){
 		this.UI_DashboardSlider.empty();
 		this.UI_DashboardComboChart.empty();
-		self.UI_SubjectTitle.html('');
+		this.UI_SubjectTitle.html('Analyzing New York Counties');
 		return;
 	}
 	var title = dataset;
 	this.UI_SubjectTitle.html("Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts");
 
 	for (var i = 0; i < years.length; i++) {
+		this.applyDataSet("Population", years[i]);
 		this.applyDataSet(dataset, years[i]);
 	};
 
@@ -658,6 +676,14 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
 			for (var i = 0; i < years.length; i++) {
 					var year = years[i];
 			        var amount = parseInt(dataset[subject][year]);
+/*			        if(title == "Vacant" || title = "Occupied"){
+			        	var total = self.currentDataSet['Vacant'] + self.currentDataSet['Housing'];
+			        	amount = Math.ceil( (amount/total) * 100);
+
+			        } else if*/
+			        if(title != "Population"){
+			        	amount = amount/ self.currentDataSet['Population'][subject][year];
+			        }
 			        datatable.setCell(i, colIndex, amount);
 			}
 		}
@@ -679,12 +705,20 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
     'state': {'selectedValues': self.STATE_Time_Period}
   });
 
+	if(title == "Occupied" || title == "Vacant"){
+		title += ' Housing Density';
+	} 
+	else if(title != "Population"){
+		title += ' Industry Density';
+	} else {
+		title += ' Density (By Square Mile)';
+	}
   // Define a column chart
-  	var columnchart = new google.visualization.ChartWrapper({
+  	var chart = new google.visualization.ChartWrapper({
 	    'chartType': 'ColumnChart',
 	    'containerId': 'chart',
 	    'options': {
-	      'title': title + ' Trends',
+	      'title': title,
 	      'hAxis': {title: 'Year', titleTextStyle: {color: 'red'}},
 	      'width': 1400,
 	      'height': 600,
@@ -696,36 +730,65 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years){
 	    }
 	});
     // Create the dashboard.
-  	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard')).
+  	var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'), 'ready', dashboardReady).
     // Configure the slider to affect the piechart
-    bind(categoryPicker, columnchart).
+    bind(categoryPicker, chart).
     // Draw the dashboard
     draw(datatable);
+
 
     google.visualization.events.addListener(categoryPicker, 'statechange', function () {
    		self.STATE_Time_Period = categoryPicker.getState().selectedValues;
    });
+
+  // Change the chart when toggled by type
+/*	$( "#toggleChartType" ).toggle(function() {
+	      chart.setChartType('LineChart');
+	          chart.draw();
+
+	}, function() {
+	      chart.setChartType('ColumnChart');
+	          chart.draw();
+	});	*/
 	
 	this.UI_Dashboard.slideDown("slow");
+}
+
+function dashboardReady() {
+  // The dashboard is ready to accept interaction. Configure the buttons to
+  // programmatically 
+
 }
 
 UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 	/* Reset */
 	if(this.markersNumSelected < 1){
-		this.UI_SubjectTitle.html('');
+		this.UI_SubjectTitle.html('Analyzing New York Counties');
 		return;
 	}
 
+	var title = dataset;
 	this.UI_Dashboard.slideUp("slow");
-	this.UI_SubjectTitle.html("Analyzing 2011 " + dataset + " Heatmap");
+
+	if(title == "Occupied" || title == "Vacant"){
+		title += ' Housing Density';
+	} 
+	else if(title != "Population"){
+		title += ' Industry Density';
+	} else {
+		title += ' Density (By Square Mile)';
+	}
+	this.UI_SubjectTitle.html("Analyzing 2011 " + title + " Heatmap");
 	// /this.toggleMarkers();
 
 	var self = this;
 	var gradient = ChoroplethHughes[dataset];
+	var gradientLength = gradient.length;
 	var selectedPoints = {};
 	var max = 0;
 
+	this.applyDataSet('Population', '2011');
 	this.applyDataSet(dataset, '2011');
 	var data = self.currentDataSet[dataset];
 
@@ -742,30 +805,47 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 		var totals = {};
 
 		for (subject in selectedPoints) {
-			var amount = parseInt(data[subject]['2011']);
+			var amount = (subject in data) ? parseInt(data[subject]['2011']) : -1;
+
+	        if(dataset != "Population"){
+	        	amount = (amount/self.currentDataSet['Population'][subject]['2011']);
+	        }
 			totals[subject] = amount;
-			max = (max < amount) ? amount : max;
-			min = (min > amount) ? amount : min;
+			//Ignore subjects that have no data
+			if (amount >= 0) {
+				max = (max < amount) ? amount : max;
+				min = (min > amount) ? amount : min;
+			}
 		}
 
 		var weightRange = max - min;
-
 		for(subject in totals){
-			var zeroToOne = ((totals[subject] - min)/weightRange); 
-			var scaled = Math.ceil(zeroToOne * (arbRange-1));
-			totals[subject] = scaled;
+			if(totals[subject] >= 0){
+				var zeroToOne = ((totals[subject] - min)/weightRange); 
+				var scaled = Math.ceil(zeroToOne * (arbRange-1));
+				totals[subject] = scaled;
+			}
 		}
 		return totals;
 
-	}(data, gradient.length)
+	}(data, gradientLength);
 
 	var getWeightColor_ = function(normalizedWeight){
+			var color = '#000000';
+			var opacity = 1;
+
+			if (normalizedWeight >= 0) {
+				color = gradient[normalizedWeight];
+			} else {
+				opacity = 1;
+			}
+
 			return {
 				strokeColor: "#444",
 				strokeOpacity: 1,
 				strokeWeight: 2,
-				fillColor: gradient[normalizedWeight],
-				fillOpacity: 1		
+				fillColor: color,
+				fillOpacity: opacity
 			};
 	}
 
@@ -776,13 +856,14 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	var createBlockRangeElement___ = function(lower, upper){
 		var oLower = lower;
 		var oUpper = upper;
+
 		var text = "";
 		lower = Math.ceil( ((lower * max)/max)*100 ).toString() + '%';
 		upper = Math.ceil( ((upper * max)/max)*100 ).toString() + '%';
 
 		if(upper == '100%'){upper = '99%'; }
 
-		if(oLower == (1/gradient.length) ){
+		if(oLower == (1/gradientLength) ){
 			text = "Less than " + upper;
 		} else if(oLower == 1) {
 			text = "Greater than 99%";
@@ -799,7 +880,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 
 	var getHeatmapkey_ = function(){
-		var bins = gradient.length;
+		var bins = gradientLength;
 		var container = self.UI_Heatmap_Key.find('ul');
 		container.empty();
 		var interval = 2;
@@ -807,7 +888,7 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 
 		var list = createKeyEntry__(
 			createColorBlockElement___(gradient[0]),
-			createBlockRangeElement___( (1/bins) ,  ((2)/bins) )
+			createBlockRangeElement___( (1/bins) ,  (2/bins) )
 			)
 		container.append(list);
 
@@ -831,6 +912,8 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	var choropleth = [];
 
 	//Go through marker subjects that are enabled
+	choropleth = [];
+
 	for (subject in data){
 		var marker = self.markers[subject];
 		var featureID = marker.id;

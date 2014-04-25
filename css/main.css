@@ -64,10 +64,16 @@ nav{
 	z-index: 2;
 }
 
+#chartHeader{
+	clear: both;
+	display: block;
+	height: auto;
+}
 #chart{
-margin: 0px auto;
 position: relative;
 width: 1400px;
+clear: both;
+margin: 3rem auto;
 }
 
 
@@ -211,13 +217,13 @@ color: red; /* #0078a0 */
 
 section.left-small, section.right-small{
 top: 45%;
-width: 28em;
+width: 24em;
 border-right: none;
 border-left: none;
 }
 
 section.right-small{
-	right: -12.9em;
+	right: -10.9em;
 
 	transform:rotate(-90deg);
 	-ms-transform:rotate(-90deg); /* IE 9 */
@@ -234,7 +240,7 @@ section.right-small{
 }
 
 section.left-small{
-	left: -12.9em;
+	left: -10.9em;
 
 	transform:rotate(90deg);
 	-ms-transform:rotate(90deg); /* IE 9 */
@@ -643,9 +649,12 @@ margin-top: 20px; */
 
 /* below is not necessary, just for style */
 #slider {
-    width: 400px;
-    margin: 2em auto;
-    margin-top: 6em;
+float: right;
+/*     margin-top: 6em; */
+}
+#toggleChartType {
+display: block;
+float: left;
 }
 
 
@@ -789,7 +798,7 @@ font-weight: 300;
 
 
 
-
+/* 
 
 #map-results{
 	position: absolute;
@@ -800,7 +809,7 @@ font-weight: 300;
 	width: 40rem;
 	height: 35rem;
 	overflow-y: scroll;
-/* 	overflow-x: hidden; */
+overflow-x: hidden;
 	background-color:rgba(0, 0, 0, 0.5);
 }
 
@@ -826,5 +835,5 @@ padding-right: 1.15rem;
 padding-bottom: 0.5875rem;
 padding-left: 1.15rem;
 font-size: 0.5875rem;
-}
+} */
 

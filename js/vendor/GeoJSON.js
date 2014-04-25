@@ -201,12 +201,25 @@ var GeoJSON = function( geojson, options ){
 				obj = _error("Invalid GeoJSON object: FeatureCollection object missing \"features\" member.");
 			}else{
 				obj = [];
+				var defaultGeoJSON_Style = {
+					strokeColor: "#444",
+					strokeOpacity: 1,
+					strokeWeight: 2,
+					fillColor: "#FFFFFF",
+					fillOpacity: 0		
+				}
 				for (var i = 0; i < geojson.features.length; i++){
 					//itrerate through options
 					//seperate fils for each feature
+
 					var nopts = (opts.length == geojson.features.length) ? opts[i] : opts;
+					nopts = (nopts) ? nopts : defaultGeoJSON_Style;
+					console.log(nopts);
 					obj.push(_geometryToGoogleMaps(geojson.features[i].geometry, nopts, geojson.features[i].properties));
 				}
+/*					console.log("NEW SECTION");
+					console.log("NEW SECTION");
+					console.log("NEW SECTION");*/
 			}
 			break;
 		

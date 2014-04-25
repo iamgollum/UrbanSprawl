@@ -75,11 +75,12 @@ var nycounties = {
 
 var ChoroplethHughes = {
  "Population": ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#084594'],
- "Housing": ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#005a32'],
+ "Occupied": ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#005a32'],
+ "Vacant": ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#005a32'],
  "Information": ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486'],
  "Health": ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d'],
- "Educational": ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'],
- "RetailTrade": ['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'],
+ "Education": ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'],
+ "Retail": ['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'],
 }
 
 
@@ -599,7 +600,7 @@ var Population_2011 = {
   }
 }
 
-var Educational_2000 = {
+var Education_2000 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -857,7 +858,7 @@ var Educational_2000 = {
   }
 }
 
-var Educational_2011 = {
+var Education_2011 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -1115,7 +1116,7 @@ var Educational_2011 = {
   }
 }
 
-var RetailTrade_2000 = {
+var Retail_2000 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -1373,7 +1374,7 @@ var RetailTrade_2000 = {
   }
 }
 
-var RetailTrade_2011 = {
+var Retail_2011 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
