@@ -65,9 +65,13 @@ nav{
 }
 
 #chartHeader{
-	clear: both;
-	display: block;
-	height: auto;
+clear: both;
+display: block;
+height: auto;
+width: 600px;
+margin-top: 6em;
+margin-left: auto;
+margin-right: auto;
 }
 #chart{
 position: relative;
@@ -322,12 +326,13 @@ section.top-small span:first-child{
 	height: 54em;
 }
 #location, #features{
-	height: 26em;
+	height: 22em;
 	overflow: auto;
 	overflow-x: hidden;
 }
 #features{
 	padding-top: 2em;
+	height: 28em;
 }
 
 #latlng{

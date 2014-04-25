@@ -649,6 +649,14 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 		return;
 	}
 	var title = dataset;
+	if(title == "Occupied" || title == "Vacant"){
+		title += ' Housing Density';
+	} 
+	else if(title != "Population"){
+		title += ' Industry Density';
+	} else {
+		title += ' Density (By Square Mile)';
+	}
 	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts";
 	this.UI_SubjectTitle.html(this.STATE_Charts_Title);
 
@@ -706,14 +714,6 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
     'state': {'selectedValues': self.STATE_Time_Period}
   });
 
-	if(title == "Occupied" || title == "Vacant"){
-		title += ' Housing Density';
-	} 
-	else if(title != "Population"){
-		title += ' Industry Density';
-	} else {
-		title += ' Density (By Square Mile)';
-	}
   // Define a column chart
   	var chart = new google.visualization.ChartWrapper({
 	    'chartType': 'ColumnChart',
@@ -736,21 +736,26 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
     bind(categoryPicker, chart).
     // Draw the dashboard
     draw(datatable);
+    $( "#toggleChartType" ).addClass("show-chart");
 
+	$( "#toggleChartType" ).click(function(event) {
+		if($(this).hasClass("show-chart")){
+		    chart.setChartType('LineChart');
+		    chart.draw();
+		    $(this).removeClass("show-chart")
+		           .addClass("show-line")
+		           .html("Column Chart");
+		} else {
+		    chart.setChartType('ColumnChart');
+	        chart.draw();
+	        $(this).addClass("show-chart")
+	               .html("Line Chart");
+		}
+	});	
 
     google.visualization.events.addListener(categoryPicker, 'statechange', function () {
    		self.STATE_Time_Period = categoryPicker.getState().selectedValues;
    });
-
-  // Change the chart when toggled by type
-/*	$( "#toggleChartType" ).toggle(function() {
-	      chart.setChartType('LineChart');
-	          chart.draw();
-
-	}, function() {
-	      chart.setChartType('ColumnChart');
-	          chart.draw();
-	});	*/
 	
 	this.UI_Dashboard.slideDown("slow");
 }
@@ -758,7 +763,7 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 function dashboardReady() {
   // The dashboard is ready to accept interaction. Configure the buttons to
   // programmatically 
-
+   // Change the chart when toggled by type
 }
 
 UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
