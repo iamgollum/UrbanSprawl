@@ -402,7 +402,7 @@ var ChoroplethHughes = {
  "Health": ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#99000d'],
  "Education": ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#8c2d04'],
  "Retail": ['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'],
- "Manufactering": ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177'], 
+ "Manufacturing": ['#fff7f3', '#fde0dd', '#fcc5c0', '#fa9fb5', '#f768a1', '#dd3497', '#ae017e', '#7a0177'], 
 }
 
 
@@ -3992,7 +3992,7 @@ var Health_2011 = {
   }
 }
 
-var Manufactering_2000 = {
+var Manufacturing_2000 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
@@ -4250,7 +4250,7 @@ var Manufactering_2000 = {
   }
 }
 
-var Manufactering_2011 = {
+var Manufacturing_2011 = {
   "head": {
     "vars": [ "county" , "establishment" ]
   } ,
