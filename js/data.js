@@ -73,7 +73,7 @@ var nycounties = {
   ]
 }
 
-var CountyWaterAndLandAreas = {
+var CountyTotalArea = {
   "head": {
     "vars": [ "county" , "waterarea" , "landarea" ]
   } ,
@@ -408,515 +408,514 @@ var ChoroplethHughes = {
 
 var Population_2000 = {
   "head": {
-    "vars": [ "county" , "population" ]
+    "vars": [ "county" , "populationdensity" ]
   } ,
   "results": {
     "bindings": [
       {
-        "county": { "type": "literal" , "value": "Jefferson" } ,
-        "population": { "type": "literal" , "value": "111,790" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "St. Lawrence" } ,
-        "population": { "type": "literal" , "value": "111,864" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Greene" } ,
-        "population": { "type": "literal" , "value": "47,986" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Ontario" } ,
-        "population": { "type": "literal" , "value": "100,106" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Franklin" } ,
-        "population": { "type": "literal" , "value": "51,044" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Tioga" } ,
-        "population": { "type": "literal" , "value": "51,838" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "New York" } ,
-        "population": { "type": "literal" , "value": "1,540,547" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Tompkins" } ,
-        "population": { "type": "literal" , "value": "96,608" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Erie" } ,
-        "population": { "type": "literal" , "value": "949,440" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Wyoming" } ,
-        "population": { "type": "literal" , "value": "43,399" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Niagara" } ,
-        "population": { "type": "literal" , "value": "219,620" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Oswego" } ,
-        "population": { "type": "literal" , "value": "122,477" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Yates" } ,
-        "population": { "type": "literal" , "value": "24,723" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Livingston" } ,
-        "population": { "type": "literal" , "value": "64,705" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Seneca" } ,
-        "population": { "type": "literal" , "value": "33,343" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cattaraugus" } ,
-        "population": { "type": "literal" , "value": "83,927" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Columbia" } ,
-        "population": { "type": "literal" , "value": "63,046" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Herkimer" } ,
-        "population": { "type": "literal" , "value": "64,451" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Oneida" } ,
-        "population": { "type": "literal" , "value": "235,146" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Bronx" } ,
-        "population": { "type": "literal" , "value": "1,334,319" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Albany" } ,
-        "population": { "type": "literal" , "value": "295,106" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Kings" } ,
-        "population": { "type": "literal" , "value": "2,467,006" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Nassau" } ,
-        "population": { "type": "literal" , "value": "1,336,713" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Essex" } ,
-        "population": { "type": "literal" , "value": "38,911" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Otsego" } ,
-        "population": { "type": "literal" , "value": "61,860" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Schenectady" } ,
-        "population": { "type": "literal" , "value": "146,581" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Ulster" } ,
-        "population": { "type": "literal" , "value": "177,810" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Washington" } ,
-        "population": { "type": "literal" , "value": "60,977" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Broome" } ,
-        "population": { "type": "literal" , "value": "200,351" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Wayne" } ,
-        "population": { "type": "literal" , "value": "93,791" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Madison" } ,
-        "population": { "type": "literal" , "value": "69,450" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Dutchess" } ,
-        "population": { "type": "literal" , "value": "280,914" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Rensselaer" } ,
-        "population": { "type": "literal" , "value": "152,684" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Westchester" } ,
-        "population": { "type": "literal" , "value": "925,511" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cortland" } ,
-        "population": { "type": "literal" , "value": "48,693" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Richmond" } ,
-        "population": { "type": "literal" , "value": "445,235" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Saratoga" } ,
-        "population": { "type": "literal" , "value": "201,514" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Delaware" } ,
-        "population": { "type": "literal" , "value": "47,864" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Steuben" } ,
-        "population": { "type": "literal" , "value": "98,764" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Queens" } ,
-        "population": { "type": "literal" , "value": "2,230,501" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Schoharie" } ,
-        "population": { "type": "literal" , "value": "31,514" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Clinton" } ,
-        "population": { "type": "literal" , "value": "79,891" }
+        "county": { "type": "literal" , "value": "Allegany" } ,
+        "populationdensity": { "type": "literal" , "value": "48.35763235" }
       } ,
       {
         "county": { "type": "literal" , "value": "Schuyler" } ,
-        "population": { "type": "literal" , "value": "19,232" }
+        "populationdensity": { "type": "literal" , "value": "58.50749901" }
       } ,
       {
-        "county": { "type": "literal" , "value": "Chenango" } ,
-        "population": { "type": "literal" , "value": "51,325" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Rockland" } ,
-        "population": { "type": "literal" , "value": "287,720" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Onondaga" } ,
-        "population": { "type": "literal" , "value": "458,034" }
+        "county": { "type": "literal" , "value": "Essex" } ,
+        "populationdensity": { "type": "literal" , "value": "21.65572128" }
       } ,
       {
         "county": { "type": "literal" , "value": "Sullivan" } ,
-        "population": { "type": "literal" , "value": "74,134" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Lewis" } ,
-        "population": { "type": "literal" , "value": "26,989" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Chautauqua" } ,
-        "population": { "type": "literal" , "value": "139,593" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Chemung" } ,
-        "population": { "type": "literal" , "value": "91,094" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Fulton" } ,
-        "population": { "type": "literal" , "value": "54,976" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Montgomery" } ,
-        "population": { "type": "literal" , "value": "49,605" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Orleans" } ,
-        "population": { "type": "literal" , "value": "44,178" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Genesee" } ,
-        "population": { "type": "literal" , "value": "60,539" }
+        "populationdensity": { "type": "literal" , "value": "76.44966021" }
       } ,
       {
         "county": { "type": "literal" , "value": "Suffolk" } ,
-        "population": { "type": "literal" , "value": "1,424,081" }
+        "populationdensity": { "type": "literal" , "value": "1561.149967" }
       } ,
       {
-        "county": { "type": "literal" , "value": "Putnam" } ,
-        "population": { "type": "literal" , "value": "96,049" }
+        "county": { "type": "literal" , "value": "Yates" } ,
+        "populationdensity": { "type": "literal" , "value": "73.09307001" }
       } ,
       {
-        "county": { "type": "literal" , "value": "Monroe" } ,
-        "population": { "type": "literal" , "value": "738,979" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cayuga" } ,
-        "population": { "type": "literal" , "value": "81,871" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Allegany" } ,
-        "population": { "type": "literal" , "value": "49,819" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Orange" } ,
-        "population": { "type": "literal" , "value": "342,892" }
+        "county": { "type": "literal" , "value": "Chenango" } ,
+        "populationdensity": { "type": "literal" , "value": "57.38740552" }
       } ,
       {
         "county": { "type": "literal" , "value": "Hamilton" } ,
-        "population": { "type": "literal" , "value": "5,377" }
+        "populationdensity": { "type": "literal" , "value": "3.125454112" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Seneca" } ,
+        "populationdensity": { "type": "literal" , "value": "102.6222646" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Broome" } ,
+        "populationdensity": { "type": "literal" , "value": "283.4540619" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Jefferson" } ,
+        "populationdensity": { "type": "literal" , "value": "87.87140387" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orleans" } ,
+        "populationdensity": { "type": "literal" , "value": "112.8717425" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Monroe" } ,
+        "populationdensity": { "type": "literal" , "value": "1120.870937" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rensselaer" } ,
+        "populationdensity": { "type": "literal" , "value": "233.4760536" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Saratoga" } ,
+        "populationdensity": { "type": "literal" , "value": "248.2188609" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schenectady" } ,
+        "populationdensity": { "type": "literal" , "value": "711.2130034" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Lewis" } ,
+        "populationdensity": { "type": "literal" , "value": "21.1608725" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Madison" } ,
+        "populationdensity": { "type": "literal" , "value": "105.8915012" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Albany" } ,
+        "populationdensity": { "type": "literal" , "value": "563.7711338" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Steuben" } ,
+        "populationdensity": { "type": "literal" , "value": "70.9185432" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oneida" } ,
+        "populationdensity": { "type": "literal" , "value": "193.9028614" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tioga" } ,
+        "populationdensity": { "type": "literal" , "value": "99.94023405" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ulster" } ,
+        "populationdensity": { "type": "literal" , "value": "157.8456786" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rockland" } ,
+        "populationdensity": { "type": "literal" , "value": "1651.475146" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Richmond" } ,
+        "populationdensity": { "type": "literal" , "value": "7613.457592" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wyoming" } ,
+        "populationdensity": { "type": "literal" , "value": "73.19660657" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cayuga" } ,
+        "populationdensity": { "type": "literal" , "value": "118.1092934" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Montgomery" } ,
+        "populationdensity": { "type": "literal" , "value": "122.5359419" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Kings" } ,
+        "populationdensity": { "type": "literal" , "value": "34938.47897" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Onondaga" } ,
+        "populationdensity": { "type": "literal" , "value": "587.0048315" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Putnam" } ,
+        "populationdensity": { "type": "literal" , "value": "415.2931512" }
       } ,
       {
         "county": { "type": "literal" , "value": "Warren" } ,
-        "population": { "type": "literal" , "value": "63,273" }
+        "populationdensity": { "type": "literal" , "value": "72.78698708" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Queens" } ,
+        "populationdensity": { "type": "literal" , "value": "20418.35408" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cortland" } ,
+        "populationdensity": { "type": "literal" , "value": "97.45421795" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Fulton" } ,
+        "populationdensity": { "type": "literal" , "value": "110.8007336" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schoharie" } ,
+        "populationdensity": { "type": "literal" , "value": "50.66396579" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Westchester" } ,
+        "populationdensity": { "type": "literal" , "value": "2138.327711" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Genesee" } ,
+        "populationdensity": { "type": "literal" , "value": "122.5213009" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cattaraugus" } ,
+        "populationdensity": { "type": "literal" , "value": "64.0737489" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oswego" } ,
+        "populationdensity": { "type": "literal" , "value": "128.4768698" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Nassau" } ,
+        "populationdensity": { "type": "literal" , "value": "4662.572814" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "St. Lawrence" } ,
+        "populationdensity": { "type": "literal" , "value": "41.65326184" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Herkimer" } ,
+        "populationdensity": { "type": "literal" , "value": "45.66944198" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chemung" } ,
+        "populationdensity": { "type": "literal" , "value": "223.1766176" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Greene" } ,
+        "populationdensity": { "type": "literal" , "value": "74.08104979" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tompkins" } ,
+        "populationdensity": { "type": "literal" , "value": "202.9366663" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Delaware" } ,
+        "populationdensity": { "type": "literal" , "value": "33.09250054" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Otsego" } ,
+        "populationdensity": { "type": "literal" , "value": "61.68727563" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Franklin" } ,
+        "populationdensity": { "type": "literal" , "value": "31.28673789" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orange" } ,
+        "populationdensity": { "type": "literal" , "value": "420.0357694" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Clinton" } ,
+        "populationdensity": { "type": "literal" , "value": "76.89590452" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Washington" } ,
+        "populationdensity": { "type": "literal" , "value": "72.98788662" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ontario" } ,
+        "populationdensity": { "type": "literal" , "value": "155.3524318" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Erie" } ,
+        "populationdensity": { "type": "literal" , "value": "909.2423938" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chautauqua" } ,
+        "populationdensity": { "type": "literal" , "value": "131.4373146" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "New York" } ,
+        "populationdensity": { "type": "literal" , "value": "67096.99477" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Columbia" } ,
+        "populationdensity": { "type": "literal" , "value": "99.17103173" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Bronx" } ,
+        "populationdensity": { "type": "literal" , "value": "31746.8237" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Niagara" } ,
+        "populationdensity": { "type": "literal" , "value": "419.9636677" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Livingston" } ,
+        "populationdensity": { "type": "literal" , "value": "102.360274" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Dutchess" } ,
+        "populationdensity": { "type": "literal" , "value": "350.4459886" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wayne" } ,
+        "populationdensity": { "type": "literal" , "value": "155.2291422" }
       }
     ]
   }
 }
-
 var Population_2011 = {
   "head": {
-    "vars": [ "county" , "population" ]
+    "vars": [ "county" , "populationdensity" ]
   } ,
   "results": {
     "bindings": [
       {
-        "county": { "type": "literal" , "value": "Madison" } ,
-        "population": { "type": "literal" , "value": "73,442" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Oneida" } ,
-        "population": { "type": "literal" , "value": "234,878" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "St. Lawrence" } ,
-        "population": { "type": "literal" , "value": "111,944" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Oswego" } ,
-        "population": { "type": "literal" , "value": "122,109" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cayuga" } ,
-        "population": { "type": "literal" , "value": "80,026" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Saratoga" } ,
-        "population": { "type": "literal" , "value": "219,607" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Erie" } ,
-        "population": { "type": "literal" , "value": "919,040" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Seneca" } ,
-        "population": { "type": "literal" , "value": "35,251" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Bronx" } ,
-        "population": { "type": "literal" , "value": "1,385,108" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Greene" } ,
-        "population": { "type": "literal" , "value": "49,221" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Queens" } ,
-        "population": { "type": "literal" , "value": "2,230,722" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Tompkins" } ,
-        "population": { "type": "literal" , "value": "101,564" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Jefferson" } ,
-        "population": { "type": "literal" , "value": "116,229" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Tioga" } ,
-        "population": { "type": "literal" , "value": "51,125" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Fulton" } ,
-        "population": { "type": "literal" , "value": "55,531" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Steuben" } ,
-        "population": { "type": "literal" , "value": "98,990" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Schenectady" } ,
-        "population": { "type": "literal" , "value": "154,727" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Yates" } ,
-        "population": { "type": "literal" , "value": "25,348" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Nassau" } ,
-        "population": { "type": "literal" , "value": "1,339,532" }
+        "county": { "type": "literal" , "value": "Broome" } ,
+        "populationdensity": { "type": "literal" , "value": "283.8063439" }
       } ,
       {
         "county": { "type": "literal" , "value": "Livingston" } ,
-        "population": { "type": "literal" , "value": "65,393" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Suffolk" } ,
-        "population": { "type": "literal" , "value": "1,493,350" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Sullivan" } ,
-        "population": { "type": "literal" , "value": "77,547" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Rensselaer" } ,
-        "population": { "type": "literal" , "value": "159,429" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Franklin" } ,
-        "population": { "type": "literal" , "value": "51,599" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Kings" } ,
-        "population": { "type": "literal" , "value": "2,504,700" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Otsego" } ,
-        "population": { "type": "literal" , "value": "62,259" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Essex" } ,
-        "population": { "type": "literal" , "value": "39,370" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cattaraugus" } ,
-        "population": { "type": "literal" , "value": "80,317" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Monroe" } ,
-        "population": { "type": "literal" , "value": "744,344" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Orange" } ,
-        "population": { "type": "literal" , "value": "372,813" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Ulster" } ,
-        "population": { "type": "literal" , "value": "182,493" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Genesee" } ,
-        "population": { "type": "literal" , "value": "60,079" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Ontario" } ,
-        "population": { "type": "literal" , "value": "107,931" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Warren" } ,
-        "population": { "type": "literal" , "value": "65,707" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Herkimer" } ,
-        "population": { "type": "literal" , "value": "64,519" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Lewis" } ,
-        "population": { "type": "literal" , "value": "27,087" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Wayne" } ,
-        "population": { "type": "literal" , "value": "93,772" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Allegany" } ,
-        "population": { "type": "literal" , "value": "48,946" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Chemung" } ,
-        "population": { "type": "literal" , "value": "88,830" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Chenango" } ,
-        "population": { "type": "literal" , "value": "50,477" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Albany" } ,
-        "population": { "type": "literal" , "value": "304,204" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Niagara" } ,
-        "population": { "type": "literal" , "value": "216,469" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Schoharie" } ,
-        "population": { "type": "literal" , "value": "32,749" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Rockland" } ,
-        "population": { "type": "literal" , "value": "311,687" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Orleans" } ,
-        "population": { "type": "literal" , "value": "42,883" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Onondaga" } ,
-        "population": { "type": "literal" , "value": "467,026" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Richmond" } ,
-        "population": { "type": "literal" , "value": "468,730" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Schuyler" } ,
-        "population": { "type": "literal" , "value": "18,343" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Columbia" } ,
-        "population": { "type": "literal" , "value": "63,096" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Cortland" } ,
-        "population": { "type": "literal" , "value": "49,336" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Wyoming" } ,
-        "population": { "type": "literal" , "value": "42,155" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Dutchess" } ,
-        "population": { "type": "literal" , "value": "297,488" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Clinton" } ,
-        "population": { "type": "literal" , "value": "82,128" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Delaware" } ,
-        "population": { "type": "literal" , "value": "47,980" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Chautauqua" } ,
-        "population": { "type": "literal" , "value": "134,905" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Broome" } ,
-        "population": { "type": "literal" , "value": "200,600" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Montgomery" } ,
-        "population": { "type": "literal" , "value": "50,219" }
-      } ,
-      {
-        "county": { "type": "literal" , "value": "Hamilton" } ,
-        "population": { "type": "literal" , "value": "4,836" }
+        "populationdensity": { "type": "literal" , "value": "103.4486577" }
       } ,
       {
         "county": { "type": "literal" , "value": "Westchester" } ,
-        "population": { "type": "literal" , "value": "949,113" }
+        "populationdensity": { "type": "literal" , "value": "2192.858463" }
       } ,
       {
-        "county": { "type": "literal" , "value": "New York" } ,
-        "population": { "type": "literal" , "value": "1,585,873" }
+        "county": { "type": "literal" , "value": "Schuyler" } ,
+        "populationdensity": { "type": "literal" , "value": "55.80298744" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Kings" } ,
+        "populationdensity": { "type": "literal" , "value": "35472.3127" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cayuga" } ,
+        "populationdensity": { "type": "literal" , "value": "115.4476471" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orleans" } ,
+        "populationdensity": { "type": "literal" , "value": "109.5631068" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Bronx" } ,
+        "populationdensity": { "type": "literal" , "value": "32955.22246" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wyoming" } ,
+        "populationdensity": { "type": "literal" , "value": "71.09848038" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Jefferson" } ,
+        "populationdensity": { "type": "literal" , "value": "91.36063512" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "St. Lawrence" } ,
+        "populationdensity": { "type": "literal" , "value": "41.68305034" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tioga" } ,
+        "populationdensity": { "type": "literal" , "value": "98.56561723" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Orange" } ,
+        "populationdensity": { "type": "literal" , "value": "456.6883896" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Tompkins" } ,
+        "populationdensity": { "type": "literal" , "value": "213.3473375" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chenango" } ,
+        "populationdensity": { "type": "literal" , "value": "56.43924147" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oneida" } ,
+        "populationdensity": { "type": "literal" , "value": "193.6818669" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Yates" } ,
+        "populationdensity": { "type": "literal" , "value": "74.94087039" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Wayne" } ,
+        "populationdensity": { "type": "literal" , "value": "155.1976962" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Saratoga" } ,
+        "populationdensity": { "type": "literal" , "value": "270.505272" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Allegany" } ,
+        "populationdensity": { "type": "literal" , "value": "47.51024053" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Onondaga" } ,
+        "populationdensity": { "type": "literal" , "value": "598.5287521" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Fulton" } ,
+        "populationdensity": { "type": "literal" , "value": "111.9193019" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Montgomery" } ,
+        "populationdensity": { "type": "literal" , "value": "124.0526654" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Erie" } ,
+        "populationdensity": { "type": "literal" , "value": "880.1294759" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Dutchess" } ,
+        "populationdensity": { "type": "literal" , "value": "371.1223942" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Essex" } ,
+        "populationdensity": { "type": "literal" , "value": "21.91117542" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Warren" } ,
+        "populationdensity": { "type": "literal" , "value": "75.58697328" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Niagara" } ,
+        "populationdensity": { "type": "literal" , "value": "413.938235" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Seneca" } ,
+        "populationdensity": { "type": "literal" , "value": "108.4946601" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Richmond" } ,
+        "populationdensity": { "type": "literal" , "value": "8015.218878" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Albany" } ,
+        "populationdensity": { "type": "literal" , "value": "581.1519725" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chemung" } ,
+        "populationdensity": { "type": "literal" , "value": "217.6299091" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Herkimer" } ,
+        "populationdensity": { "type": "literal" , "value": "45.71762622" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ontario" } ,
+        "populationdensity": { "type": "literal" , "value": "167.4958875" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cortland" } ,
+        "populationdensity": { "type": "literal" , "value": "98.74111878" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Cattaraugus" } ,
+        "populationdensity": { "type": "literal" , "value": "61.31770813" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Steuben" } ,
+        "populationdensity": { "type": "literal" , "value": "71.08082491" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Sullivan" } ,
+        "populationdensity": { "type": "literal" , "value": "79.96926916" }
       } ,
       {
         "county": { "type": "literal" , "value": "Putnam" } ,
-        "population": { "type": "literal" , "value": "99,710" }
+        "populationdensity": { "type": "literal" , "value": "431.122449" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Chautauqua" } ,
+        "populationdensity": { "type": "literal" , "value": "127.0232098" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Franklin" } ,
+        "populationdensity": { "type": "literal" , "value": "31.62691773" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Genesee" } ,
+        "populationdensity": { "type": "literal" , "value": "121.5903341" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Suffolk" } ,
+        "populationdensity": { "type": "literal" , "value": "1637.086165" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "New York" } ,
+        "populationdensity": { "type": "literal" , "value": "69071.12369" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Madison" } ,
+        "populationdensity": { "type": "literal" , "value": "111.9781661" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Delaware" } ,
+        "populationdensity": { "type": "literal" , "value": "33.17270131" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Ulster" } ,
+        "populationdensity": { "type": "literal" , "value": "162.0028762" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Otsego" } ,
+        "populationdensity": { "type": "literal" , "value": "62.08516155" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schoharie" } ,
+        "populationdensity": { "type": "literal" , "value": "52.64943249" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Monroe" } ,
+        "populationdensity": { "type": "literal" , "value": "1129.008479" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Schenectady" } ,
+        "populationdensity": { "type": "literal" , "value": "750.7375061" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Hamilton" } ,
+        "populationdensity": { "type": "literal" , "value": "2.810990531" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Oswego" } ,
+        "populationdensity": { "type": "literal" , "value": "128.0908423" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Nassau" } ,
+        "populationdensity": { "type": "literal" , "value": "4672.405734" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Queens" } ,
+        "populationdensity": { "type": "literal" , "value": "20420.37715" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rockland" } ,
+        "populationdensity": { "type": "literal" , "value": "1789.04259" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Rensselaer" } ,
+        "populationdensity": { "type": "literal" , "value": "243.7901401" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Columbia" } ,
+        "populationdensity": { "type": "literal" , "value": "99.24968147" }
       } ,
       {
         "county": { "type": "literal" , "value": "Washington" } ,
-        "population": { "type": "literal" , "value": "63,216" }
+        "populationdensity": { "type": "literal" , "value": "75.66791152" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Greene" } ,
+        "populationdensity": { "type": "literal" , "value": "75.98764956" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Clinton" } ,
+        "populationdensity": { "type": "literal" , "value": "79.0490399" }
+      } ,
+      {
+        "county": { "type": "literal" , "value": "Lewis" } ,
+        "populationdensity": { "type": "literal" , "value": "21.23770993" }
       }
     ]
   }

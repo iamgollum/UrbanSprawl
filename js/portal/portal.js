@@ -41,6 +41,7 @@ Array.prototype.repeat= function(what, L){
 	this.UI_Dashboard = $('#dashboard');
     this.UI_DashboardSlider = $('#slider');
 	this.UI_DashboardComboChart = $('#chart');
+	this.UI_DashboardChartToggle = $('#toggleChartType');
 	this.UI_Heatmap_Key = $('#heatmap-key');
 
 	// SHARED UI Elements 
@@ -595,7 +596,14 @@ Array.prototype.repeat= function(what, L){
 	enableBoxSelection_();
 	enablePlacesSearch_();
 
-	/* Tests */
+	/* Cache Test Data for Demo */
+	this.applyDataSet("CountyTotalArea");
+	years = ['2000', '2011'];
+	for (var i = 0; i < years.length; i++) {
+		this.applyDataSet('Population', years[i]);
+		this.applyDataSet('Vacant', years[i]);
+		this.applyDataSet('Occupied', years[i]);
+	};
 }
 UrbanSprawlPortal.prototype = new google.maps.MVCObject();
 
@@ -617,7 +625,8 @@ UrbanSprawlPortal.prototype.findModel = function(dataset){
 UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 
 	//data = this.findModel(dataset).getFromYear(year);
-	data = window[dataset + "_" + year];
+
+	var data = (year) ? window[dataset + "_" + year] : window[dataset];
 	//parse RDF JSON Data
 	var header = data.head.vars; //object, subject, no predicate
 	var results = data.results.bindings;
@@ -630,11 +639,20 @@ UrbanSprawlPortal.prototype.applyDataSet = function(dataset, year){
 	for (var i = 0; i < results.length; i++) {
 		//create hashtable of object : subject for fast lookup
 		var subject = results[i][header[0]].value;
-		var value = results[i][header[1]].value;
+		var value = 0;
+
+		for (var h = 1; h < header.length; h++) {
+			value+= parseInt(results[i][header[h]].value.replace(/[^\d\.\-\ ]/g, ''));
+		};
+
 		if(!(subject in this.cachedDataSets[dataset]) ){
 			this.cachedDataSets[dataset][subject] = {};
 		}
-		this.cachedDataSets[dataset][subject][year] = value.replace(/[^\d\.\-\ ]/g, '');
+		if(year){
+			this.cachedDataSets[dataset][subject][year] = value;
+		} else {
+			this.cachedDataSets[dataset][subject] = value;
+		}
 	};
 }
 
@@ -650,18 +668,17 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 	}
 	var title = dataset;
 	if(title == "Occupied" || title == "Vacant"){
-		title += ' Housing Density';
+		title += ' Housing Rate';
 	} 
 	else if(title != "Population"){
-		title += ' Industry Density';
+		title += ' Industry Density (By Population)';
 	} else {
 		title += ' Density (By Square Mile)';
 	}
-	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + dataset + " Charts";
+	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + title;
 	this.UI_SubjectTitle.html(this.STATE_Charts_Title);
 
 	for (var i = 0; i < years.length; i++) {
-		this.applyDataSet("Population", years[i]);
 		this.applyDataSet(dataset, years[i]);
 	};
 
@@ -684,14 +701,20 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 			var colIndex = datatable.addColumn( 'number', $(this).attr("id") );
 			for (var i = 0; i < years.length; i++) {
 					var year = years[i];
-			        var amount = parseInt(dataset[subject][year]);
+			        var amount = dataset[subject][year];
 /*			        if(title == "Vacant" || title = "Occupied"){
 			        	var total = self.cachedDataSets['Vacant'] + self.cachedDataSets['Housing'];
 			        	amount = Math.ceil( (amount/total) * 100);
 
 			        } else if*/
-			        if(title != "Population"){
-			        	amount = amount/ self.cachedDataSets['Population'][subject][year];
+			        if(title == "Occupied"){
+			        	amount = (amount/ (amount + self.cachedDataSets['Vacant'][subject][year]) );
+			        }
+			        else if(title == "Vacant"){
+			        	amount = (amount/ (amount + self.cachedDataSets['Occupied'][subject][year]) );
+			        }
+			        else if(title != "Population"){
+			        	amount = (amount/ (self.cachedDataSets['CountyTotalArea'][subject] * self.cachedDataSets['Population'][subject][year]) );
 			        }
 			        datatable.setCell(i, colIndex, amount);
 			}
@@ -778,14 +801,14 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	this.UI_Dashboard.slideUp("slow");
 
 	if(title == "Occupied" || title == "Vacant"){
-		title += ' Housing Density';
+		title += ' Housing Rate';
 	} 
 	else if(title != "Population"){
-		title += ' Industry Density';
+		title += ' Industry Density (By Population)';
 	} else {
 		title += ' Density (By Square Mile)';
 	}
-	this.STATE_Heatmap_Title = "Analyzing 2011 " + title + " Heatmap";
+	this.STATE_Heatmap_Title = "Analyzing 2011 " + title;
 	this.UI_SubjectTitle.html(this.STATE_Heatmap_Title);
 	// /this.toggleMarkers();
 
@@ -795,7 +818,6 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 	var selectedPoints = {};
 	var max = 0;
 
-	this.applyDataSet('Population', '2011');
 	this.applyDataSet(dataset, '2011');
 	var data = self.cachedDataSets[dataset];
 
@@ -812,10 +834,16 @@ UrbanSprawlPortal.prototype.generateHeatmap = function(dataset){
 		var totals = {};
 
 		for (subject in selectedPoints) {
-			var amount = (subject in data) ? parseInt(data[subject]['2011']) : -1;
+			var amount = (subject in data) ? data[subject]['2011'] : -1;
 
-	        if(dataset != "Population"){
-	        	amount = (amount/self.cachedDataSets['Population'][subject]['2011']);
+	        if(dataset == "Occupied"){
+	        	amount = (amount/ (amount + self.cachedDataSets['Vacant'][subject]['2011']) );
+	        }
+	        else if(dataset == "Vacant"){
+	        	amount = (amount/ (amount + self.cachedDataSets['Occupied'][subject]['2011']) );
+	        }
+	        else if(dataset != "Population"){
+	        	amount = (amount/ (self.cachedDataSets['CountyTotalArea'][subject] * self.cachedDataSets['Population'][subject]['2011']) );
 	        }
 			totals[subject] = amount;
 			//Ignore subjects that have no data
