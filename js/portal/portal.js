@@ -1,4 +1,3 @@
-
 Array.prototype.repeat= function(what, L){
  while(L) this[--L]= what;
  return this;
@@ -387,7 +386,7 @@ Array.prototype.repeat= function(what, L){
 	var data = {
 			'Population' : '', 
 			'Housing' : ['Occupied', 'Vacant'], 
-            'Businesses' : ['Education', 'Health', 'Manufactering', 'Technology'],
+            'Businesses' : ['Education', 'Health', 'Manufacturing', 'Technology'],
 	         };
 	//this.markers.sort(dynamicSortMultiple("kind", "selected"));
 
