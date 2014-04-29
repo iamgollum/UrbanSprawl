@@ -56,7 +56,7 @@ Array.prototype.repeat= function(what, L){
 		this.styles[key].bindTo('map', this);
 		this.styles[key].bindTo('UI_Tab_Buttons', this);
 	}
-	this.themeStrategy = map_styles['water'];
+	this.themeStrategy = map_styles['administrative'];
 
 
 	this.markers = {};
@@ -80,11 +80,11 @@ Array.prototype.repeat= function(what, L){
 		fillOpacity: 0		
 	}
  
-	this.overlays = {
+	this.set('overlays', {
 		'bikeroute' : new google.maps.BicyclingLayer(),
 		'transit' : new google.maps.TransitLayer(),
 		'counties' : new function(){},
-	}
+	});
 
 
 	// State Variables, persists across all views (aka. view history)

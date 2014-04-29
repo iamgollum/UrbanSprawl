@@ -23,6 +23,7 @@ function main(){
 	/* Aar*/
 	var mapStyles = {
 		'urban': new UrbanTheme(),
+		'administrative': new AdministrativeTheme(),
 		'transit': new TransitTheme(),
 		'water': new InverseWaterTheme()
 	}

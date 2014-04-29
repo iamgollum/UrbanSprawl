@@ -40,6 +40,14 @@ var UrbanTheme = function() {};
 UrbanTheme.prototype = Object.create(MapThemeStrategy.prototype);
 UrbanTheme.prototype.setTheme = function() {
   		this.get('map').setOptions({styles: urbanTheme}); /* default theme */
+		this.get('UI_Tab_Buttons').css('color', '#000');
+		this.get('UI_Tab_Buttons').css('textShadow', '0px 0px 15px #fff');
+};
+
+var AdministrativeTheme = function() {};
+AdministrativeTheme.prototype = Object.create(MapThemeStrategy.prototype);
+AdministrativeTheme.prototype.setTheme = function() {
+  		this.get('map').setOptions({styles: administrativeTheme}); /* default theme */
 		this.get('UI_Tab_Buttons').css('color', '#fff');
 		this.get('UI_Tab_Buttons').css('textShadow', '0px 0px 15px #000');
 };
