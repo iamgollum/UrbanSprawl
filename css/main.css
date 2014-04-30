@@ -28,6 +28,10 @@ nav{
 	z-index: 9999 !important;
 }
 
+.top-bar #search-input{
+	width: 20rem;
+}
+
 .clear{
 	clear: both;
 }
