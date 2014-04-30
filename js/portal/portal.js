@@ -666,23 +666,13 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 		return;
 	}
 	var title = dataset;
-	if(title == "Occupied" || title == "Vacant"){
-		title += ' Housing Rate';
-	} 
-	else if(title != "Population"){
-		title += ' Industry Density (By Population)';
-	} else {
-		title += ' Density (By Square Mile)';
-	}
-	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + title;
-	this.UI_SubjectTitle.html(this.STATE_Charts_Title);
 
 	for (var i = 0; i < years.length; i++) {
 		this.applyDataSet(dataset, years[i]);
 	};
 
 	var self = this;
-	var dataset = this.cachedDataSets[dataset];
+	var data = this.cachedDataSets[dataset];
 
 
 	var datatable = new google.visualization.DataTable();
@@ -696,11 +686,11 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
 		var subject = $(this).attr("id");
 		var first = true;
 		var colIndex = 0;
-		if (subject in dataset){
+		if (subject in data){
 			var colIndex = datatable.addColumn( 'number', $(this).attr("id") );
 			for (var i = 0; i < years.length; i++) {
 					var year = years[i];
-			        var amount = dataset[subject][year];
+			        var amount = data[subject][year];
 /*			        if(title == "Vacant" || title = "Occupied"){
 			        	var total = self.cachedDataSets['Vacant'] + self.cachedDataSets['Housing'];
 			        	amount = Math.ceil( (amount/total) * 100);
@@ -778,7 +768,17 @@ UrbanSprawlPortal.prototype.generateDashboard = function(dataset, years, chartTy
     google.visualization.events.addListener(categoryPicker, 'statechange', function () {
    		self.STATE_Time_Period = categoryPicker.getState().selectedValues;
    });
-	
+
+	if(title == "Occupied" || title == "Vacant"){
+		title += ' Housing Rate';
+	} 
+	else if(title != "Population"){
+		title += ' Industry Density (By Population)';
+	} else {
+		title += ' Density (By Square Mile)';
+	}
+	this.STATE_Charts_Title = "Analyzing " + years[0] + " to " + years[1] + " " + title;
+	this.UI_SubjectTitle.html(this.STATE_Charts_Title);
 	this.UI_Dashboard.slideDown("slow");
 }
 
